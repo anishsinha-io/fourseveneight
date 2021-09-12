@@ -1,13 +1,11 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import React, { Fragment, useState } from "react";
+import { useAppDispatch } from "../../app/hooks";
 // import validateInputs from "../../util/validateInputs";
 // import { setAlert } from "../../actions/alert";
 import { getTokenAndLogin } from "./authSlice";
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
-  const token = useAppSelector((state) => state.auth.token);
-  const user = useAppSelector((state) => state.auth.user);
 
   const [formData, setFormData] = useState({
     username: "",

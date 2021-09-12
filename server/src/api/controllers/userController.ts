@@ -52,7 +52,7 @@ export const registerUser: RequestHandler = async (req, res) => {
       `${process.env.JWT_SECRET}`,
       { expiresIn: 3600 },
       (err: Error | null, token: string | undefined) => {
-        return res.status(201).json({ data: `Bearer ${token}` });
+        return res.status(201).json({ token: `Bearer ${token}` });
       }
     );
   } catch (err) {

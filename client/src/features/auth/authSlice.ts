@@ -134,6 +134,12 @@ export const authSlice = createSlice({
         state.user = null;
         state.loading = false;
         state.isAuthenticated = false;
+      })
+      .addCase(registerUserAndLoginWithToken.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(registerUserAndLoginWithToken.fulfilled, (state, action) => {
+        state.status = "idle";
       });
   },
 });

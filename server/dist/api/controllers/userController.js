@@ -108,7 +108,7 @@ var registerUser = function (req, res) { return __awaiter(void 0, void 0, void 0
                     username: user.username,
                 };
                 jsonwebtoken_1.default.sign(payload, "" + process.env.JWT_SECRET, { expiresIn: 3600 }, function (err, token) {
-                    return res.status(201).json({ data: "Bearer " + token });
+                    return res.status(201).json({ token: "Bearer " + token });
                 });
                 return [3 /*break*/, 5];
             case 4:

@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect } from "react";
-// import logo from "./logo.svg";
-// import { Counter } from "./features/counter/Counter";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import Login from "./features/auth/Login";
+import Landing from "./features/landing/Landing";
+import Routes from "./routes/Routes";
+
 import { loadUserFromToken } from "./features/auth/authSlice";
 import { store } from "./app/store";
 
@@ -11,9 +12,14 @@ const App: React.FC = () => {
     store.dispatch(loadUserFromToken());
   }, []);
   return (
-    <Fragment>
-      <Login />
-    </Fragment>
+    <Router>
+      <Fragment>
+        <Switch>
+          <Route exact path="/" component={Landing} />
+          <Route component={Routes} />
+        </Switch>
+      </Fragment>
+    </Router>
   );
 };
 
