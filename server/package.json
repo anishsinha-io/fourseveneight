@@ -1,0 +1,42 @@
+{
+  "name": "fourseveneight-alpha",
+  "version": "1.0.0",
+  "description": "social network",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "nodemon dist/app.js",
+    "compile:ts": "tsc -w",
+    "client": "npm start --prefix ../client",
+    "dev": "concurrently \"npm start\" \"npm run client\""
+  },
+  "keywords": [
+    "social",
+    "network"
+  ],
+  "author": "Anish Sinha",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "http": "0.0.1-security",
+    "mongoose": "^6.0.4",
+    "nodemailer": "^6.6.3",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "slugify": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/mongoose": "^5.11.97",
+    "@types/nodemailer": "^6.4.4",
+    "@types/passport": "^1.0.7",
+    "@types/passport-jwt": "^3.0.6",
+    "concurrently": "^6.2.1",
+    "nodemon": "^2.0.12"
+  }
+}

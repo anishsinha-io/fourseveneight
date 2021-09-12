@@ -1,0 +1,37 @@
+.form-wrapper {
+  border: 1px solid $color-primary;
+  border-radius: 3px;
+  width: min-content;
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  text-align: center;
+  padding: 1rem;
+  margin: 0 auto;
+
+  .form-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    place-items: center;
+    .form-body__container {
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        place-items: center;
+        padding: 0.5rem;
+        & > input {
+          width: $max-form-width;
+          @media (max-width: 700px) {
+            width: $max-width;
+          }
+          font-size: 1rem;
+          padding: 0.1rem;
+        }
+        & > button {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
