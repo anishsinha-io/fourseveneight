@@ -2,7 +2,8 @@ import React, { Fragment, useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import { registerUserAndLoginWithToken } from "../auth/authSlice";
 import validateInputs from "../../util/validateInputs";
-import { setAlert } from "../../features/alert/alertSlice";
+import { setAlert, removeAlertAsync } from "../alert/alertSlice";
+
 // import api from "../../app/api";
 
 const Register = () => {
@@ -46,7 +47,9 @@ const Register = () => {
     });
     if (errors.length > 0) {
       for (let i = 0; i < errors.length; i++) {
+        //todo refactor elegantly
         dispatch(setAlert(errors[i], "danger"));
+        dispatch(removeAlertAsync());
       }
       return;
     }

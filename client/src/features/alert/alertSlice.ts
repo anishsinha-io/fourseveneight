@@ -1,4 +1,9 @@
-import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  nanoid,
+  createAsyncThunk,
+} from "@reduxjs/toolkit";
 
 export interface IAlert {
   id: string;
@@ -21,9 +26,19 @@ const alertSlice = createSlice({
         return { payload: { id, alertType, msg } };
       },
     },
+    removeAlert: (state) => {
+      state.pop();
+    },
   },
   extraReducers: (builder) => {},
 });
 
-export const { setAlert } = alertSlice.actions;
+export const { setAlert, removeAlert } = alertSlice.actions;
+
+export const removeAlertAsync = () => (dispatch: any) => {
+  setTimeout(() => {
+    dispatch(removeAlert());
+  }, 5000);
+};
+
 export default alertSlice.reducer;
