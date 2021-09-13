@@ -12,7 +12,10 @@ import Email from "../../util/Email";
 
 export const registerUser: RequestHandler = async (req, res) => {
   try {
-    const { firstName, lastName, email, username, password } = req.body;
+    const { firstName, lastName, email, username, password, passwordConfirm } =
+      req.body;
+    if (password !== passwordConfirm)
+      return res.status(400).json({ msg: "Passwords do not match!" });
     let user = await User.findOne({ username: username });
     if (user) {
       return res
@@ -276,6 +279,17 @@ export const auth: RequestHandler = async (req, res) => {
       "-password"
     );
     return res.status(200).json({ user });
+  } catch (err) {
+    return res.status(500).json({ msg: "Internal server error" });
+  }
+};
+
+export const getUserByUsername: RequestHandler = async (req, res) => {
+  try {
+    const { username } = req.body;
+    const user = await User.findOne({ username: username });
+    if (user) return res.status(200).json({ data: user });
+    else return res.status(404).json({ data: "User not found" });
   } catch (err) {
     return res.status(500).json({ msg: "Internal server error" });
   }

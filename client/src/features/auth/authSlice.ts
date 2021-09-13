@@ -98,8 +98,10 @@ export const loadUserFromToken = createAsyncThunk(
       setAuthToken(token);
       const res = await api.get("/users/auth"); //throws error if not authenticated
       const user = (res.data.user as IUser) || null;
+      console.clear();
       return { token, user };
     } catch (err: any) {
+      console.clear();
       return rejectWithValue("Unable to load user!");
     }
   }

@@ -59,7 +59,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.auth = exports.updateUser = exports.deactivateAccount = exports.resendConfirmationEmail = exports.confirmAccountEmail = exports.logoutUser = exports.resetPassword = exports.sendPasswordResetEmail = exports.getCurrentUser = exports.loginUser = exports.registerUser = void 0;
+exports.getUserByUsername = exports.auth = exports.updateUser = exports.deactivateAccount = exports.resendConfirmationEmail = exports.confirmAccountEmail = exports.logoutUser = exports.resetPassword = exports.sendPasswordResetEmail = exports.getCurrentUser = exports.loginUser = exports.registerUser = void 0;
 var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var userModel_1 = __importDefault(require("../../models/userModel"));
@@ -67,12 +67,14 @@ var blacklistModel_1 = __importDefault(require("../../models/blacklistModel"));
 var security = __importStar(require("../../auth/security"));
 var Email_1 = __importDefault(require("../../util/Email"));
 var registerUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, firstName, lastName, email, username, password, user, hash, confirmationUrl, confirmationToken, payload, err_1;
+    var _a, firstName, lastName, email, username, password, passwordConfirm, user, hash, confirmationUrl, confirmationToken, payload, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 4, , 5]);
-                _a = req.body, firstName = _a.firstName, lastName = _a.lastName, email = _a.email, username = _a.username, password = _a.password;
+                _a = req.body, firstName = _a.firstName, lastName = _a.lastName, email = _a.email, username = _a.username, password = _a.password, passwordConfirm = _a.passwordConfirm;
+                if (password !== passwordConfirm)
+                    return [2 /*return*/, res.status(400).json({ msg: "Passwords do not match!" })];
                 return [4 /*yield*/, userModel_1.default.findOne({ username: username })];
             case 1:
                 user = _b.sent();
@@ -428,3 +430,26 @@ var auth = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
     });
 }); };
 exports.auth = auth;
+var getUserByUsername = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var username, user, err_11;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                username = req.body.username;
+                return [4 /*yield*/, userModel_1.default.findOne({ username: username })];
+            case 1:
+                user = _a.sent();
+                if (user)
+                    return [2 /*return*/, res.status(200).json({ data: user })];
+                else
+                    return [2 /*return*/, res.status(404).json({ data: "User not found" })];
+                return [3 /*break*/, 3];
+            case 2:
+                err_11 = _a.sent();
+                return [2 /*return*/, res.status(500).json({ msg: "Internal server error" })];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.getUserByUsername = getUserByUsername;

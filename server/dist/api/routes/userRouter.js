@@ -30,6 +30,7 @@ router.route("/login").post(userController.loginUser);
 router.route("/recover").post(userController.sendPasswordResetEmail);
 router.route("/reset/:resetToken").post(userController.resetPassword);
 router.route("/confirm/:userId").get(userController.confirmAccountEmail);
+router.route("/user").post(userController.getUserByUsername);
 //private
 router.use(security.authenticateUser, security.authenticateToken);
 router.route("/current").get(userController.getCurrentUser);
