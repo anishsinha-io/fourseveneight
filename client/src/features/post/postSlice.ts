@@ -34,12 +34,11 @@ const initialState = {
   posts: [] as IPost[],
 };
 
-//Check IndexedDB for posts before making api call
 export const getAndLoadPosts = createAsyncThunk(
   "post/loadAllPosts",
   async (_, { rejectWithValue }) => {
     try {
-      // await db.table("posts").clear();
+      await db.table("posts").clear();
       const res = await api.get("/posts");
       await db.table("posts").bulkPut(res.data.posts);
       return res.data;

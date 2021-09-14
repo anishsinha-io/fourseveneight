@@ -1,29 +1,28 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getAndLoadPosts } from "../post/postSlice";
 import PostItem from "../post/PostItem";
 import { db } from "../../App";
 import Spinner from "../spinner/Spinner";
+import { useAppDispatch } from "../../app/hooks";
+import { setAlert } from "../alert/alertSlice";
 
 const Landing: React.FC = () => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchPostsFromClientDB = async () => {
       try {
-        // setLoading(true);
         const posts = await db.table("posts").toArray();
-        console.log(posts);
         setData(posts);
         setLoading(false);
       } catch (err) {
-        console.log(err);
+        dispatch(setAlert("Error loading posts", "danger"));
       }
     };
     fetchPostsFromClientDB();
-  }, [loading]);
+  }, [loading, dispatch]);
 
   let postItems;
 

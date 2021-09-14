@@ -3,7 +3,6 @@ import React, { Fragment } from "react";
 import { IPost } from "./postSlice";
 
 const PostItem: React.FC<{ post: IPost }> = (props) => {
-  console.log(props.post);
   return (
     <Fragment>
       <div className="post-container">

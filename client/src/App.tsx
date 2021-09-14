@@ -7,6 +7,8 @@ import Routes from "./routes/Routes";
 import { loadUserFromToken } from "./features/auth/authSlice";
 import { getAndLoadPosts } from "./features/post/postSlice";
 import { store } from "./app/store";
+import { useAppDispatch } from "./app/hooks";
+import { setAlert } from "./features/alert/alertSlice";
 
 const dbName = "clientDB";
 export const db = new Dexie(dbName);
@@ -17,7 +19,10 @@ db.version(1).stores({
 //todo add db.on('changes') and clear + reload indexeddb
 
 const App: React.FC = () => {
-  db.open().catch((err) => console.log(err));
+  const dispatch = useAppDispatch();
+  db.open().catch((err) =>
+    dispatch(setAlert("Unknown error loading assets", "danger"))
+  );
   useEffect(() => {
     store.dispatch(loadUserFromToken());
     store.dispatch(getAndLoadPosts());
