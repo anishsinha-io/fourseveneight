@@ -1,9 +1,4 @@
-import {
-  createSlice,
-  PayloadAction,
-  nanoid,
-  createAsyncThunk,
-} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit";
 
 export interface IAlert {
   id: string;

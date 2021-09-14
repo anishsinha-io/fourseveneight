@@ -1,11 +1,14 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+// import { persistStore, persistReducer } from "redux-persist";
 import authReducer from "../features/auth/authSlice";
 import alertReducer from "../features/alert/alertSlice";
+import postReducer from "../features/post/postSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     alert: alertReducer,
+    post: postReducer,
   },
 });
 

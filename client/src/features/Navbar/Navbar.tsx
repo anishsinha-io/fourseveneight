@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
   return (
     <nav>
       <h1>
-        <Link to="/landing">fourseveneight</Link>
+        <Link to="/">fourseveneight</Link>
       </h1>
       {!userIsLoading && (
         <Fragment>{isLoggedIn ? authLinks : guestLinks}</Fragment>
