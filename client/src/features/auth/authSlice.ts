@@ -79,7 +79,7 @@ export const getTokenAndLogin = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk(
   "auth/logout",
-  async (_, { dispatch, rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       await api.get("/users/logout");
       setAuthToken();

@@ -1,10 +1,19 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
+import { logoutUser } from "../auth/authSlice";
+import { useAppDispatch } from "../../app/hooks";
+import { Redirect } from "react-router";
 
 const Navbar: React.FC = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isAuthenticated);
   const userIsLoading = useAppSelector((state) => state.auth.loading);
+  const dispatch = useAppDispatch();
+
+  const logoutHandler = () => {
+    dispatch(logoutUser());
+    return <Redirect to="/"></Redirect>;
+  };
 
   const authLinks = (
     <ul className="navbar-links">
@@ -12,7 +21,9 @@ const Navbar: React.FC = () => {
         <Link to="/post">Post</Link>
       </li>
       <li className="navbar-link">
-        <Link to="/logout">Logout</Link>
+        <Link to="/" onClick={logoutHandler}>
+          Logout
+        </Link>
       </li>
     </ul>
   );
