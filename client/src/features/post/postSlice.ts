@@ -38,8 +38,13 @@ export const getAndLoadPosts = createAsyncThunk(
   "post/loadAllPosts",
   async (_, { rejectWithValue }) => {
     try {
-      await db.table("posts").clear();
       const res = await api.get("/posts");
+      const cachedPostsLength = await db.table("posts").count();
+      const cachedPosts = await db.table("posts").toArray();
+      if (res.data.posts.length === cachedPostsLength) {
+        return cachedPosts;
+      }
+      await db.table("posts").clear();
       await db.table("posts").bulkPut(res.data.posts);
       return res.data;
     } catch (err) {
