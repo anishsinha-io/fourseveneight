@@ -82,6 +82,7 @@ export const logoutUser = createAsyncThunk(
   async (_, { dispatch, rejectWithValue }) => {
     try {
       await api.get("/users/logout");
+      setAuthToken();
       //dispatch success alert
     } catch (err) {
       //dispatch failure alert
@@ -141,6 +142,16 @@ export const authSlice = createSlice({
       })
       .addCase(registerUserAndLoginWithToken.fulfilled, (state, action) => {
         state.status = "idle";
+      })
+      .addCase(logoutUser.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.status = "idle";
+        state.token = "";
+        state.user = null;
+        state.loading = false;
+        state.isAuthenticated = false;
       });
   },
 });
