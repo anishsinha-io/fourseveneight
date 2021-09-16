@@ -14,6 +14,7 @@ export interface IComment {
 
 export interface IPost {
   title: string;
+  summary: string;
   content: string;
   image?: string;
   author: string;
@@ -50,6 +51,15 @@ export const getAndLoadPosts = createAsyncThunk(
     } catch (err) {
       return rejectWithValue("Error loading posts!");
     }
+  }
+);
+
+export const loadPosts = createAsyncThunk(
+  "post/loadPosts",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.get("/posts");
+    } catch (err) {}
   }
 );
 

@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import PostItem from "./PostItem";
+import PostItem from "../post/PostItem";
 import { db } from "../../App";
 import Spinner from "../spinner/Spinner";
 import { useAppDispatch } from "../../app/hooks";
@@ -29,8 +29,13 @@ const Posts: React.FC = () => {
   if (loading) {
     return <Spinner />;
   }
+
   postItems = data.map((post: any) => <PostItem key={post.slug} post={post} />);
-  return <Fragment>{postItems}</Fragment>;
+  return (
+    <Fragment>
+      <div className="posts-container">{postItems}</div>
+    </Fragment>
+  );
 };
 
 export default Posts;

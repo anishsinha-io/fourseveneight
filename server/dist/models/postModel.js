@@ -21,6 +21,9 @@ var postSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    summary: {
+        type: String,
+    },
     author: {
         type: String,
         required: true,

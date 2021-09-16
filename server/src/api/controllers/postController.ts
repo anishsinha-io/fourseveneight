@@ -7,7 +7,6 @@ import { ObjectId } from "mongoose";
 import * as authFunctions from "../../auth/security";
 import { IUser } from "../../models/userModel";
 import Post, { IPost } from "../../models/postModel";
-import { Body } from "../../auth/security";
 
 export const createPost: RequestHandler = async (req, res) => {
   try {
@@ -16,10 +15,11 @@ export const createPost: RequestHandler = async (req, res) => {
       return res.status(403).json({
         msg: "You must activate your account to access this resource!",
       });
-    const { content, title } = req.body;
+    const { content, title, summary } = req.body;
 
     const postFields = {
       user: user.id,
+      summary: summary,
       title: title,
       author: `${user.firstName} ${user.lastName}`,
       content: content,
@@ -63,18 +63,18 @@ export const updatePost: RequestHandler = async (req, res) => {
         .status(403)
         .json({ msg: "Current account not authorized for this action" });
 
-    const filteredBody: Body = authFunctions.sanitizeBody(
-      req.body,
-      "title",
-      "content"
+    const { title, content, summary } = req.body;
+
+    const slug = slugify(title, { lower: true });
+
+    await Post.findOneAndUpdate(
+      { slug: req.params.slug },
+      { title, content, summary, slug },
+      {
+        new: true,
+        runValidators: true,
+      }
     );
-
-    filteredBody.slug = slugify(filteredBody.title, { lower: true });
-
-    await Post.findOneAndUpdate({ slug: req.params.slug }, filteredBody, {
-      new: true,
-      runValidators: true,
-    });
     return res.status(200).json({ msg: "Post successfully updated!" });
   } catch (err) {
     return res.status(500).json({ msg: "Internal server error" });

@@ -6,6 +6,7 @@ import { Schema, model, Document, ObjectId } from "mongoose";
 export interface IPost extends Document {
   user: ObjectId;
   title: string;
+  summary: string;
   content: string;
   author: string;
   likes?: ObjectId[];
@@ -29,6 +30,9 @@ const postSchema: Schema = new Schema({
   content: {
     type: String,
     required: true,
+  },
+  summary: {
+    type: String,
   },
   author: {
     type: String,

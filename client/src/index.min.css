@@ -63,6 +63,10 @@
     .navbar .navbar-links .navbar-link {
       margin-right: 1rem; }
 
+.posts-container {
+  border: 1px solid #051e3e;
+  width: 60%; }
+
 * {
   box-sizing: border-box;
   margin: 0;
