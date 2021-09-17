@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import createAxiosInstance from "../../app/api";
+import api from "../../app/api";
 import setAuthToken from "../../app/setAuthToken";
 
 export interface IUser {
@@ -49,7 +49,7 @@ export const registerUserAndLoginWithToken = createAsyncThunk(
   "auth/register",
   async (args: IRegisterData, { dispatch, rejectWithValue }) => {
     try {
-      const res = await createAxiosInstance().post("/users/register", args);
+      const res = await api.post("/users/register", args);
       const token = res.data.token || null;
       setAuthToken(token);
       const user = await dispatch(loadUserFromToken());
@@ -65,7 +65,7 @@ export const getTokenAndLogin = createAsyncThunk(
   "auth/login",
   async (args: ILoginData, { dispatch, rejectWithValue }) => {
     try {
-      const res = await createAxiosInstance().post("/users/login", args);
+      const res = await api.post("/users/login", args);
       const token = res.data.token || null;
       setAuthToken(token);
       const user = await dispatch(loadUserFromToken());
@@ -81,7 +81,7 @@ export const logoutUser = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
-      await createAxiosInstance().get("/users/logout");
+      await api.get("/users/logout");
       setAuthToken();
       //dispatch success alert
     } catch (err) {
@@ -97,7 +97,7 @@ export const loadUserFromToken = createAsyncThunk(
     try {
       const token = localStorage.token;
       setAuthToken(token);
-      const res = await createAxiosInstance().get("/users/auth"); //throws error if not authenticated
+      const res = await api.get("/users/auth"); //throws error if not authenticated
       const user = (res.data.user as IUser) || null;
 
       return { token, user };

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import createAxiosInstance from "../../app/api";
+import api from "../../app/api";
 import { db } from "../../App";
 
 export interface IComment {
@@ -39,7 +39,7 @@ export const getAndLoadPosts = createAsyncThunk(
   "post/loadAllPosts",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await createAxiosInstance().get("/posts");
+      const res = await api.get("/posts");
       const cachedPostsLength = await db.table("posts").count();
       const cachedPosts = await db.table("posts").toArray();
       if (res.data.posts.length === cachedPostsLength) {
@@ -58,7 +58,7 @@ export const loadPosts = createAsyncThunk(
   "post/loadPosts",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await createAxiosInstance().get("/posts");
+      // const res = await api().get("/posts");
     } catch (err) {}
   }
 );

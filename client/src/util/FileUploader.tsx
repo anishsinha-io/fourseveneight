@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 
-import createAxiosInstance from "../app/api";
+import axios from "axios";
 
 interface IFileData {
   image: any;
@@ -11,10 +11,8 @@ const postImage = async (fileData: IFileData) => {
   const formData = new FormData();
   formData.append("image", fileData.image);
   formData.append("description", fileData.alt);
-  const result = await createAxiosInstance("multipart/form-data").post(
-    "/posts/uploads/image",
-    formData
-  );
+  //todo update
+  const result = await axios.post("/posts/uploads/image", formData);
   return result.data;
 };
 

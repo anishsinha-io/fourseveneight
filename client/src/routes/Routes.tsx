@@ -6,6 +6,7 @@ import Navbar from "../features/navbar/Navbar";
 import Landing from "../features/landing/Landing";
 import PrivateRoute from "./PrivateRoute";
 import Dashboard from "../features/dashboard/Dashboard";
+import PostForm from "../features/post/PostForm";
 
 const Routes: React.FC = () => {
   return (
@@ -16,6 +17,12 @@ const Routes: React.FC = () => {
           <Route exact path="/" component={Landing} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
+          <PrivateRoute
+            exact
+            path="/post/new"
+            redirectPath="/login"
+            component={PostForm}
+          />
           <PrivateRoute
             exact
             path="/dashboard"

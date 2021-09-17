@@ -1,12 +1,10 @@
-import axios, { AxiosInstance } from "axios";
+import axios from "axios";
 
-const createAxiosInstance = (contentType?: string): AxiosInstance => {
-  return axios.create({
-    baseURL: "http://localhost:8000/api",
-    headers: {
-      "Content-Type": contentType || "application/json",
-    },
-  });
-};
+const api = axios.create({
+  baseURL: "http://localhost:8000/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-export default createAxiosInstance;
+export default api;
