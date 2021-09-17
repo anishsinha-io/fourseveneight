@@ -16,8 +16,13 @@
     "axios": "^0.21.4",
     "dexie": "^3.0.3",
     "dexie-react-hooks": "^1.0.7",
+    "dompurify": "^2.3.2",
+    "draft-convert": "^2.1.12",
+    "draft-js": "^0.11.7",
+    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-draft-wysiwyg": "^1.14.7",
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
@@ -48,6 +53,12 @@
   },
   "proxy": "http://localhost:8000",
   "devDependencies": {
+    "@types/dompurify": "^2.2.3",
+    "@types/draft-convert": "^2.1.4",
+    "@types/draft-js": "^0.11.5",
+    "@types/lodash": "^4.14.173",
+    "@types/quill": "^2.0.9",
+    "@types/react-draft-wysiwyg": "^1.13.3",
     "node-sass": "^6.0.1"
   }
 }

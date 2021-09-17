@@ -4,7 +4,7 @@ import { Router } from "express";
 
 import * as security from "../../auth/security";
 import * as postController from "../controllers/postController";
-import { uploadImage, downloadImage, upload } from "../../middleware/_media";
+import { uploadImage, downloadImage, upload } from "../../middleware/media";
 
 const router: Router = Router();
 
