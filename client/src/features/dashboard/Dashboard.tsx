@@ -8,9 +8,7 @@ import Questions from "./Questions";
 const Dashboard: React.FC = () => {
   return (
     <div className="dashboard">
-      <div className="dashboard-posts">
-        <Posts />
-      </div>
+      <div className="dashboard-posts">{/* <Posts /> */}</div>
       <div className="dashboard-tabs">
         <Following />
         <Questions />

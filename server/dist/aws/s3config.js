@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadFile = void 0;
+exports.downloadFile = exports.uploadFile = void 0;
 var s3_1 = __importDefault(require("aws-sdk/clients/s3"));
 var fs_1 = __importDefault(require("fs"));
 var s3Client = new s3_1.default({
@@ -21,3 +21,11 @@ var uploadFile = function (file) {
     s3Client.upload(uploadParams).promise();
 };
 exports.uploadFile = uploadFile;
+var downloadFile = function (fileKey) {
+    var downloadParams = {
+        Key: fileKey,
+        Bucket: "" + process.env.AWS_BUCKET_NAME,
+    };
+    return s3Client.getObject(downloadParams).createReadStream();
+};
+exports.downloadFile = downloadFile;

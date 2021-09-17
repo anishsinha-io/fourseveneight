@@ -16,3 +16,11 @@ export const uploadFile = (file: any) => {
   };
   s3Client.upload(uploadParams).promise();
 };
+
+export const downloadFile = (fileKey: string) => {
+  const downloadParams = {
+    Key: fileKey,
+    Bucket: `${process.env.AWS_BUCKET_NAME}`,
+  };
+  return s3Client.getObject(downloadParams).createReadStream();
+};

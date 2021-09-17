@@ -39,11 +39,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadImage = exports.upload = void 0;
+exports.downloadImage = exports.uploadImage = exports.upload = void 0;
 var multer_1 = __importDefault(require("multer"));
-//Import as middleware in profile and post routes
-exports.upload = multer_1.default({ dest: "uploads/" });
-var uploadImage = function () { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
-    return [2 /*return*/];
-}); }); };
+var s3config_1 = require("../aws/s3config");
+exports.upload = multer_1.default();
+var uploadImage = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var file;
+    return __generator(this, function (_a) {
+        file = req.file;
+        s3config_1.uploadFile(file);
+        return [2 /*return*/, res.status(200).json({ msg: "Successfully sent to s3" })];
+    });
+}); };
 exports.uploadImage = uploadImage;
+var downloadImage = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var key, readStream;
+    return __generator(this, function (_a) {
+        key = req.params.key;
+        readStream = s3config_1.downloadFile(key);
+        readStream.pipe(res);
+        return [2 /*return*/];
+    });
+}); };
+exports.downloadImage = downloadImage;

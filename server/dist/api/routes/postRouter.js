@@ -23,10 +23,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var security = __importStar(require("../../auth/security"));
 var postController = __importStar(require("../controllers/postController"));
+var _media_1 = require("../../middleware/_media");
 var router = express_1.Router();
 //public
 router.route("/").get(postController.getAllPosts);
 router.route("/:slug").get(postController.getPost);
+router.route("/uploads/image").post(_media_1.upload.single("image"), _media_1.uploadImage);
+router.route("/downloads/image/:key").get(_media_1.downloadImage);
 //private
 router.use(security.authenticateUser, security.authenticateToken, security.isActive);
 router.route("/").post(postController.createPost);

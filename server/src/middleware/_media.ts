@@ -1,8 +1,18 @@
+import { RequestHandler } from "express";
 import multer from "multer";
 
-import { uploadFile } from "../aws/s3config";
+import { uploadFile, downloadFile } from "../aws/s3config";
 
-//Import as middleware in profile and post routes
-export const upload = multer({ dest: "uploads/" });
+export const upload = multer();
 
-export const uploadImage = async () => {};
+export const uploadImage: RequestHandler = async (req, res) => {
+  const file = req.file;
+  uploadFile(file);
+  return res.status(200).json({ msg: "Successfully sent to s3" });
+};
+
+export const downloadImage: RequestHandler = async (req, res) => {
+  const key = req.params.key;
+  const readStream = downloadFile(key);
+  readStream.pipe(res);
+};

@@ -1,11 +1,11 @@
-import api from "./api";
+import createAxiosInstance from "./api";
 
 const setAuthToken = (token?: string) => {
   if (token) {
-    api.defaults.headers.common["Authorization"] = token;
+    createAxiosInstance().defaults.headers.common["Authorization"] = token;
     localStorage.setItem("token", token);
   } else {
-    delete api.defaults.headers.common["Authorization"];
+    delete createAxiosInstance().defaults.headers.common["Authorization"];
     localStorage.removeItem("token");
   }
 };

@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
-import Posts from "../post/Posts";
+import FileUploader from "../../util/FileUploader";
 
 const Landing: React.FC = () => {
   return (
     <Fragment>
-      <Posts />
+      <FileUploader />
     </Fragment>
   );
 };
