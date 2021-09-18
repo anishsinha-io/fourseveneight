@@ -44,7 +44,7 @@ exports.getAllPosts = exports.getPost = exports.updatePost = exports.deletePost 
 var slugify_1 = __importDefault(require("slugify"));
 var postModel_1 = __importDefault(require("../../models/postModel"));
 var createPost = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, _a, content, title, summary, postFields, newPost, err_1;
+    var user, _a, content, title, summary, file, postFields, newPost, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -55,8 +55,11 @@ var createPost = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                             msg: "You must activate your account to access this resource!",
                         })];
                 _a = req.body, content = _a.content, title = _a.title, summary = _a.summary;
+                file = req.file;
+                console.log(file === null || file === void 0 ? void 0 : file.filename);
                 postFields = {
                     user: user.id,
+                    image: "image-fse-" + (file === null || file === void 0 ? void 0 : file.filename),
                     summary: summary,
                     title: title,
                     author: user.firstName + " " + user.lastName,

@@ -32,7 +32,13 @@ router.route("/uploads/image").post(media_1.upload.single("image"), media_1.uplo
 router.route("/downloads/image/:key").get(media_1.downloadImage);
 //private
 router.use(security.authenticateUser, security.authenticateToken, security.isActive);
-router.route("/").post(postController.createPost);
+router.route("/").post(function (req, res, next) {
+    console.log("here");
+    next();
+}, media_1.upload.single("image"), function (req, res, next) {
+    console.log("here");
+    next();
+}, media_1.uploadImage, postController.createPost);
 router.route("/update/:slug").patch(postController.updatePost);
 router.route("/delete/:slug").delete(postController.deletePost);
 exports.default = router;

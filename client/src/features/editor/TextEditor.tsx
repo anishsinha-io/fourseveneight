@@ -3,17 +3,25 @@ import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
+import axios from "axios";
 // import { useAppDispatch } from "../../app/hooks";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
+import { INewPost } from "../post/postSlice";
+import { useAppDispatch } from "../../app/hooks";
+import { createPost } from "../post/postSlice";
+export interface IFileData {
+  image: any;
+  alt: string;
+}
+
 const TextEditor: React.FC = () => {
-  interface INewPost {
-    title: string;
-    summary: string;
-    content: string;
-  }
+  const dispatch = useAppDispatch();
+  const [image, setImage] = useState<any>(null);
+  const [alt, setAlt] = useState<string>("");
   const [formData, setFormData] = useState<INewPost>({
     title: "",
+    image: null,
     summary: "",
     content: "",
   });
@@ -22,6 +30,11 @@ const TextEditor: React.FC = () => {
 
   const fieldChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const fileSelectedHandler = (e: any) => {
+    const file = e.target.files[0];
+    setImage(file);
   };
 
   const [editorState, setEditorState] = useState(() =>
@@ -44,12 +57,13 @@ const TextEditor: React.FC = () => {
   const formSubmitHandler = async (e: any) => {
     e.preventDefault();
     const htmlString = createMarkup(convertedContent);
-    console.log(htmlString);
     const submitFields: INewPost = {
       title,
+      image,
       summary,
       content: htmlString.__html,
     };
+    dispatch(createPost(submitFields));
     console.log(submitFields);
   };
   return (
@@ -70,6 +84,7 @@ const TextEditor: React.FC = () => {
             onChange={fieldChangeHandler}
             value={summary}
           />
+          <input onChange={fileSelectedHandler} type="file" accept="image/*" />
         </form>
         <Editor
           editorState={editorState}

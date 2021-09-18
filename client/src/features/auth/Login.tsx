@@ -1,11 +1,13 @@
 import React, { Fragment, useState } from "react";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { Redirect } from "react-router-dom";
 // import validateInputs from "../../util/validateInputs";
 // import { setAlert } from "../../actions/alert";
 import { getTokenAndLogin } from "./authSlice";
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -22,6 +24,7 @@ const Login: React.FC = () => {
     dispatch(getTokenAndLogin({ username, password }));
     setFormData({ username: "", password: "" });
   };
+  if (isAuthenticated) return <Redirect to="/" />;
 
   return (
     <Fragment>

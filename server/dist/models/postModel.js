@@ -12,6 +12,9 @@ var postSchema = new mongoose_1.Schema({
         ref: "User",
         required: true,
     },
+    image: {
+        type: String,
+    },
     title: {
         type: String,
         required: true,

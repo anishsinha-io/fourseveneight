@@ -3,12 +3,13 @@ import multer from "multer";
 
 import { uploadFile, downloadFile } from "../aws/s3config";
 
-export const upload = multer();
+export const upload = multer({ dest: "uploads/" });
 
-export const uploadImage: RequestHandler = async (req, res) => {
+export const uploadImage: RequestHandler = async (req, res, next) => {
   const file = req.file;
+  console.log(file);
   uploadFile(file);
-  return res.status(200).json({ msg: "Successfully sent to s3" });
+  next();
 };
 
 export const downloadImage: RequestHandler = async (req, res) => {

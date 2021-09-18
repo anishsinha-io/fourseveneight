@@ -4,7 +4,6 @@ import { RequestHandler } from "express";
 import slugify from "slugify";
 import { ObjectId } from "mongoose";
 
-import * as authFunctions from "../../auth/security";
 import { IUser } from "../../models/userModel";
 import Post, { IPost } from "../../models/postModel";
 
@@ -16,9 +15,12 @@ export const createPost: RequestHandler = async (req, res) => {
         msg: "You must activate your account to access this resource!",
       });
     const { content, title, summary } = req.body;
+    const file = req.file;
+    console.log(file?.filename);
 
     const postFields = {
       user: user.id,
+      image: `image-fse-${file?.filename}`,
       summary: summary,
       title: title,
       author: `${user.firstName} ${user.lastName}`,

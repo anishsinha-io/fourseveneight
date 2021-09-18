@@ -16,7 +16,7 @@ var uploadFile = function (file) {
     var uploadParams = {
         Bucket: "" + process.env.AWS_BUCKET_NAME,
         Body: fileStream,
-        Key: file.filename,
+        Key: "image-fse-" + file.filename,
     };
     s3Client.upload(uploadParams).promise();
 };

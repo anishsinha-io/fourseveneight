@@ -5,6 +5,7 @@ import { Schema, model, Document, ObjectId } from "mongoose";
 
 export interface IPost extends Document {
   user: ObjectId;
+  image: string;
   title: string;
   summary: string;
   content: string;
@@ -21,6 +22,9 @@ const postSchema: Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
+  },
+  image: {
+    type: String,
   },
   title: {
     type: String,

@@ -2,6 +2,14 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import api from "../../app/api";
 import { db } from "../../App";
+import axios from "axios";
+
+export interface INewPost {
+  title: string;
+  image: any;
+  summary: string;
+  content: string;
+}
 
 export interface IComment {
   user: string;
@@ -40,12 +48,6 @@ export const getAndLoadPosts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await api.get("/posts");
-      const cachedPostsLength = await db.table("posts").count();
-      const cachedPosts = await db.table("posts").toArray();
-      if (res.data.posts.length === cachedPostsLength) {
-        return cachedPosts;
-      }
-      await db.table("posts").clear();
       await db.table("posts").bulkPut(res.data.posts);
       return res.data;
     } catch (err) {
@@ -54,12 +56,31 @@ export const getAndLoadPosts = createAsyncThunk(
   }
 );
 
-export const loadPosts = createAsyncThunk(
-  "post/loadPosts",
-  async (_, { rejectWithValue }) => {
+export const createPost = createAsyncThunk(
+  "post/createPost",
+  async (args: INewPost, { dispatch, rejectWithValue }) => {
     try {
-      // const res = await api().get("/posts");
-    } catch (err) {}
+      const formData = new FormData();
+      const { title, image, summary, content } = args;
+      formData.append("image", image);
+      formData.append("title", title);
+      formData.append("summary", summary);
+      formData.append("content", content);
+
+      const apiInstance = axios.create({
+        baseURL: "http://localhost:8000/api",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const token = localStorage.token;
+      console.log(token);
+      if (token) apiInstance.defaults.headers.common["Authorization"] = token;
+      await apiInstance.post("/posts", formData);
+      dispatch(getAndLoadPosts);
+    } catch (err) {
+      return rejectWithValue("Error creating post!");
+    }
   }
 );
 
@@ -78,6 +99,12 @@ const postSlice = createSlice({
       })
       .addCase(getAndLoadPosts.rejected, (state) => {
         state.status = "failed";
+      })
+      .addCase(createPost.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(createPost.fulfilled, (state) => {
+        state.status = "idle";
       });
   },
 });
