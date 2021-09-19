@@ -15,6 +15,9 @@ var postSchema = new mongoose_1.Schema({
     image: {
         type: String,
     },
+    imageAlt: {
+        type: String,
+    },
     title: {
         type: String,
         required: true,

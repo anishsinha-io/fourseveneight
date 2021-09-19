@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import api from "../../app/api";
-import { db } from "../../App";
 import axios from "axios";
 
 export interface INewPost {
   title: string;
   image: any;
+  imageAlt: string;
   summary: string;
   content: string;
 }
@@ -48,7 +48,6 @@ export const getAndLoadPosts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await api.get("/posts");
-      await db.table("posts").bulkPut(res.data.posts);
       return res.data;
     } catch (err) {
       return rejectWithValue("Error loading posts!");
@@ -61,9 +60,10 @@ export const createPost = createAsyncThunk(
   async (args: INewPost, { dispatch, rejectWithValue }) => {
     try {
       const formData = new FormData();
-      const { title, image, summary, content } = args;
+      const { title, image, imageAlt, summary, content } = args;
       formData.append("image", image);
       formData.append("title", title);
+      formData.append("imageAlt", imageAlt);
       formData.append("summary", summary);
       formData.append("content", content);
 
@@ -74,10 +74,9 @@ export const createPost = createAsyncThunk(
         },
       });
       const token = localStorage.token;
-      console.log(token);
       if (token) apiInstance.defaults.headers.common["Authorization"] = token;
       await apiInstance.post("/posts", formData);
-      dispatch(getAndLoadPosts);
+      dispatch(getAndLoadPosts());
     } catch (err) {
       return rejectWithValue("Error creating post!");
     }
@@ -95,7 +94,7 @@ const postSlice = createSlice({
       })
       .addCase(getAndLoadPosts.fulfilled, (state, action) => {
         state.status = "idle";
-        state.posts.push(action?.payload.posts);
+        state.posts = action?.payload.posts;
       })
       .addCase(getAndLoadPosts.rejected, (state) => {
         state.status = "failed";

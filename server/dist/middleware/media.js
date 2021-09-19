@@ -47,7 +47,6 @@ var uploadImage = function (req, res, next) { return __awaiter(void 0, void 0, v
     var file;
     return __generator(this, function (_a) {
         file = req.file;
-        console.log(file);
         s3config_1.uploadFile(file);
         next();
         return [2 /*return*/];

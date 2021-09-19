@@ -7,7 +7,6 @@ export const upload = multer({ dest: "uploads/" });
 
 export const uploadImage: RequestHandler = async (req, res, next) => {
   const file = req.file;
-  console.log(file);
   uploadFile(file);
   next();
 };

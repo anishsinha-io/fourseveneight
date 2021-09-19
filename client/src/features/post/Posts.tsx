@@ -1,36 +1,27 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 
 import PostItem from "../post/PostItem";
-import { db } from "../../App";
-import Spinner from "../spinner/Spinner";
-import { useAppDispatch } from "../../app/hooks";
-import { setAlert } from "../alert/alertSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { getAndLoadPosts } from "./postSlice";
 
 const Posts: React.FC = () => {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
+  const posts = useAppSelector((state) => state.post.posts);
 
   useEffect(() => {
-    const fetchPostsFromClientDB = async () => {
-      try {
-        const posts = await db.table("posts").toArray();
-        setData(posts);
-        setLoading(false);
-      } catch (err) {
-        dispatch(setAlert("Error loading posts", "danger"));
-      }
-    };
-    fetchPostsFromClientDB();
-  }, [loading, dispatch]);
+    dispatch(getAndLoadPosts());
+  }, [dispatch]);
 
-  let postItems;
+  if (posts.length < 1)
+    return (
+      <Fragment>
+        <div>No posts found!</div>
+      </Fragment>
+    );
 
-  if (loading) {
-    return <Spinner />;
-  }
-
-  postItems = data.map((post: any) => <PostItem key={post.slug} post={post} />);
+  const postItems = posts.map((post: any) => (
+    <PostItem key={post.slug} post={post} />
+  ));
   return (
     <Fragment>
       <div className="posts-container">{postItems}</div>

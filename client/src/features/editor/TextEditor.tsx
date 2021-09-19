@@ -3,13 +3,12 @@ import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
-import axios from "axios";
-// import { useAppDispatch } from "../../app/hooks";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-import { INewPost } from "../post/postSlice";
+import { getAndLoadPosts, INewPost } from "../post/postSlice";
 import { useAppDispatch } from "../../app/hooks";
 import { createPost } from "../post/postSlice";
+import editorOptions from "./editorAPI";
 export interface IFileData {
   image: any;
   alt: string;
@@ -18,15 +17,15 @@ export interface IFileData {
 const TextEditor: React.FC = () => {
   const dispatch = useAppDispatch();
   const [image, setImage] = useState<any>(null);
-  const [alt, setAlt] = useState<string>("");
   const [formData, setFormData] = useState<INewPost>({
     title: "",
     image: null,
+    imageAlt: "",
     summary: "",
     content: "",
   });
 
-  const { title, summary } = formData;
+  const { title, summary, imageAlt } = formData;
 
   const fieldChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -41,7 +40,7 @@ const TextEditor: React.FC = () => {
     EditorState.createEmpty()
   );
   const [convertedContent, setConvertedContent] = useState<any>();
-  const editorChangeHandler = (state: any) => {
+  const editorChangeHandler = (state: EditorState) => {
     setEditorState(state);
     convertContentToHTML();
   };
@@ -56,20 +55,22 @@ const TextEditor: React.FC = () => {
   };
   const formSubmitHandler = async (e: any) => {
     e.preventDefault();
-    const htmlString = createMarkup(convertedContent);
+    const content = createMarkup(convertedContent).__html;
     const submitFields: INewPost = {
       title,
       image,
+      imageAlt,
       summary,
-      content: htmlString.__html,
+      content,
     };
     dispatch(createPost(submitFields));
+    dispatch(getAndLoadPosts);
     console.log(submitFields);
   };
   return (
     <Fragment>
-      <div>
-        <form>
+      <div className="editor-main">
+        <form className="editor-main__form">
           <input
             type="text"
             name="title"
@@ -84,22 +85,32 @@ const TextEditor: React.FC = () => {
             onChange={fieldChangeHandler}
             value={summary}
           />
+          <input
+            type="text"
+            name="imageAlt"
+            placeholder="your image description"
+            value={imageAlt}
+            onChange={fieldChangeHandler}
+          />
           <input onChange={fileSelectedHandler} type="file" accept="image/*" />
         </form>
         <Editor
+          wrapperClassName="editor-main__editor"
           editorState={editorState}
           onEditorStateChange={editorChangeHandler}
-          wrapperClassName="wrapper-class"
-          editorClassName="editor-class"
-          toolbarClassName="toolbar-class"
+          toolbar={editorOptions}
         />
       </div>
 
       <div
-        className="preview"
+        className="editor-preview"
         dangerouslySetInnerHTML={createMarkup(convertedContent)}
       ></div>
-      <button type="button" onClick={formSubmitHandler}>
+      <button
+        className="btn btn-action"
+        type="button"
+        onClick={formSubmitHandler}
+      >
         Post
       </button>
     </Fragment>

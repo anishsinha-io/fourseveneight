@@ -14,13 +14,13 @@ export const createPost: RequestHandler = async (req, res) => {
       return res.status(403).json({
         msg: "You must activate your account to access this resource!",
       });
-    const { content, title, summary } = req.body;
+    const { content, title, summary, imageAlt } = req.body;
     const file = req.file;
-    console.log(file?.filename);
 
     const postFields = {
       user: user.id,
       image: `image-fse-${file?.filename}`,
+      imageAlt,
       summary: summary,
       title: title,
       author: `${user.firstName} ${user.lastName}`,
