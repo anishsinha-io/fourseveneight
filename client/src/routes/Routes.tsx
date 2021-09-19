@@ -19,7 +19,7 @@ const Routes: React.FC = () => {
           <Route exact path="/register" component={Register} />
           <PrivateRoute
             exact
-            path="/post/new"
+            path="/create"
             redirectPath="/login"
             component={PostForm}
           />

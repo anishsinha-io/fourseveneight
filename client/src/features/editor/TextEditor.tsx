@@ -4,6 +4,7 @@ import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { MathComponent } from "mathjax-react";
 
 import { getAndLoadPosts, INewPost } from "../post/postSlice";
 import { useAppDispatch } from "../../app/hooks";
@@ -48,14 +49,35 @@ const TextEditor: React.FC = () => {
     let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
     setConvertedContent(currentContentAsHTML);
   };
-  const createMarkup = (html: string) => {
+  const createPreviewMarkup = (html: string) => {
+    const texRegex = /(?<=[^`]|^)(```)([^`]+)\1(?=[^`]|$)/g;
+    let __html = DOMPurify.sanitize(html);
+    let cleanedMatches;
+    const texMatches = __html.match(texRegex);
+    if (texMatches) {
+      cleanedMatches = texMatches.map((match: string) =>
+        match.replaceAll("`", "")
+      );
+      __html = __html.replaceAll(
+        texRegex,
+        `${(<MathComponent tex={cleanedMatches?.shift()} />)}`
+      );
+      console.log(__html);
+    }
+
+    return {
+      __html,
+    };
+  };
+
+  const createFinalMarkup = (html: string) => {
     return {
       __html: DOMPurify.sanitize(html),
     };
   };
   const formSubmitHandler = async (e: any) => {
     e.preventDefault();
-    const content = createMarkup(convertedContent).__html;
+    const content = createFinalMarkup(convertedContent).__html;
     const submitFields: INewPost = {
       title,
       image,
@@ -65,10 +87,10 @@ const TextEditor: React.FC = () => {
     };
     dispatch(createPost(submitFields));
     dispatch(getAndLoadPosts);
-    console.log(submitFields);
   };
   return (
     <Fragment>
+      {/* <MathComponent tex={String.raw`\int_0^1 x^2\ dx`} /> */}
       <div className="editor-main">
         <form className="editor-main__form">
           <input
@@ -104,7 +126,7 @@ const TextEditor: React.FC = () => {
 
       <div
         className="editor-preview"
-        dangerouslySetInnerHTML={createMarkup(convertedContent)}
+        dangerouslySetInnerHTML={createPreviewMarkup(convertedContent)}
       ></div>
       <button
         className="btn btn-action"
