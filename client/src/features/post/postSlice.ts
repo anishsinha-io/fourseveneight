@@ -35,11 +35,13 @@ export interface IPost {
 
 export interface IPostState {
   status: "idle" | "loading" | "failed";
+  post: IPost;
   posts: IPost[];
 }
 
 const initialState = {
   status: "idle",
+  post: {} as IPost,
   posts: [] as IPost[],
 };
 
@@ -51,6 +53,19 @@ export const getAndLoadPosts = createAsyncThunk(
       return res.data;
     } catch (err) {
       return rejectWithValue("Error loading posts!");
+    }
+  }
+);
+
+export const loadPost = createAsyncThunk(
+  "/post/loadPost",
+  async (slug: string, { rejectWithValue }) => {
+    try {
+      const res = await api.get(`/posts/${slug}`);
+      console.log(res.data.post);
+      return res.data.post;
+    } catch (err) {
+      return rejectWithValue("Error loading post!");
     }
   }
 );
@@ -104,6 +119,17 @@ const postSlice = createSlice({
       })
       .addCase(createPost.fulfilled, (state) => {
         state.status = "idle";
+      })
+      .addCase(loadPost.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(loadPost.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        state.post = action.payload;
+      })
+      .addCase(loadPost.rejected, (state, action) => {
+        state.status = "failed";
+        state.post = {} as IPost;
       });
   },
 });

@@ -54,19 +54,17 @@ const TextEditor: React.FC = () => {
   const createPreviewMarkup = (html: string) => {
     const texRegex = /(?<=[^`]|^)(```)([^`]+)\1(?=[^`]|$)/g;
     let __html = DOMPurify.sanitize(html);
-
-    const previewHtml = new Preview(__html);
-    let cleanedMatches;
-    const texMatches = __html.match(texRegex);
-    if (texMatches) {
-      cleanedMatches = texMatches.map((match: string) =>
-        match.replaceAll("`", "")
-      );
-      __html = __html.replaceAll(
-        texRegex,
-        `${(<MathComponent tex={cleanedMatches?.shift()} />)}`
-      );
-    }
+    // let cleanedMatches;
+    // const texMatches = __html.match(texRegex);
+    // if (texMatches) {
+    //   cleanedMatches = texMatches.map((match: string) =>
+    //     match.replaceAll("`", "")
+    //   );
+    //   __html = __html.replaceAll(
+    //     texRegex,
+    //     `${(<MathComponent tex={cleanedMatches?.shift()} />)}`
+    //   );
+    // }
     console.log(__html);
     return {
       __html,
