@@ -5,11 +5,13 @@ import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { MathComponent } from "mathjax-react";
+import JsxParser from "react-jsx-parser";
 
 import { getAndLoadPosts, INewPost } from "../post/postSlice";
 import { useAppDispatch } from "../../app/hooks";
 import { createPost } from "../post/postSlice";
-import editorOptions from "./editorAPI";
+import Preview, { editorOptions } from "./editorAPI";
+import PostPreview from "./PostPreview";
 export interface IFileData {
   image: any;
   alt: string;
@@ -52,6 +54,8 @@ const TextEditor: React.FC = () => {
   const createPreviewMarkup = (html: string) => {
     const texRegex = /(?<=[^`]|^)(```)([^`]+)\1(?=[^`]|$)/g;
     let __html = DOMPurify.sanitize(html);
+
+    const previewHtml = new Preview(__html);
     let cleanedMatches;
     const texMatches = __html.match(texRegex);
     if (texMatches) {
@@ -62,9 +66,8 @@ const TextEditor: React.FC = () => {
         texRegex,
         `${(<MathComponent tex={cleanedMatches?.shift()} />)}`
       );
-      console.log(__html);
     }
-
+    console.log(__html);
     return {
       __html,
     };
@@ -90,7 +93,11 @@ const TextEditor: React.FC = () => {
   };
   return (
     <Fragment>
-      {/* <MathComponent tex={String.raw`\int_0^1 x^2\ dx`} /> */}
+      <JsxParser
+        components={{ MathComponent }}
+        bindings={{ math: String.raw`\int_0^1 x^2\ dx`, asdf: [1, 2] }}
+        jsx={`<div>asdf</div> <MathComponent tex={math}/><div>asdf</div>`}
+      />
       <div className="editor-main">
         <form className="editor-main__form">
           <input
