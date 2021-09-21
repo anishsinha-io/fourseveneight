@@ -58,7 +58,12 @@ var downloadImage = function (req, res) { return __awaiter(void 0, void 0, void 
     return __generator(this, function (_a) {
         key = req.params.key;
         readStream = s3config_1.downloadFile(key);
-        readStream.pipe(res);
+        readStream
+            .on("data", function (data) {
+            res.write(data);
+        })
+            .on("end", function () { return readStream.pipe(res); })
+            .on("error", function () { return res.end(); });
         return [2 /*return*/];
     });
 }); };

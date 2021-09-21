@@ -14,5 +14,10 @@ export const uploadImage: RequestHandler = async (req, res, next) => {
 export const downloadImage: RequestHandler = async (req, res) => {
   const key = req.params.key;
   const readStream = downloadFile(key);
-  readStream.pipe(res);
+  readStream
+    .on("data", (data) => {
+      res.write(data);
+    })
+    .on("end", () => readStream.pipe(res))
+    .on("error", () => res.end());
 };

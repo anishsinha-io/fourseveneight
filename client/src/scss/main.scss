@@ -7,6 +7,9 @@
 @import "./components/navbar.scss";
 @import "./components/posts.scss";
 
+@import "./pages/post.scss";
+@import "./pages/dashboard.scss";
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -34,4 +37,8 @@ a {
 
 ul {
   list-style-type: none;
+}
+
+img {
+  width: 100%;
 }

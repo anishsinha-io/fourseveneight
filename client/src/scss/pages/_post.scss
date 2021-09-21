@@ -1,0 +1,28 @@
+.post-page {
+  border: 1px solid $color-primary;
+  padding: 2rem;
+  margin-left: 16rem;
+  margin-right: 16rem;
+  .post-image {
+    display: flex;
+    place-items: center;
+  }
+  .post-title {
+    text-align: center;
+  }
+  .post-meta {
+    display: flex;
+    place-items: center;
+
+    &__list {
+      display: flex;
+      margin: 0 auto;
+      &-item {
+        margin: 0.25rem;
+      }
+    }
+  }
+  .post-content {
+    margin-top: 2rem;
+  }
+}

@@ -1,9 +1,8 @@
-import JsxParser from "react-jsx-parser";
 import DOMPurify from "dompurify";
 
 //todo convert functions to class
 
-JsxParser.defaultProps = {
+export const JsxParserDefaultProps = {
   allowUnknownElements: true,
   autoCloseVoidElements: false,
   bindings: {},
@@ -19,10 +18,8 @@ JsxParser.defaultProps = {
   showWarnings: false,
   renderError: undefined,
   renderInWrapper: true,
-  renderUnrecognized: (tagName) => null,
+  renderUnrecognized: (tagName: string) => null,
 };
-
-export const renderHtmlAsJsx = (html: string) => {};
 
 class Markup {
   private html: string;

@@ -67,6 +67,30 @@
   border: 1px solid #051e3e;
   width: 60%; }
 
+.post-container {
+  display: grid; }
+
+.post-page {
+  border: 1px solid #051e3e;
+  padding: 2rem;
+  margin-left: 16rem;
+  margin-right: 16rem; }
+  .post-page .post-image {
+    display: flex;
+    place-items: center; }
+  .post-page .post-title {
+    text-align: center; }
+  .post-page .post-meta {
+    display: flex;
+    place-items: center; }
+    .post-page .post-meta__list {
+      display: flex;
+      margin: 0 auto; }
+      .post-page .post-meta__list-item {
+        margin: 0.25rem; }
+  .post-page .post-content {
+    margin-top: 2rem; }
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -87,3 +111,6 @@ a {
 
 ul {
   list-style-type: none; }
+
+img {
+  width: 100%; }

@@ -25,6 +25,7 @@ export interface IPost {
   summary: string;
   content: string;
   image?: string;
+  imageAlt: string;
   author: string;
   likes: number;
   comments: string[];
