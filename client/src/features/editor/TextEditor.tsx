@@ -4,8 +4,7 @@ import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { MathComponent } from "mathjax-react";
-import JsxParser from "react-jsx-parser";
+// import { MathComponent } from "mathjax-react";
 
 import { getAndLoadPosts, INewPost } from "../post/postSlice";
 import { useAppDispatch } from "../../app/hooks";
@@ -76,13 +75,10 @@ const TextEditor: React.FC = () => {
     dispatch(createPost(submitFields));
     dispatch(getAndLoadPosts);
   };
+
+  //todo add onTab, onBlur handlers
   return (
     <Fragment>
-      <JsxParser
-        components={{ MathComponent }}
-        bindings={{ math: String.raw`\int_0^1 x^2\ dx`, asdf: [1, 2] }}
-        jsx={`<div>asdf</div> <MathComponent tex={math}/><div>asdf</div>`}
-      />
       <div className="editor-main">
         <form className="editor-main__form">
           <input

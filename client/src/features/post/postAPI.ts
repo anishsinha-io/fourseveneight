@@ -39,12 +39,19 @@ class Markup {
     let htmlChunksArray = html.split(/(```[^`]+```)/);
     return htmlChunksArray;
   }
-  private replaceLatexWithComponent() {
-    const latexRegex = /(?<=[^`]|^)(```)([^`]+)\1(?=[^`]|$)/g;
+  private replaceWithComponent() {
     const htmlChunksArray = this.splitHtml();
-    let finalChunksArray = htmlChunksArray.map((chunk: string) => {
-      if (latexRegex.test(chunk)) {
-        const tex = chunk.replaceAll("`", "").replaceAll("\\", "\\\\");
+    const finalChunksArray = htmlChunksArray.map((chunk: string) => {
+      if (chunk.startsWith("```code")) {
+        const url = chunk.replace("code", "").replaceAll("`", "");
+        const trimmedUrl = url.trim();
+        chunk = `<br/><Gist url = "${trimmedUrl}"/><br/>`;
+      } else if (chunk.startsWith("```latex")) {
+        const tex = chunk
+          .replace("latex", "")
+          .replaceAll("`", "")
+          .replaceAll("\\", "\\\\")
+          .trim();
         chunk = `<MathComponent tex = {'${tex}'}/>`;
       }
       return chunk;
@@ -52,7 +59,7 @@ class Markup {
     return finalChunksArray;
   }
   private generateJsxMarkup() {
-    const finalHtmlMarkup = this.replaceLatexWithComponent().join("");
+    const finalHtmlMarkup = this.replaceWithComponent().join("");
     this.finalMarkup = finalHtmlMarkup;
   }
 }
