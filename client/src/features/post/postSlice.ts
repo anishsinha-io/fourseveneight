@@ -27,6 +27,7 @@ export interface IPost {
   image?: string;
   author: string;
   likes: number;
+  comments: string[];
   date: Date;
   slug: string;
   deleted: boolean;
@@ -62,7 +63,6 @@ export const loadPost = createAsyncThunk(
   async (slug: string, { rejectWithValue }) => {
     try {
       const res = await api.get(`/posts/${slug}`);
-      console.log(res.data.post);
       return res.data.post;
     } catch (err) {
       return rejectWithValue("Error loading post!");

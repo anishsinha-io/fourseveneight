@@ -7,7 +7,7 @@ const PostItem: React.FC<{ post: IPost }> = (props) => {
     <Fragment>
       <div className="post-container">
         <div>Title: {props.post.title}</div>
-        <div>{props.post.content}</div>
+        <div>{props.post.summary}</div>
       </div>
     </Fragment>
   );

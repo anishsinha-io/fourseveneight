@@ -10,8 +10,7 @@ import JsxParser from "react-jsx-parser";
 import { getAndLoadPosts, INewPost } from "../post/postSlice";
 import { useAppDispatch } from "../../app/hooks";
 import { createPost } from "../post/postSlice";
-import Preview, { editorOptions } from "./editorAPI";
-import PostPreview from "./PostPreview";
+import { editorOptions } from "./editorAPI";
 export interface IFileData {
   image: any;
   alt: string;
@@ -52,19 +51,7 @@ const TextEditor: React.FC = () => {
     setConvertedContent(currentContentAsHTML);
   };
   const createPreviewMarkup = (html: string) => {
-    const texRegex = /(?<=[^`]|^)(```)([^`]+)\1(?=[^`]|$)/g;
     let __html = DOMPurify.sanitize(html);
-    // let cleanedMatches;
-    // const texMatches = __html.match(texRegex);
-    // if (texMatches) {
-    //   cleanedMatches = texMatches.map((match: string) =>
-    //     match.replaceAll("`", "")
-    //   );
-    //   __html = __html.replaceAll(
-    //     texRegex,
-    //     `${(<MathComponent tex={cleanedMatches?.shift()} />)}`
-    //   );
-    // }
     console.log(__html);
     return {
       __html,

@@ -1,4 +1,3 @@
-import React from "react";
 import JsxParser from "react-jsx-parser";
 import DOMPurify from "dompurify";
 
@@ -30,10 +29,12 @@ class Markup {
   public finalMarkup: string = "";
   constructor(html: string) {
     this.html = html;
-    this.replaceLatexWithComponent();
+    this.generateJsxMarkup();
   }
   private sanitizeHtml() {
-    const __html = DOMPurify.sanitize(this.html);
+    const __html = DOMPurify.sanitize(this.html)
+      .replaceAll("<p>", "<div>")
+      .replaceAll("</p>", "</div>");
     return __html;
   }
   private splitHtml() {
@@ -46,13 +47,16 @@ class Markup {
     const htmlChunksArray = this.splitHtml();
     let finalChunksArray = htmlChunksArray.map((chunk: string) => {
       if (latexRegex.test(chunk)) {
-        chunk = `'${String.raw`${chunk.replaceAll("`", "")}`}'`;
-        chunk = `<MathComponent tex = {${chunk}}/>`;
+        const tex = chunk.replaceAll("`", "").replaceAll("\\", "\\\\");
+        chunk = `<MathComponent tex = {'${tex}'}/>`;
       }
       return chunk;
     });
-    console.log(finalChunksArray);
     return finalChunksArray;
+  }
+  private generateJsxMarkup() {
+    const finalHtmlMarkup = this.replaceLatexWithComponent().join("");
+    this.finalMarkup = finalHtmlMarkup;
   }
 }
 
