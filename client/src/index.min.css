@@ -75,6 +75,9 @@
   flex-direction: column;
   max-width: 65rem;
   margin: 0 auto; }
+  .editor-main__preview {
+    margin-bottom: 5rem;
+    border-top: 1px solid #051e3e; }
   .editor-main__form {
     display: flex;
     place-items: center;
@@ -90,7 +93,7 @@
     min-height: 35rem;
     border: 1px solid #051e3e;
     border-radius: 3px;
-    line-height: 20%;
+    line-height: 100%;
     margin-bottom: 1rem; }
   .editor-main > button {
     margin-bottom: 1rem; }
@@ -201,3 +204,9 @@ img {
         transform: translateY(300%); }
       [type="file"] + label.btn-3:hover::before {
         top: 0; }
+
+pre,
+code {
+  display: inline-block;
+  font-size: 1rem;
+  background-color: #ebebeb; }

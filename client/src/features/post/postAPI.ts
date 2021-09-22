@@ -52,7 +52,7 @@ class Markup {
           .trim();
         chunk = `<MathComponent tex = {'${tex}'}/>`;
       } else if (chunk.startsWith("```raw")) {
-        const content = chunk.replaceAll("`", "").replace("raw", "");
+        const content = chunk.replaceAll("`", "").replace("raw", "").trim();
         chunk = `<pre>${content}</pre>`;
       }
       return chunk;
@@ -64,5 +64,10 @@ class Markup {
     this.finalMarkup = finalHtmlMarkup;
   }
 }
+
+export const decompileHtml = (html: string) => {
+  const decompiledHtml = html.replaceAll(/\\<.*?\\>/g, "");
+  return decompiledHtml;
+};
 
 export default Markup;

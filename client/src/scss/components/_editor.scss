@@ -3,6 +3,10 @@
   flex-direction: column;
   max-width: 65rem;
   margin: 0 auto;
+  &__preview {
+    margin-bottom: 5rem;
+    border-top: 1px solid $color-primary;
+  }
   &__form {
     display: flex;
     place-items: center;
@@ -21,7 +25,7 @@
     min-height: 35rem;
     border: 1px solid $color-primary;
     border-radius: 3px;
-    line-height: 20%;
+    line-height: 100%;
     margin-bottom: 1rem;
   }
   & > button {

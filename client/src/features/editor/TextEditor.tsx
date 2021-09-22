@@ -3,12 +3,16 @@ import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
+import JsxParser from "react-jsx-parser";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import Gist from "super-react-gist";
+import { MathComponent } from "mathjax-react";
 
 import { getAndLoadPosts, INewPost } from "../post/postSlice";
 import { useAppDispatch } from "../../app/hooks";
 import { createPost } from "../post/postSlice";
 import { editorOptions } from "./editorAPI";
+import Markup from "../post/postAPI";
 export interface IFileData {
   image: any;
   alt: string;
@@ -17,6 +21,7 @@ export interface IFileData {
 const TextEditor: React.FC = () => {
   const dispatch = useAppDispatch();
   const [image, setImage] = useState<any>(null);
+  // const [showPreview, setShowPreview] = useState<boolean>(false);
   const [formData, setFormData] = useState<INewPost>({
     title: "",
     image: null,
@@ -29,10 +34,6 @@ const TextEditor: React.FC = () => {
 
   const fieldChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const previewHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
   };
 
   const fileSelectedHandler = (e: any) => {
@@ -57,11 +58,10 @@ const TextEditor: React.FC = () => {
     }
   };
   const createPreviewMarkup = (html: string) => {
-    let __html = DOMPurify.sanitize(html);
-    console.log(__html);
-    return {
-      __html,
-    };
+    const __html = DOMPurify.sanitize(html);
+    const markup = new Markup(__html).finalMarkup;
+    console.log(markup);
+    return markup;
   };
 
   const createFinalMarkup = (html: string) => {
@@ -114,7 +114,12 @@ const TextEditor: React.FC = () => {
             value={imageAlt}
             onChange={fieldChangeHandler}
           />
-          <input type="file" id="file" />
+          <input
+            type="file"
+            id="file"
+            accept="image/*"
+            onChange={fileSelectedHandler}
+          />
           <label htmlFor="file" className="btn-3">
             <span>Upload Cover Image</span>
           </label>
@@ -128,13 +133,12 @@ const TextEditor: React.FC = () => {
           stripPastedStyles
           placeholder="Tell your story..."
         />
-        <button
-          type="button"
-          className="btn btn-action"
-          onClick={previewHandler}
-        >
-          Preview
-        </button>
+        <h3>Preview</h3>
+        <JsxParser
+          components={{ Gist, MathComponent }}
+          jsx={createPreviewMarkup(convertedContent)}
+          className="editor-main__preview"
+        />
         <button
           className="btn btn-action"
           type="button"

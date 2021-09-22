@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
   const authLinks = (
     <ul className="navbar-links">
       <li className="navbar-link">
-        <Link to="/post">Post</Link>
+        <Link to="/create">Post</Link>
       </li>
       <li className="navbar-link">
         <Link to="/" onClick={logoutHandler}>
