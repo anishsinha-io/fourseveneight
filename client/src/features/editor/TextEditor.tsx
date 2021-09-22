@@ -31,6 +31,10 @@ const TextEditor: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const previewHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+  };
+
   const fileSelectedHandler = (e: any) => {
     const file = e.target.files[0];
     setImage(file);
@@ -84,7 +88,10 @@ const TextEditor: React.FC = () => {
     <Fragment>
       <div className="editor-main">
         <form className="editor-main__form">
+          <h3 className="form-heading">Create a new post</h3>
+
           <input
+            className="form-input"
             type="text"
             name="title"
             placeholder="Your post title"
@@ -92,6 +99,7 @@ const TextEditor: React.FC = () => {
             value={title}
           />
           <input
+            className="form-input"
             type="summary"
             name="summary"
             placeholder="Your post description"
@@ -99,13 +107,17 @@ const TextEditor: React.FC = () => {
             value={summary}
           />
           <input
+            className="form-input"
             type="text"
             name="imageAlt"
             placeholder="your image description"
             value={imageAlt}
             onChange={fieldChangeHandler}
           />
-          <input onChange={fileSelectedHandler} type="file" accept="image/*" />
+          <input type="file" id="file" />
+          <label htmlFor="file" className="btn-3">
+            <span>Upload Cover Image</span>
+          </label>
         </form>
         <Editor
           wrapperClassName="editor-main__editor"
@@ -114,20 +126,28 @@ const TextEditor: React.FC = () => {
           toolbar={editorOptions}
           handlePastedText={() => false}
           stripPastedStyles
+          placeholder="Tell your story..."
         />
+        <button
+          type="button"
+          className="btn btn-action"
+          onClick={previewHandler}
+        >
+          Preview
+        </button>
+        <button
+          className="btn btn-action"
+          type="button"
+          onClick={formSubmitHandler}
+        >
+          Post
+        </button>
       </div>
 
-      <div
+      {/* <div
         className="editor-preview"
         dangerouslySetInnerHTML={createPreviewMarkup(convertedContent)}
-      ></div>
-      <button
-        className="btn btn-action"
-        type="button"
-        onClick={formSubmitHandler}
-      >
-        Post
-      </button>
+      ></div> */}
     </Fragment>
   );
 };

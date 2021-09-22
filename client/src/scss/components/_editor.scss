@@ -1,0 +1,30 @@
+.editor-main {
+  display: flex;
+  flex-direction: column;
+  max-width: 65rem;
+  margin: 0 auto;
+  &__form {
+    display: flex;
+    place-items: center;
+    flex-direction: column;
+    .form-input {
+      width: 100%;
+      padding: 0.1rem;
+      margin-bottom: 0.25rem;
+      font-size: 1rem;
+    }
+    .form-heading {
+      margin-bottom: 1rem;
+    }
+  }
+  &__editor {
+    min-height: 35rem;
+    border: 1px solid $color-primary;
+    border-radius: 3px;
+    line-height: 20%;
+    margin-bottom: 1rem;
+  }
+  & > button {
+    margin-bottom: 1rem;
+  }
+}
