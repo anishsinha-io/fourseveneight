@@ -1,7 +1,5 @@
 import DOMPurify from "dompurify";
 
-//todo convert functions to class
-
 export const JsxParserDefaultProps = {
   allowUnknownElements: true,
   autoCloseVoidElements: false,
@@ -53,6 +51,9 @@ class Markup {
           .replaceAll("\\", "\\\\")
           .trim();
         chunk = `<MathComponent tex = {'${tex}'}/>`;
+      } else if (chunk.startsWith("```raw")) {
+        const content = chunk.replaceAll("`", "").replace("raw", "");
+        chunk = `<pre>${content}</pre>`;
       }
       return chunk;
     });

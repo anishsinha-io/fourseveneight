@@ -77,7 +77,10 @@
   margin-right: 16rem; }
   .post-page .post-image {
     display: flex;
-    place-items: center; }
+    place-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #051e3e;
+    padding: 1rem; }
   .post-page .post-title {
     text-align: center; }
   .post-page .post-meta {

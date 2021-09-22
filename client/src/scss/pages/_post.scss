@@ -6,6 +6,9 @@
   .post-image {
     display: flex;
     place-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid $color-primary;
+    padding: 1rem;
   }
   .post-title {
     text-align: center;

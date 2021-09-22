@@ -30,7 +30,7 @@ const Post = ({ match }: RouteComponentProps<{ slug?: string }>) => {
     );
 
   const display = new Markup(post.content);
-  console.log(display.finalMarkup);
+
   if (status === "loading") {
     return <Spinner />;
   }
@@ -43,7 +43,9 @@ const Post = ({ match }: RouteComponentProps<{ slug?: string }>) => {
             alt={post.imageAlt}
           />
         </div>
-        <div className="post-title">{post.title}</div>
+        <div className="post-title">
+          <h1>{post.title}</h1>
+        </div>
         <div className="post-meta">
           <ul className="post-meta__list">
             <li className="post-meta__list-item">{post.author}</li>
@@ -62,15 +64,6 @@ const Post = ({ match }: RouteComponentProps<{ slug?: string }>) => {
           className="post-content"
           {...JsxParserDefaultProps}
         />
-        {/* <JsxParser
-          components={{ Gist }}
-          bindings={{ id: "1a72213e52fe69b29418e64f08591391" }}
-          jsx={"<Gist id={id}/>"}
-        /> */}
-        {/* <JsxParser
-          components={{ Gist }}
-          jsx={`<Gist url="https://gist.github.com/anish-sinha1/1a72213e52fe69b29418e64f08591391" />`}
-        /> */}
         <div className="post-data">
           <ul>
             <li>{post.likes}</li>

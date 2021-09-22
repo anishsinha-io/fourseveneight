@@ -4,7 +4,6 @@ import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-// import { MathComponent } from "mathjax-react";
 
 import { getAndLoadPosts, INewPost } from "../post/postSlice";
 import { useAppDispatch } from "../../app/hooks";
@@ -46,8 +45,12 @@ const TextEditor: React.FC = () => {
     convertContentToHTML();
   };
   const convertContentToHTML = () => {
-    let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
-    setConvertedContent(currentContentAsHTML);
+    try {
+      let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
+      setConvertedContent(currentContentAsHTML);
+    } catch (err) {
+      console.log(err);
+    }
   };
   const createPreviewMarkup = (html: string) => {
     let __html = DOMPurify.sanitize(html);
@@ -109,6 +112,8 @@ const TextEditor: React.FC = () => {
           editorState={editorState}
           onEditorStateChange={editorChangeHandler}
           toolbar={editorOptions}
+          handlePastedText={() => false}
+          stripPastedStyles
         />
       </div>
 
