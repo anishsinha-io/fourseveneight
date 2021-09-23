@@ -1,16 +1,17 @@
-import React, { useState, Fragment } from "react";
-import { EditorState } from "draft-js";
+import React, { useState, useEffect, Fragment } from "react";
+import { EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import DOMPurify from "dompurify";
 import JsxParser from "react-jsx-parser";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Gist from "super-react-gist";
 import { MathComponent } from "mathjax-react";
+import JSSoup from "jssoup";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 import { getAndLoadPosts, INewPost } from "../post/postSlice";
-import { useAppDispatch } from "../../app/hooks";
-import { createPost } from "../post/postSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { createPost, loadPost } from "../post/postSlice";
 import { editorOptions } from "./editorAPI";
 import Markup from "../post/postAPI";
 export interface IFileData {
@@ -18,10 +19,11 @@ export interface IFileData {
   alt: string;
 }
 
-const TextEditor: React.FC = () => {
+const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
+  props
+) => {
   const dispatch = useAppDispatch();
   const [image, setImage] = useState<any>(null);
-  // const [showPreview, setShowPreview] = useState<boolean>(false);
   const [formData, setFormData] = useState<INewPost>({
     title: "",
     image: null,
@@ -32,6 +34,14 @@ const TextEditor: React.FC = () => {
 
   const { title, summary, imageAlt } = formData;
 
+  useEffect(() => {
+    if (props.postSlug) dispatch(loadPost(props.postSlug));
+  });
+
+  const postContent = useAppSelector(
+    (state) => state.post.post.content || null
+  );
+
   const fieldChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -41,9 +51,17 @@ const TextEditor: React.FC = () => {
     setImage(file);
   };
 
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+  const [editorState, setEditorState] = useState(() => {
+    if (!props.updateMode) {
+      return EditorState.createEmpty();
+    } else {
+      const initialContentState = new JSSoup(postContent).text;
+      return EditorState.createWithContent(
+        ContentState.createFromText(initialContentState)
+      );
+    }
+  });
+
   const [convertedContent, setConvertedContent] = useState<any>();
   const editorChangeHandler = (state: EditorState) => {
     setEditorState(state);
@@ -144,14 +162,9 @@ const TextEditor: React.FC = () => {
           type="button"
           onClick={formSubmitHandler}
         >
-          Post
+          {props.updateMode ? "Update" : "Post"}
         </button>
       </div>
-
-      {/* <div
-        className="editor-preview"
-        dangerouslySetInnerHTML={createPreviewMarkup(convertedContent)}
-      ></div> */}
     </Fragment>
   );
 };
