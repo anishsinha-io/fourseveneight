@@ -111,7 +111,7 @@ var deletePost = function (req, res) { return __awaiter(void 0, void 0, void 0, 
 }); };
 exports.deletePost = deletePost;
 var updatePost = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, post, _a, title, content, summary, slug, err_3;
+    var user, post, _a, title, content, summary, imageAlt, slug, file, image, err_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -126,9 +126,14 @@ var updatePost = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                     return [2 /*return*/, res
                             .status(403)
                             .json({ msg: "Current account not authorized for this action" })];
-                _a = req.body, title = _a.title, content = _a.content, summary = _a.summary;
+                _a = req.body, title = _a.title, content = _a.content, summary = _a.summary, imageAlt = _a.imageAlt;
                 slug = slugify_1.default(title, { lower: true });
-                return [4 /*yield*/, postModel_1.default.findOneAndUpdate({ slug: req.params.slug }, { title: title, content: content, summary: summary, slug: slug }, {
+                file = req.file;
+                image = void 0;
+                if (file) {
+                    image = "image-fse-" + (file === null || file === void 0 ? void 0 : file.filename);
+                }
+                return [4 /*yield*/, postModel_1.default.findOneAndUpdate({ slug: req.params.slug }, { title: title, content: content, summary: summary, slug: slug, image: image, imageAlt: imageAlt }, {
                         new: true,
                         runValidators: true,
                     })];

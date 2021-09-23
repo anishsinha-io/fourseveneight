@@ -9,9 +9,13 @@ import { MathComponent } from "mathjax-react";
 import JSSoup from "jssoup";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
-import { getAndLoadPosts, INewPost } from "../post/postSlice";
+import {
+  getAndLoadPosts,
+  INewPost,
+  createPost,
+  updatePost,
+} from "../post/postSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { createPost } from "../post/postSlice";
 import { editorOptions } from "./editorAPI";
 import Markup from "../post/postAPI";
 export interface IFileData {
@@ -23,12 +27,13 @@ const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
   props
 ) => {
   const dispatch = useAppDispatch();
+  const oldPost = useAppSelector((state) => state.post.post);
   const [image, setImage] = useState<any>(null);
   const [formData, setFormData] = useState<INewPost>({
-    title: "",
+    title: oldPost.title || "",
     image: null,
-    imageAlt: "",
-    summary: "",
+    imageAlt: oldPost.imageAlt || "",
+    summary: oldPost.summary || "",
     content: "",
   });
 
@@ -93,7 +98,12 @@ const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
       summary,
       content,
     };
-    dispatch(createPost(submitFields));
+    if (!props.updateMode) {
+      dispatch(createPost(submitFields));
+      dispatch(getAndLoadPosts());
+    }
+    submitFields.slug = oldPost.slug;
+    dispatch(updatePost(submitFields));
     dispatch(getAndLoadPosts);
   };
 
@@ -102,7 +112,9 @@ const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
     <Fragment>
       <div className="editor-main">
         <form className="editor-main__form">
-          <h3 className="form-heading">Create a new post</h3>
+          <h3 className="form-heading">
+            {props.updateMode ? "Update your post" : "Create a new post"}
+          </h3>
 
           <input
             className="form-input"

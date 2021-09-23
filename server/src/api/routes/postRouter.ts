@@ -23,20 +23,12 @@ router.use(
   security.isActive
 );
 
-router.route("/").post(
-  (req, res, next) => {
-    console.log("here");
-    next();
-  },
-  upload.single("image"),
-  (req, res, next) => {
-    console.log("here");
-    next();
-  },
-  uploadImage,
-  postController.createPost
-);
-router.route("/update/:slug").patch(postController.updatePost);
+router
+  .route("/")
+  .post(upload.single("image"), uploadImage, postController.createPost);
+router
+  .route("/update/:slug")
+  .patch(upload.single("image"), uploadImage, postController.updatePost);
 router.route("/delete/:slug").delete(postController.deletePost);
 
 export default router;

@@ -39,17 +39,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.downloadImage = exports.uploadImage = exports.upload = void 0;
+exports.deleteImage = exports.downloadImage = exports.uploadImage = exports.upload = exports.unlinkFile = void 0;
 var multer_1 = __importDefault(require("multer"));
+var fs_1 = __importDefault(require("fs"));
+var util_1 = __importDefault(require("util"));
+exports.unlinkFile = util_1.default.promisify(fs_1.default.unlink);
 var s3config_1 = require("../aws/s3config");
 exports.upload = multer_1.default({ dest: "uploads/" });
 var uploadImage = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var file;
     return __generator(this, function (_a) {
-        file = req.file;
-        s3config_1.uploadFile(file);
-        next();
-        return [2 /*return*/];
+        switch (_a.label) {
+            case 0:
+                file = req.file;
+                if (file)
+                    s3config_1.uploadFile(file);
+                if (!(file === null || file === void 0 ? void 0 : file.path)) return [3 /*break*/, 2];
+                return [4 /*yield*/, exports.unlinkFile(file.path)];
+            case 1:
+                _a.sent();
+                _a.label = 2;
+            case 2:
+                next();
+                return [2 /*return*/];
+        }
     });
 }); };
 exports.uploadImage = uploadImage;
@@ -68,3 +81,7 @@ var downloadImage = function (req, res) { return __awaiter(void 0, void 0, void 
     });
 }); };
 exports.downloadImage = downloadImage;
+var deleteImage = function (req, res) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
+    return [2 /*return*/];
+}); }); };
+exports.deleteImage = deleteImage;

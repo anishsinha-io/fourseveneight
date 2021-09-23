@@ -4,6 +4,7 @@ import api from "../../app/api";
 import axios from "axios";
 
 export interface INewPost {
+  slug?: string;
   title: string;
   image: any;
   imageAlt: string;
@@ -74,6 +75,7 @@ export const loadPost = createAsyncThunk(
   }
 );
 
+//todo refactor -> the following functions are basically the same
 export const createPost = createAsyncThunk(
   "post/createPost",
   async (args: INewPost, { dispatch, rejectWithValue }) => {
@@ -99,6 +101,31 @@ export const createPost = createAsyncThunk(
     } catch (err) {
       return rejectWithValue("Error creating post!");
     }
+  }
+);
+
+export const updatePost = createAsyncThunk(
+  "post/updatePost",
+  async (args: INewPost, { dispatch, rejectWithValue }) => {
+    try {
+      const { title, image, imageAlt, summary, content, slug } = args;
+      const formData = new FormData();
+      formData.append("image", image);
+      formData.append("title", title);
+      formData.append("imageAlt", imageAlt);
+      formData.append("summary", summary);
+      formData.append("content", content);
+
+      const apiInstance = axios.create({
+        baseURL: "http://localhost:8000/api",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const token = localStorage.token;
+      if (token) apiInstance.defaults.headers.common["Authorization"] = token;
+      await apiInstance.patch(`/posts/update/${slug}`, formData);
+    } catch (err) {}
   }
 );
 

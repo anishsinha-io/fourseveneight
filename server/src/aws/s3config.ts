@@ -1,5 +1,6 @@
 import S3 from "aws-sdk/clients/s3";
 import fs from "fs";
+import express from "express";
 
 const s3Client = new S3({
   region: process.env.AWS_BUCKET_REGION,
@@ -7,7 +8,7 @@ const s3Client = new S3({
   secretAccessKey: `${process.env.AWS_SECRET_KEY}`,
 });
 
-export const uploadFile = (file: any) => {
+export const uploadFile = (file: Express.Multer.File) => {
   const fileStream = fs.createReadStream(file.path);
   const uploadParams = {
     Bucket: `${process.env.AWS_BUCKET_NAME}`,

@@ -31,6 +31,7 @@ export const createPost: RequestHandler = async (req, res) => {
 
     const newPost = new Post(postFields);
     await newPost.save();
+
     return res.status(201).json({ newPost });
   } catch (err) {
     return res.status(500).json({ msg: "Internal server error" });
@@ -65,13 +66,18 @@ export const updatePost: RequestHandler = async (req, res) => {
         .status(403)
         .json({ msg: "Current account not authorized for this action" });
 
-    const { title, content, summary } = req.body;
+    const { title, content, summary, imageAlt } = req.body;
 
     const slug = slugify(title, { lower: true });
+    const file = req.file;
+    let image;
+    if (file) {
+      image = `image-fse-${file?.filename}`;
+    }
 
     await Post.findOneAndUpdate(
       { slug: req.params.slug },
-      { title, content, summary, slug },
+      { title, content, summary, slug, image, imageAlt },
       {
         new: true,
         runValidators: true,
