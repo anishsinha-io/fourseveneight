@@ -8,6 +8,7 @@ import PrivateRoute from "./PrivateRoute";
 import Dashboard from "../features/dashboard/Dashboard";
 import PostForm from "../features/post/PostForm";
 import Post from "../features/post/Post";
+import UpdateForm from "../features/post/UpdateForm";
 
 const Routes: React.FC = () => {
   return (
@@ -19,6 +20,12 @@ const Routes: React.FC = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/post/:slug" component={Post} />
+          <PrivateRoute
+            exact
+            path="/update/:slug"
+            redirectPath="/login"
+            component={UpdateForm}
+          />
           <PrivateRoute
             exact
             path="/create"

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
@@ -11,7 +11,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 import { getAndLoadPosts, INewPost } from "../post/postSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { createPost, loadPost } from "../post/postSlice";
+import { createPost } from "../post/postSlice";
 import { editorOptions } from "./editorAPI";
 import Markup from "../post/postAPI";
 export interface IFileData {
@@ -33,10 +33,6 @@ const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
   });
 
   const { title, summary, imageAlt } = formData;
-
-  useEffect(() => {
-    if (props.postSlug) dispatch(loadPost(props.postSlug));
-  });
 
   const postContent = useAppSelector(
     (state) => state.post.post.content || null

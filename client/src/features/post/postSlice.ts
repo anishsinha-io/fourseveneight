@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import JSSoup from "jssoup";
 
 import api from "../../app/api";
 import axios from "axios";
@@ -23,6 +22,7 @@ export interface IComment {
 
 export interface IPost {
   title: string;
+  user: string;
   summary: string;
   content: string;
   image?: string;
@@ -65,10 +65,8 @@ export const loadPost = createAsyncThunk(
   async (slug: string, { rejectWithValue }) => {
     try {
       const res = await api.get(`/posts/${slug}`);
-      let a = res.data.post.content;
-      a = new JSSoup(a).text;
-      console.log(a);
-      console.log(typeof res.data.post.content);
+      if (!res.data.post) {
+      }
       return res.data.post;
     } catch (err) {
       return rejectWithValue("Error loading post!");
