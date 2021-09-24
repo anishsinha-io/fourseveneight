@@ -211,7 +211,7 @@ const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
           jsx={createPreviewMarkup(convertedContent)}
           className="editor-main__preview"
         />
-        {!showConfirmButton && (
+        {props.updateMode && !showConfirmButton && (
           <button
             className="btn btn-action"
             type="button"
@@ -220,13 +220,22 @@ const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
             Update
           </button>
         )}
-        {showConfirmButton && (
+        {props.updateMode && showConfirmButton && (
           <button
             className="btn btn-confirm"
             type="button"
             onClick={formSubmitHandler}
           >
             Confirm
+          </button>
+        )}
+        {!props.updateMode && (
+          <button
+            type="button"
+            onClick={formSubmitHandler}
+            className="btn btn-action"
+          >
+            Create
           </button>
         )}
       </div>
