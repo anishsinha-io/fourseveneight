@@ -3,16 +3,17 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import { logoutUser } from "../auth/authSlice";
 import { useAppDispatch } from "../../app/hooks";
-import { Redirect } from "react-router";
+import { useHistory } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isAuthenticated);
   const userIsLoading = useAppSelector((state) => state.auth.loading);
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
   const logoutHandler = () => {
     dispatch(logoutUser());
-    return <Redirect to="/"></Redirect>;
+    return history.push("/");
   };
 
   const authLinks = (

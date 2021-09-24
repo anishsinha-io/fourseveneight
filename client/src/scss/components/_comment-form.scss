@@ -1,0 +1,29 @@
+.comment-main {
+  border-top: 1px solid $color-primary;
+  display: flex;
+  flex-direction: column;
+
+  .comment-section-heading {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .comment-form {
+    margin-bottom: 0.5rem;
+    .comment-input {
+      min-height: 6rem;
+      padding: 0.25rem;
+      width: 100%;
+      font-family: inherit;
+      padding: 0.1rem;
+      font-size: inherit;
+    }
+  }
+  .comment-button {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .btn-comment {
+      width: 20%;
+    }
+  }
+}

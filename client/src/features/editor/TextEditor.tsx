@@ -2,7 +2,7 @@ import React, { useState, Fragment } from "react";
 import { EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import DOMPurify from "dompurify";
 import JsxParser from "react-jsx-parser";
 import Gist from "super-react-gist";
@@ -25,9 +25,8 @@ export interface IFileData {
   alt: string;
 }
 
-const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
-  props
-) => {
+const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
+  const history = useHistory();
   const dispatch = useAppDispatch();
   const oldPost = useAppSelector((state) => state.post.post);
   const [showConfirmButton, setShowConfirmButton] = useState<boolean>(false);
@@ -71,7 +70,7 @@ const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
   ) => {
     e.preventDefault();
     if (props.updateMode) dispatch(deletePost(oldPost.slug));
-    return <Redirect to="/landing" />;
+    return history.push("/");
   };
 
   const [convertedContent, setConvertedContent] = useState<any>();
@@ -124,12 +123,12 @@ const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
       if (!props.updateMode) {
         dispatch(createPost(submitFields));
         dispatch(getAndLoadPosts());
-        return <Redirect to="/landing" />;
+        return history.push("/");
       }
       submitFields.slug = oldPost.slug;
       dispatch(updatePost(submitFields));
       dispatch(getAndLoadPosts);
-      return <Redirect to="/landing" />;
+      return history.push("/");
     } catch (err) {
       //dispatch alert
     }

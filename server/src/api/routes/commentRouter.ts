@@ -7,6 +7,8 @@ import * as security from "../../auth/security";
 
 const router: Router = Router();
 
+//public
+
 //private
 router.use(security.authenticateUser, security.authenticateToken);
 

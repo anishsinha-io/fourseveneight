@@ -65,5 +65,12 @@ postSchema.pre("save", function (next) {
     this.slug = slugify_1.default(this.title, { lower: true });
     next();
 });
+postSchema.pre("/^find/", function (next) {
+    this.populate({
+        path: "rootComments",
+        select: "-deleted",
+        match: { deleted: false },
+    });
+});
 var Post = mongoose_1.model("Post", postSchema);
 exports.default = Post;

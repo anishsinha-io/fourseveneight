@@ -107,6 +107,29 @@
   .editor-main > button {
     margin-bottom: 1rem; }
 
+.comment-main {
+  border-top: 1px solid #051e3e;
+  display: flex;
+  flex-direction: column; }
+  .comment-main .comment-section-heading {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem; }
+  .comment-main .comment-form {
+    margin-bottom: 0.5rem; }
+    .comment-main .comment-form .comment-input {
+      min-height: 6rem;
+      padding: 0.25rem;
+      width: 100%;
+      font-family: inherit;
+      padding: 0.1rem;
+      font-size: inherit; }
+  .comment-main .comment-button {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center; }
+    .comment-main .comment-button .btn-comment {
+      width: 20%; }
+
 .post-page {
   border: 1px solid #051e3e;
   padding: 2rem;

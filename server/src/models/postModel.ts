@@ -79,6 +79,14 @@ postSchema.pre("save", function (next) {
   next();
 });
 
+postSchema.pre("/^find/", function (next) {
+  this.populate({
+    path: "rootComments",
+    select: "-deleted",
+    match: { deleted: false },
+  });
+});
+
 const Post = model<IPost>("Post", postSchema);
 
 export default Post;

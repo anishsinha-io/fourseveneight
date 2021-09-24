@@ -9,6 +9,7 @@ import JsxParserDefaultProps from "./postAPI";
 import Gist from "super-react-gist";
 
 import Spinner from "../spinner/Spinner";
+import CommentForm from "../comment/CommentForm";
 
 const Post = ({ match }: RouteComponentProps<{ slug?: string }>) => {
   const dispatch = useAppDispatch();
@@ -70,6 +71,7 @@ const Post = ({ match }: RouteComponentProps<{ slug?: string }>) => {
             <li>{post.comments?.length}</li>
           </ul>
         </div>
+        <CommentForm />
       </div>
     </Fragment>
   );
