@@ -46,15 +46,14 @@ var util_1 = __importDefault(require("util"));
 exports.unlinkFile = util_1.default.promisify(fs_1.default.unlink);
 var s3config_1 = require("../aws/s3config");
 exports.upload = multer_1.default({ dest: "uploads/" });
-var uploadImage = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+var uploadImage = function (req, _, next) { return __awaiter(void 0, void 0, void 0, function () {
     var file;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 file = req.file;
-                if (file)
-                    s3config_1.uploadFile(file);
-                if (!(file === null || file === void 0 ? void 0 : file.path)) return [3 /*break*/, 2];
+                if (!file) return [3 /*break*/, 2];
+                s3config_1.uploadFile(file);
                 return [4 /*yield*/, exports.unlinkFile(file.path)];
             case 1:
                 _a.sent();
@@ -71,17 +70,27 @@ var downloadImage = function (req, res) { return __awaiter(void 0, void 0, void 
     return __generator(this, function (_a) {
         key = req.params.key;
         readStream = s3config_1.downloadFile(key);
-        readStream
-            .on("data", function (data) {
-            res.write(data);
-        })
-            .on("end", function () { return readStream.pipe(res); })
-            .on("error", function () { return res.end(); });
+        if (readStream)
+            readStream
+                .on("data", function (data) {
+                res.write(data);
+            })
+                .on("end", function () { return readStream.pipe(res); })
+                .on("error", function () { return res.end(); });
         return [2 /*return*/];
     });
 }); };
 exports.downloadImage = downloadImage;
-var deleteImage = function (req, res) { return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_a) {
-    return [2 /*return*/];
-}); }); };
+var deleteImage = function (req, _, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var key;
+    return __generator(this, function (_a) {
+        try {
+            key = req.params.key;
+            s3config_1.deleteFile(key);
+            next();
+        }
+        catch (err) { }
+        return [2 /*return*/];
+    });
+}); };
 exports.deleteImage = deleteImage;

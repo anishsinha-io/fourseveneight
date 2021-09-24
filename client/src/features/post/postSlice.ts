@@ -125,7 +125,22 @@ export const updatePost = createAsyncThunk(
       const token = localStorage.token;
       if (token) apiInstance.defaults.headers.common["Authorization"] = token;
       await apiInstance.patch(`/posts/update/${slug}`, formData);
-    } catch (err) {}
+      dispatch(getAndLoadPosts);
+    } catch (err) {
+      rejectWithValue("Error updating post");
+    }
+  }
+);
+
+export const deletePost = createAsyncThunk(
+  "post/deletePost",
+  async (slug: string, { dispatch, rejectWithValue }) => {
+    try {
+      await api.delete(`/posts/delete/${slug}`);
+      dispatch(getAndLoadPosts());
+    } catch (err) {
+      return rejectWithValue("Error deleting post");
+    }
   }
 );
 

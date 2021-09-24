@@ -2,6 +2,7 @@ import React, { useState, Fragment } from "react";
 import { EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
+import { Redirect } from "react-router-dom";
 import DOMPurify from "dompurify";
 import JsxParser from "react-jsx-parser";
 import Gist from "super-react-gist";
@@ -14,6 +15,7 @@ import {
   INewPost,
   createPost,
   updatePost,
+  deletePost,
 } from "../post/postSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { editorOptions } from "./editorAPI";
@@ -28,6 +30,8 @@ const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
 ) => {
   const dispatch = useAppDispatch();
   const oldPost = useAppSelector((state) => state.post.post);
+  const [showConfirmButton, setShowConfirmButton] = useState<boolean>(false);
+  const [showDeleteButton, setShowDeleteButton] = useState<boolean>(false);
   const [image, setImage] = useState<any>(null);
   const [formData, setFormData] = useState<INewPost>({
     title: oldPost.title || "",
@@ -62,6 +66,13 @@ const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
       );
     }
   });
+  const deleteSubmitHandler = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    if (props.updateMode) dispatch(deletePost(oldPost.slug));
+    return <Redirect to="/landing" />;
+  };
 
   const [convertedContent, setConvertedContent] = useState<any>();
   const editorChangeHandler = (state: EditorState) => {
@@ -82,6 +93,16 @@ const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
     console.log(markup);
     return markup;
   };
+  const updateButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    convertContentToHTML();
+    setShowConfirmButton(true);
+  };
+
+  const deleteButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setShowDeleteButton(true);
+  };
 
   const createFinalMarkup = (html: string) => {
     return {
@@ -89,28 +110,53 @@ const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
     };
   };
   const formSubmitHandler = async (e: any) => {
-    e.preventDefault();
-    const content = createFinalMarkup(convertedContent).__html;
-    const submitFields: INewPost = {
-      title,
-      image,
-      imageAlt,
-      summary,
-      content,
-    };
-    if (!props.updateMode) {
-      dispatch(createPost(submitFields));
-      dispatch(getAndLoadPosts());
+    try {
+      e.preventDefault();
+      convertContentToHTML();
+      const content = createFinalMarkup(convertedContent).__html;
+      const submitFields: INewPost = {
+        title,
+        image,
+        imageAlt,
+        summary,
+        content,
+      };
+      if (!props.updateMode) {
+        dispatch(createPost(submitFields));
+        dispatch(getAndLoadPosts());
+        return <Redirect to="/landing" />;
+      }
+      submitFields.slug = oldPost.slug;
+      dispatch(updatePost(submitFields));
+      dispatch(getAndLoadPosts);
+      return <Redirect to="/landing" />;
+    } catch (err) {
+      //dispatch alert
     }
-    submitFields.slug = oldPost.slug;
-    dispatch(updatePost(submitFields));
-    dispatch(getAndLoadPosts);
   };
 
   //todo add onTab, onBlur handlers
   return (
     <Fragment>
       <div className="editor-main">
+        {props.updateMode && !showDeleteButton && (
+          <button
+            type="button"
+            className="btn btn-action"
+            onClick={deleteButtonHandler}
+          >
+            Delete
+          </button>
+        )}
+        {props.updateMode && showDeleteButton && (
+          <button
+            type="button"
+            className="btn btn-confirm"
+            onClick={deleteSubmitHandler}
+          >
+            Confirm
+          </button>
+        )}
         <form className="editor-main__form">
           <h3 className="form-heading">
             {props.updateMode ? "Update your post" : "Create a new post"}
@@ -165,13 +211,24 @@ const TextEditor: React.FC<{ updateMode?: boolean; postSlug?: string }> = (
           jsx={createPreviewMarkup(convertedContent)}
           className="editor-main__preview"
         />
-        <button
-          className="btn btn-action"
-          type="button"
-          onClick={formSubmitHandler}
-        >
-          {props.updateMode ? "Update" : "Post"}
-        </button>
+        {!showConfirmButton && (
+          <button
+            className="btn btn-action"
+            type="button"
+            onClick={updateButtonHandler}
+          >
+            Update
+          </button>
+        )}
+        {showConfirmButton && (
+          <button
+            className="btn btn-confirm"
+            type="button"
+            onClick={formSubmitHandler}
+          >
+            Confirm
+          </button>
+        )}
       </div>
     </Fragment>
   );

@@ -27,8 +27,7 @@ const UpdateForm = ({ match }: RouteComponentProps<{ slug?: string }>) => {
 
   if (status === "loading") return <Spinner />;
 
-  if (!post.user) return <Spinner />;
-  console.log(currentUser, post.user);
+  if (!post.user && status === "idle") return <Spinner />;
 
   if (currentUser !== post.user) {
     return <Redirect to="/login" />;

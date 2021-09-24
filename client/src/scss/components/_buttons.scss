@@ -13,7 +13,16 @@
     @include set-background($color-primary);
     &:hover {
       background: $color-white;
-      color: set-text-color($color-white);
+      color: set-text-color($color-white, $color-primary);
+    }
+  }
+  &.btn-confirm {
+    border: 1px solid $color-accent;
+    color: $color-accent;
+    @include set-background($color-accent);
+    &:hover {
+      background: $color-white;
+      color: set-text-color($color-white, $color-accent);
     }
   }
 }

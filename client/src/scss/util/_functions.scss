@@ -1,6 +1,6 @@
-@function set-text-color($color) {
+@function set-text-color($color, $current-text-color: $color-primary) {
   @if (lightness($color) > 60) {
-    @return $color-primary;
+    @return $current-text-color;
   } @else {
     @return $color-white;
   }

@@ -44,6 +44,14 @@
     .btn.btn-action:hover {
       background: #fff;
       color: #051e3e; }
+  .btn.btn-confirm {
+    border: 1px solid #851e3e;
+    color: #851e3e;
+    background-color: #851e3e;
+    color: #fff; }
+    .btn.btn-confirm:hover {
+      background: #fff;
+      color: #851e3e; }
 
 .bg-action {
   background-color: #fff;
@@ -74,7 +82,8 @@
   display: flex;
   flex-direction: column;
   max-width: 65rem;
-  margin: 0 auto; }
+  margin: 0 auto;
+  margin-bottom: 4rem; }
   .editor-main__preview {
     margin-bottom: 5rem;
     border-top: 1px solid #051e3e; }
@@ -102,7 +111,8 @@
   border: 1px solid #051e3e;
   padding: 2rem;
   margin-left: 16rem;
-  margin-right: 16rem; }
+  margin-right: 16rem;
+  margin-bottom: 2rem; }
   .post-page .post-image {
     display: flex;
     place-items: center;
