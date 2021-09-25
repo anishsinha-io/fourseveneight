@@ -2,7 +2,11 @@ import React, { Fragment, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useHistory } from "react-router-dom";
-import { createRootComment } from "../comment/commentSlice";
+import {
+  createRootComment,
+  createChildComment,
+  toggleReplyingToComment,
+} from "../comment/commentSlice";
 
 const CommentForm: React.FC = () => {
   const history = useHistory();
@@ -10,8 +14,12 @@ const CommentForm: React.FC = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const currentPost = useAppSelector((state) => state.post.post);
   const currentComment = useAppSelector((state) => state.comment.comment);
+  const replyingToComment = useAppSelector(
+    (state) => state.comment.replyingToComment
+  );
+  const status = useAppSelector((state) => state.comment.status);
   let currentCommentString;
-  if (Object.keys(currentComment).includes("content")) {
+  if (Object.keys(currentComment).includes("content") && status === "idle") {
     currentCommentString = `${currentComment.content.slice(0, 15)}... by ${
       currentComment.author
     }`;
@@ -29,15 +37,32 @@ const CommentForm: React.FC = () => {
   };
 
   const submitHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (!isAuthenticated) {
-      //dispatch failure alert
-      return history.push("/login");
+    try {
+      e.preventDefault();
+
+      if (!isAuthenticated) {
+        //dispatch failure alert
+        return history.push("/login");
+      }
+      if (replyingToComment) {
+        console.log("replying to comment");
+        dispatch(
+          createChildComment({
+            content: commentEditorState,
+            _id: currentComment._id,
+          })
+        );
+      } else
+        dispatch(
+          createRootComment({
+            slug: currentPost.slug,
+            content: commentEditorState,
+          })
+        );
+      //dispatch success alert
+    } catch (err) {
+      console.log(err);
     }
-    dispatch(
-      createRootComment({ slug: currentPost.slug, content: commentEditorState })
-    );
-    //dispatch success alert
   };
   return (
     <Fragment>

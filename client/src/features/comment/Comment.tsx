@@ -1,15 +1,21 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 
-import { IComment, setComment } from "./commentSlice";
-import { useAppDispatch } from "../../app/hooks";
+import { IComment, setComment, toggleReplyingToComment } from "./commentSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 const Comment: React.FC<{ comment: IComment }> = (props) => {
-  const dispatch = useAppDispatch();
   const { comment } = props;
+  const dispatch = useAppDispatch();
+
+  const replyingToComment: boolean = useAppSelector(
+    (state) => state.comment.replyingToComment
+  );
 
   const replyButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    dispatch(setComment(comment));
+    dispatch(toggleReplyingToComment());
+    if (!replyingToComment) dispatch(setComment(comment));
+    else dispatch(setComment({} as IComment));
   };
 
   return (
@@ -35,7 +41,9 @@ const Comment: React.FC<{ comment: IComment }> = (props) => {
         </button>
         <button
           type="button"
-          className="reply reply-btn"
+          className={`reply reply-btn ${
+            replyingToComment && "reply-highlight"
+          }`}
           onClick={replyButtonHandler}
         >
           Reply

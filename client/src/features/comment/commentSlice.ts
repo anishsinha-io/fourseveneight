@@ -1,9 +1,14 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import api from "../../app/api";
 
 export interface INewComment {
   slug: string;
+  content: string;
+}
+
+export interface INewChildComment {
+  _id: string;
   content: string;
 }
 
@@ -22,12 +27,14 @@ export interface ICommentState {
   status: "idle" | "loading" | "failed";
   comments: IComment[];
   comment: IComment;
+  replyingToComment: boolean;
 }
 
 const initialState = {
   status: "idle",
   comments: [] as IComment[],
   comment: {} as IComment,
+  replyingToComment: false,
 };
 
 export const getRootComments = createAsyncThunk(
@@ -52,13 +59,24 @@ export const getChildComments = createAsyncThunk(
 );
 
 export const createRootComment = createAsyncThunk(
-  "comment/createComment",
+  "comment/createRootComment",
   async (args: INewComment, { dispatch, rejectWithValue }) => {
     try {
       const { slug, content } = args;
-      console.log(args);
       await api.post(`/comments/${slug}`, { content });
-      dispatch(getRootComments(slug));
+    } catch (err) {
+      rejectWithValue(err);
+    }
+  }
+);
+
+export const createChildComment = createAsyncThunk(
+  "comment/createChildComment",
+  async (args: INewChildComment, { rejectWithValue }) => {
+    try {
+      const { _id, content } = args;
+      console.log(args);
+      await api.post(`/comments/child/${_id}`, { content });
     } catch (err) {
       rejectWithValue(err);
     }
@@ -71,12 +89,15 @@ const commentSlice = createSlice({
   reducers: {
     setComment: {
       //todo change PayloadAction<any> to PayloadAction<T> where T is defined
-      reducer: (state, action: PayloadAction<any>) => {
+      reducer: (state, action: any) => {
         state.comment = action.payload.comment;
       },
       prepare: (comment: IComment) => {
         return { payload: { comment } };
       },
+    },
+    toggleReplyingToComment(state) {
+      state.replyingToComment = !state.replyingToComment;
     },
   },
   extraReducers: (builder) => {
@@ -100,6 +121,6 @@ const commentSlice = createSlice({
   },
 });
 
-export const { setComment } = commentSlice.actions;
+export const { setComment, toggleReplyingToComment } = commentSlice.actions;
 
 export default commentSlice.reducer;

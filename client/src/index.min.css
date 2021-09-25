@@ -65,6 +65,9 @@
   cursor: pointer;
   color: #7e7e7e; }
 
+.reply-highlight {
+  color: #051e3e; }
+
 .navbar {
   display: flex;
   justify-content: center;
