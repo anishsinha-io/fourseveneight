@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 import api from "../../app/api";
 
@@ -8,21 +8,26 @@ export interface INewComment {
 }
 
 export interface IComment {
+  _id: string;
   user: string;
   post?: string;
   comment?: string;
   content: string;
+  directChildComments?: IComment[];
   date: string;
+  author: string;
 }
 
 export interface ICommentState {
   status: "idle" | "loading" | "failed";
   comments: IComment[];
+  comment: IComment;
 }
 
 const initialState = {
   status: "idle",
   comments: [] as IComment[],
+  comment: {} as IComment,
 };
 
 export const getRootComments = createAsyncThunk(
@@ -63,7 +68,17 @@ export const createRootComment = createAsyncThunk(
 const commentSlice = createSlice({
   name: "comment",
   initialState,
-  reducers: {},
+  reducers: {
+    setComment: {
+      //todo change PayloadAction<any> to PayloadAction<T> where T is defined
+      reducer: (state, action: PayloadAction<any>) => {
+        state.comment = action.payload.comment;
+      },
+      prepare: (comment: IComment) => {
+        return { payload: { comment } };
+      },
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getRootComments.pending, (state) => {
@@ -84,5 +99,7 @@ const commentSlice = createSlice({
       });
   },
 });
+
+export const { setComment } = commentSlice.actions;
 
 export default commentSlice.reducer;

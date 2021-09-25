@@ -68,12 +68,13 @@ const Post = ({ match }: RouteComponentProps<{ slug?: string }>) => {
         />
         <div className="post-data">
           <ul>
-            <li>{post.likes}</li>
-            <li>{post.rootComments?.length}</li>
+            <li>
+              <strong>Comments: {`(${post.rootComments.length})`}</strong>
+            </li>
           </ul>
         </div>
-        <CommentForm />
         <Comments root={true} />
+        <CommentForm />
       </div>
     </Fragment>
   );

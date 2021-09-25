@@ -1,3 +1,32 @@
 .comment-container {
+  border: 1px solid $color-gray;
+  border-radius: 5px;
   display: flex;
+  padding: 0.25rem;
+
+  &__content {
+    display: flex;
+    justify-content: right;
+  }
+}
+
+.comment-meta {
+  display: flex;
+  &__date {
+    margin-right: auto;
+    color: $color-gray;
+    font-size: 0.75rem;
+  }
+  .reply {
+    margin-right: 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+.comments-container {
+  border-left: 1px solid $color-primary;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
 }

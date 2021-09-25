@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
 import Comment from "./Comment";
-import { useAppSelector, useAppDispatch } from "../../app/hooks";
+import { useAppSelector } from "../../app/hooks";
 import { IComment } from "./commentSlice";
 import Spinner from "../spinner/Spinner";
 
@@ -20,11 +20,13 @@ const Comments: React.FC<{ root?: boolean }> = (props) => {
 
   if (status === "loading") return <Spinner />;
   const finalComments = (comments: IComment[]) => {
-    return comments.map((comment: IComment) => <Comment comment={comment} />);
+    return comments.map((comment: IComment) => (
+      <Comment key={comment._id} comment={comment} />
+    ));
   };
   return (
     <Fragment>
-      <div>{finalComments(comments)}</div>
+      <div className="comments-container">{finalComments(comments)}</div>
     </Fragment>
   );
 };

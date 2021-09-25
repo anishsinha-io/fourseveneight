@@ -9,6 +9,13 @@ const CommentForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const currentPost = useAppSelector((state) => state.post.post);
+  const currentComment = useAppSelector((state) => state.comment.comment);
+  let currentCommentString;
+  if (Object.keys(currentComment).includes("content")) {
+    currentCommentString = `${currentComment.content.slice(0, 15)}... by ${
+      currentComment.author
+    }`;
+  }
   const [commentEditorState, setCommentEditorState] = useState<string>("");
   const commentEditorChangeHandler = (
     e: React.ChangeEvent<HTMLTextAreaElement>
@@ -35,7 +42,9 @@ const CommentForm: React.FC = () => {
   return (
     <Fragment>
       <div className="comment-main">
-        <h4 className="comment-section-heading">{`Leaving a comment on: ${currentPost.title}`}</h4>
+        <h4 className="comment-section-heading">{`Leaving a comment on: ${
+          currentCommentString || currentPost.title
+        }`}</h4>
         <div className="comment-form">
           <textarea
             className="comment-input"

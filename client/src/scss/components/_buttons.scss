@@ -33,3 +33,11 @@
     border: #000 1px solid;
   }
 }
+
+.reply-btn {
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  color: $color-gray;
+}
