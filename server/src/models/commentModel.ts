@@ -1,6 +1,7 @@
 //Implements database schema for comments
 
 import { Schema, model, Document } from "mongoose";
+import User from "./userModel";
 
 export interface ILike {
   user: Schema.Types.ObjectId;
@@ -9,6 +10,7 @@ export interface ILike {
 //not entirely sure about the efficiency of this model
 export interface IComment extends Document {
   user: Schema.Types.ObjectId;
+  author?: string;
   post?: Schema.Types.ObjectId;
   comment?: Schema.Types.ObjectId;
   content: string;
@@ -21,6 +23,9 @@ const commentSchema: Schema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",
+  },
+  author: {
+    type: String,
   },
   post: {
     type: Schema.Types.ObjectId,
@@ -48,6 +53,12 @@ const commentSchema: Schema = new Schema({
     type: Boolean,
     default: false,
   },
+});
+
+commentSchema.pre("save", async function (next) {
+  const author = await User.findById(this.user);
+  if (author) this.author = `${author.firstName} ${author.lastName}`;
+  next();
 });
 
 const Comment = model<IComment>("Comment", commentSchema);

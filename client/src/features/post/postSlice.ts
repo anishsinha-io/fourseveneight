@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 import api from "../../app/api";
-import axios from "axios";
+import { IComment } from "../comment/commentSlice";
 
 export interface INewPost {
   slug?: string;
@@ -10,15 +11,6 @@ export interface INewPost {
   imageAlt: string;
   summary: string;
   content: string;
-}
-
-export interface IComment {
-  user: string;
-  post?: string;
-  comment?: IComment;
-  content: string;
-  date: Date;
-  directChildComments: IComment[];
 }
 
 export interface IPost {
@@ -30,7 +22,7 @@ export interface IPost {
   imageAlt: string;
   author: string;
   likes: number;
-  comments: string[];
+  rootComments: IComment[];
   date: Date;
   slug: string;
   deleted: boolean;

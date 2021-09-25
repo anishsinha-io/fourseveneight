@@ -23,7 +23,6 @@ export const createPost: RequestHandler = async (req, res) => {
       imageAlt,
       summary: summary,
       title: title,
-      author: `${user.firstName} ${user.lastName}`,
       content: content,
       rootComments: [] as ObjectId[],
       likes: [] as ObjectId[],

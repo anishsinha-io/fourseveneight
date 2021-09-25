@@ -130,6 +130,9 @@
     .comment-main .comment-button .btn-comment {
       width: 20%; }
 
+.comment-container {
+  display: flex; }
+
 .post-page {
   border: 1px solid #051e3e;
   padding: 2rem;
@@ -165,7 +168,7 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: "Hind Madurai", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 

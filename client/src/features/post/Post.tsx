@@ -7,6 +7,7 @@ import JsxParser from "react-jsx-parser";
 import { MathComponent } from "mathjax-react";
 import JsxParserDefaultProps from "./postAPI";
 import Gist from "super-react-gist";
+import Comments from "../comment/Comments";
 
 import Spinner from "../spinner/Spinner";
 import CommentForm from "../comment/CommentForm";
@@ -68,10 +69,11 @@ const Post = ({ match }: RouteComponentProps<{ slug?: string }>) => {
         <div className="post-data">
           <ul>
             <li>{post.likes}</li>
-            <li>{post.comments?.length}</li>
+            <li>{post.rootComments?.length}</li>
           </ul>
         </div>
         <CommentForm />
+        <Comments root={true} />
       </div>
     </Fragment>
   );

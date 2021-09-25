@@ -2,6 +2,7 @@
 
 import slugify from "slugify";
 import { Schema, model, Document, ObjectId } from "mongoose";
+import User from "./userModel";
 
 export interface IPost extends Document {
   user: ObjectId;
@@ -44,7 +45,6 @@ const postSchema: Schema = new Schema({
   },
   author: {
     type: String,
-    required: true,
   },
   likes: [
     {
@@ -74,17 +74,20 @@ const postSchema: Schema = new Schema({
   },
 });
 
-postSchema.pre("save", function (next) {
+postSchema.pre("save", async function (next) {
   this.slug = slugify(this.title, { lower: true });
+  const author = await User.findById(this.user);
+  if (author) this.author = `${author.firstName} ${author.lastName}`;
   next();
 });
 
-postSchema.pre("/^find/", function (next) {
+postSchema.pre(/^find/, function (next) {
   this.populate({
     path: "rootComments",
     select: "-deleted",
     match: { deleted: false },
   });
+  next();
 });
 
 const Post = model<IPost>("Post", postSchema);
