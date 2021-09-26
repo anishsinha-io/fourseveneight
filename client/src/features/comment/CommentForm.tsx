@@ -47,6 +47,7 @@ const CommentForm: React.FC = () => {
             _id: currentComment._id,
           })
         );
+        history.go(0);
       } else
         dispatch(
           createRootComment({
@@ -54,6 +55,7 @@ const CommentForm: React.FC = () => {
             content: commentEditorState,
           })
         );
+      history.go(0);
       //dispatch success alert
     } catch (err) {
       console.log(err);
@@ -63,7 +65,7 @@ const CommentForm: React.FC = () => {
     <Fragment>
       <div className="comment-main">
         <h4 className="comment-section-heading">{`Leaving a comment on: ${
-          currentCommentString || currentPost.title
+          (replyingToComment && currentCommentString) || currentPost.title
         }`}</h4>
         <div className="comment-form">
           <textarea

@@ -1,0 +1,29 @@
+version:'3'
+services:
+  react-app:
+    image: react-app
+    build: ./client/
+    stdin_open: true
+    ports: 
+      - "3000:3000"
+    networks: 
+      - "fourseveneight"
+  api-server:
+    image: api-server
+    build: './server/'
+    ports: 
+      -"8000:8000"
+    networks: 
+      - "fourseveneight"
+
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:4.4-bionic
+    ports: 
+      - "27017"
+
+networks:
+  - "fourseveneight"
+
+volumes:

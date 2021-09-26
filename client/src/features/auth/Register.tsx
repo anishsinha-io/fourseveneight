@@ -20,20 +20,6 @@ const Register = () => {
     formData;
   const fieldChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    //todo make this work
-    // if (e.target.name === "username" && e.target.focus) {
-    //   setInterval(async () => {
-    //     if (e.target.value.length < 1) return;
-    //     const res = await api.post("/users/user", { username: e.target.value });
-    //     console.log(res);
-    //     console.clear();
-    //     e.target.style.backgroundColor = "#fff";
-    //     if (res.status === 200) {
-    //       //highlight username in red
-    //       e.target.style.backgroundColor = "#ff7070";
-    //     } else e.target.style.backgroundColor = "#4bb543";
-    //   }, 3000);
-    // }
   };
   const submitHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

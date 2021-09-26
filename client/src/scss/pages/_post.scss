@@ -3,6 +3,10 @@
   padding: 2rem;
   margin-left: 16rem;
   margin-right: 16rem;
+  @media (max-width: 700px) {
+    margin-left: 0rem;
+    margin-right: 0rem;
+  }
   margin-bottom: 2rem;
   .post-image {
     display: flex;

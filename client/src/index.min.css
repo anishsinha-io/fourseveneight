@@ -191,6 +191,10 @@
   margin-left: 16rem;
   margin-right: 16rem;
   margin-bottom: 2rem; }
+  @media (max-width: 700px) {
+    .post-page {
+      margin-left: 0rem;
+      margin-right: 0rem; } }
   .post-page .post-image {
     display: flex;
     place-items: center;

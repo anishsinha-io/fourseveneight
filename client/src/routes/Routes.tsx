@@ -5,10 +5,11 @@ import Register from "../features/auth/Register";
 import Navbar from "../features/navbar/Navbar";
 import Landing from "../features/landing/Landing";
 import PrivateRoute from "./PrivateRoute";
-import Dashboard from "../features/dashboard/Dashboard";
+import Dashboard from "../features/profile/Dashboard";
 import PostForm from "../features/post/PostForm";
 import Post from "../features/post/Post";
 import UpdateForm from "../features/post/UpdateForm";
+import Settings from "../features/profile/Settings";
 
 const Routes: React.FC = () => {
   return (

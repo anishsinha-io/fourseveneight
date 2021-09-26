@@ -4,6 +4,7 @@ import authReducer from "../features/auth/authSlice";
 import alertReducer from "../features/alert/alertSlice";
 import postReducer from "../features/post/postSlice";
 import commentReducer from "../features/comment/commentSlice";
+import profileReducer from "../features/profile/profileSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     alert: alertReducer,
     post: postReducer,
     comment: commentReducer,
+    profile: profileReducer,
   },
 });
 

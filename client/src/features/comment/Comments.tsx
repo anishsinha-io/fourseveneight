@@ -11,7 +11,6 @@ const Comments: React.FC<{ comments: IComment[] }> = (props) => {
   return (
     <Fragment>
       {length > 0 &&
-        comments.length > 0 &&
         comments.map((comment: IComment) => (
           <div className="comments-container">
             <div key={comment._id}>
