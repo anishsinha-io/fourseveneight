@@ -73,7 +73,7 @@ const Post = ({ match }: RouteComponentProps<{ slug?: string }>) => {
             </li>
           </ul>
         </div>
-        <Comments root={true} />
+        <Comments comments={post.rootComments} />
         <CommentForm />
       </div>
     </Fragment>

@@ -5,29 +5,40 @@ import { useAppSelector } from "../../app/hooks";
 import { IComment } from "./commentSlice";
 import Spinner from "../spinner/Spinner";
 
-const Comments: React.FC<{ root?: boolean; commentId?: string }> = (props) => {
-  const { root, commentId } = props;
-
-  const status = useAppSelector((state) =>
-    root ? state.post.status : state.comment.status
-  );
-  const comments: IComment[] = useAppSelector((state) =>
-    root
-      ? state.post.post.rootComments
-      : state.comment.childCommentContainer[`${commentId}`]
-  );
-
-  console.log("comments", comments);
-
-  if (status === "loading") return <Spinner />;
-  const finalComments = (comments: IComment[]) => {
-    return comments.map((comment: IComment) => (
+const Comments: React.FC<{ root?: boolean; comments?: IComment[] }> = (
+  props
+) => {
+  const { comments } = props;
+  console.log(comments);
+  const hasChildren = comments && comments.length;
+  // if (comments) {
+  //   const childCommentArray = comments.map(
+  //     (comment: IComment) => comment.directChildComments
+  //   );
+  // }
+  console.log(hasChildren);
+  if (comments) {
+    const renderedComments = comments.map((comment: IComment) => (
       <Comment key={comment._id} comment={comment} />
     ));
-  };
+  }
+
   return (
     <Fragment>
-      <div className="comments-container">{finalComments(comments)}</div>
+      <div className="comments-container">
+        {/* {comments &&
+          comments.map((comment: IComment) => (
+            <Comment key={comment._id} comment={comment} />
+          ))} */}
+        {hasChildren &&
+          comments &&
+          comments.map((comment: IComment) => (
+            <Fragment>
+              <Comment comment={comment} />
+              <Comments comments={comment.directChildComments} />
+            </Fragment>
+          ))}
+      </div>
     </Fragment>
   );
 };

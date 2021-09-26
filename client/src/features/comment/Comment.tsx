@@ -11,7 +11,6 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 const Comment: React.FC<{ comment: IComment }> = (props) => {
   const { comment } = props;
-  const [showChildComments, setShowChildComments] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   console.log(comment);
@@ -20,18 +19,10 @@ const Comment: React.FC<{ comment: IComment }> = (props) => {
     (state) => state.comment.replyingToComment
   );
 
-  const showRepliesHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    dispatch(setComment(comment));
-    dispatch(loadChildComments(comment._id));
-    setShowChildComments(true);
-  };
-
   const replyButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
-    dispatch(toggleReplyingToComment());
     dispatch(setComment(comment));
+    dispatch(toggleReplyingToComment());
   };
 
   return (
@@ -54,13 +45,6 @@ const Comment: React.FC<{ comment: IComment }> = (props) => {
         </div>
         <button
           type="button"
-          className="reply reply-btn"
-          onClick={showRepliesHandler}
-        >
-          View Replies
-        </button>
-        <button
-          type="button"
           className={`reply reply-btn ${
             replyingToComment && "reply-highlight"
           }`}
@@ -68,12 +52,10 @@ const Comment: React.FC<{ comment: IComment }> = (props) => {
         >
           Reply
         </button>
-      </div>
-      {showChildComments && (
         <div className="comment-container">
-          {showChildComments && <Comments commentId={comment._id} />}
+          {/* {<Comments comments={comment.directChildComments} />} */}
         </div>
-      )}
+      </div>
     </Fragment>
   );
 };
