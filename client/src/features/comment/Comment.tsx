@@ -19,10 +19,8 @@ const Comment: React.FC<{ comment: IComment }> = (props) => {
   return (
     <Fragment>
       <div className="comment-container">
-        <div className="comment-container__image">Profile would go here</div>
-        <div className="comment-container__content">
-          {comment.content}Example content
-        </div>
+        <div className="comment-container__image">Profile</div>
+        <div className="comment-container__content">{comment.content}</div>
       </div>
       <div className="comment-meta">
         <div className="comment-meta__date">
