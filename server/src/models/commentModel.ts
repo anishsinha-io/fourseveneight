@@ -61,6 +61,15 @@ commentSchema.pre("save", async function (next) {
   next();
 });
 
+commentSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "directChildComments",
+    select: "-deleted",
+    match: { deleted: false },
+  });
+  next();
+});
+
 const Comment = model<IComment>("Comment", commentSchema);
 
 export default Comment;

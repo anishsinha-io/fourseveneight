@@ -40,7 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteChildComment = exports.deleteRootComment = exports.updateComment = exports.addChildComment = exports.addRootComment = void 0;
+exports.getComment = exports.deleteChildComment = exports.deleteRootComment = exports.updateComment = exports.addChildComment = exports.addRootComment = void 0;
 var commentModel_1 = __importDefault(require("../../models/commentModel"));
 var postModel_1 = __importDefault(require("../../models/postModel"));
 var addRootComment = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -207,3 +207,23 @@ var deleteChildComment = function (req, res) { return __awaiter(void 0, void 0, 
     });
 }); };
 exports.deleteChildComment = deleteChildComment;
+var getComment = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var comment, err_6;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, commentModel_1.default.findById(req.params.commentId)];
+            case 1:
+                comment = _a.sent();
+                if (!comment)
+                    return [2 /*return*/, res.status(404).json({ msg: "Comment not found" })];
+                return [2 /*return*/, res.status(200).json({ comment: comment })];
+            case 2:
+                err_6 = _a.sent();
+                return [2 /*return*/, res.status(500).json({ msg: "Internal server error" })];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.getComment = getComment;

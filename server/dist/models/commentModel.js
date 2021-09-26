@@ -93,5 +93,13 @@ commentSchema.pre("save", function (next) {
         });
     });
 });
+commentSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: "directChildComments",
+        select: "-deleted",
+        match: { deleted: false },
+    });
+    next();
+});
 var Comment = mongoose_1.model("Comment", commentSchema);
 exports.default = Comment;

@@ -25,6 +25,7 @@ var commentController = __importStar(require("../controllers/commentController")
 var security = __importStar(require("../../auth/security"));
 var router = express_1.Router();
 //public
+router.route("/:commentId").get(commentController.getComment);
 //private
 router.use(security.authenticateUser, security.authenticateToken);
 router.route("/:slug").post(commentController.addRootComment);

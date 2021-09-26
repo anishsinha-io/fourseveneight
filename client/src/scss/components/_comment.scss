@@ -1,9 +1,11 @@
 .comment-container {
-  border: 1px solid $color-gray;
+  //   border: 1px solid $color-gray;
   border-radius: 5px;
   display: flex;
-  padding: 0.25rem;
-
+  padding-left: 0.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  width: 100%;
   &__content {
     display: flex;
     justify-content: right;
@@ -25,8 +27,11 @@
 
 .comments-container {
   border-left: 1px solid $color-primary;
-  padding: 0.5rem;
+  padding-left: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
+  flex-grow: 1;
 }

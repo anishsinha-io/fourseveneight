@@ -9,6 +9,8 @@ const router: Router = Router();
 
 //public
 
+router.route("/:commentId").get(commentController.getComment);
+
 //private
 router.use(security.authenticateUser, security.authenticateToken);
 

@@ -2,11 +2,7 @@ import React, { Fragment, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useHistory } from "react-router-dom";
-import {
-  createRootComment,
-  createChildComment,
-  toggleReplyingToComment,
-} from "../comment/commentSlice";
+import { createRootComment, createChildComment } from "../comment/commentSlice";
 
 const CommentForm: React.FC = () => {
   const history = useHistory();
@@ -45,7 +41,6 @@ const CommentForm: React.FC = () => {
         return history.push("/login");
       }
       if (replyingToComment) {
-        console.log("replying to comment");
         dispatch(
           createChildComment({
             content: commentEditorState,

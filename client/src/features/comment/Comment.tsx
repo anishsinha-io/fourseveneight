@@ -1,21 +1,37 @@
 import React, { Fragment, useState } from "react";
+import Comments from "./Comments";
 
-import { IComment, setComment, toggleReplyingToComment } from "./commentSlice";
+import {
+  IComment,
+  setComment,
+  toggleReplyingToComment,
+  loadChildComments,
+} from "./commentSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 const Comment: React.FC<{ comment: IComment }> = (props) => {
   const { comment } = props;
+  const [showChildComments, setShowChildComments] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+
+  console.log(comment);
 
   const replyingToComment: boolean = useAppSelector(
     (state) => state.comment.replyingToComment
   );
 
+  const showRepliesHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    dispatch(setComment(comment));
+    dispatch(loadChildComments(comment._id));
+    setShowChildComments(true);
+  };
+
   const replyButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
     dispatch(toggleReplyingToComment());
-    if (!replyingToComment) dispatch(setComment(comment));
-    else dispatch(setComment({} as IComment));
+    dispatch(setComment(comment));
   };
 
   return (
@@ -36,7 +52,11 @@ const Comment: React.FC<{ comment: IComment }> = (props) => {
             minute: "numeric",
           })}
         </div>
-        <button type="button" className="reply reply-btn">
+        <button
+          type="button"
+          className="reply reply-btn"
+          onClick={showRepliesHandler}
+        >
           View Replies
         </button>
         <button
@@ -49,6 +69,11 @@ const Comment: React.FC<{ comment: IComment }> = (props) => {
           Reply
         </button>
       </div>
+      {showChildComments && (
+        <div className="comment-container">
+          {showChildComments && <Comments commentId={comment._id} />}
+        </div>
+      )}
     </Fragment>
   );
 };

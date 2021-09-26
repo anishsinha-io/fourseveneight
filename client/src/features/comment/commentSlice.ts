@@ -23,11 +23,16 @@ export interface IComment {
   author: string;
 }
 
+export interface IChildCommentContainer {
+  [key: string]: IComment[];
+}
+
 export interface ICommentState {
   status: "idle" | "loading" | "failed";
   comments: IComment[];
   comment: IComment;
   replyingToComment: boolean;
+  childCommentContainer: IComment[][];
 }
 
 const initialState = {
@@ -35,6 +40,7 @@ const initialState = {
   comments: [] as IComment[],
   comment: {} as IComment,
   replyingToComment: false,
+  childCommentContainer: {} as IChildCommentContainer,
 };
 
 export const getRootComments = createAsyncThunk(
@@ -42,19 +48,10 @@ export const getRootComments = createAsyncThunk(
   async (slug: string, { dispatch, rejectWithValue }) => {
     try {
       const comments = await api.get("/comments");
-      console.log(comments);
       return comments;
     } catch (err) {
       return rejectWithValue(err);
     }
-  }
-);
-
-export const getChildComments = createAsyncThunk(
-  "comment/childComments",
-  async (id: string, { dispatch, rejectWithValue }) => {
-    try {
-    } catch (err) {}
   }
 );
 
@@ -75,10 +72,23 @@ export const createChildComment = createAsyncThunk(
   async (args: INewChildComment, { rejectWithValue }) => {
     try {
       const { _id, content } = args;
-      console.log(args);
       await api.post(`/comments/child/${_id}`, { content });
     } catch (err) {
       rejectWithValue(err);
+    }
+  }
+);
+
+export const loadChildComments = createAsyncThunk(
+  "comment/loadComment",
+  async (commentId: string, { dispatch, rejectWithValue }) => {
+    try {
+      const res = await api.get(`/comments/${commentId}`);
+      const directChildComments = res.data.comment.directChildComments;
+      console.log({ commentId, directChildComments });
+      return { commentId, directChildComments };
+    } catch (err) {
+      return rejectWithValue(err);
     }
   }
 );
@@ -105,7 +115,9 @@ const commentSlice = createSlice({
       .addCase(getRootComments.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getRootComments.fulfilled, (state, action) => {})
+      .addCase(getRootComments.fulfilled, (state, action) => {
+        state.status = "idle";
+      })
       .addCase(getRootComments.rejected, (state, action) => {
         state.status = "failed";
       })
@@ -116,6 +128,17 @@ const commentSlice = createSlice({
         state.status = "idle";
       })
       .addCase(createRootComment.rejected, (state) => {
+        state.status = "failed";
+      })
+      .addCase(loadChildComments.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(loadChildComments.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.childCommentContainer[action.payload.commentId] =
+          action.payload.directChildComments;
+      })
+      .addCase(loadChildComments.rejected, (state) => {
         state.status = "failed";
       });
   },

@@ -115,3 +115,13 @@ export const deleteChildComment: RequestHandler = async (req, res) => {
     return res.status(500).json({ msg: "Internal server error" });
   }
 };
+
+export const getComment: RequestHandler = async (req, res) => {
+  try {
+    const comment = await Comment.findById(req.params.commentId);
+    if (!comment) return res.status(404).json({ msg: "Comment not found" });
+    return res.status(200).json({ comment });
+  } catch (err) {
+    return res.status(500).json({ msg: "Internal server error" });
+  }
+};
