@@ -69,20 +69,46 @@ export const fetchUserProfile = createAsyncThunk(
   }
 );
 
+export const fetchProfileFromQuery = createAsyncThunk(
+  "profile/queryData",
+  async (username: string, { rejectWithValue }) => {
+    try {
+      console.log("asdf");
+      const res = await api.get(`/profiles/${username}`);
+      console.log("asdf");
+      console.log(res.data.profile);
+      return res.data.profile;
+    } catch (err) {
+      rejectWithValue(err);
+    }
+  }
+);
+
+export const createEmptyProfile = createAsyncThunk(
+  "profile/createEmpty",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      await api.post("/profiles", {});
+    } catch (err) {
+      rejectWithValue(err);
+    }
+  }
+);
+
 const profileSlice = createSlice({
   name: "profile",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUserProfile.pending, (state) => {
+      .addCase(fetchProfileFromQuery.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchUserProfile.fulfilled, (state, action) => {
+      .addCase(fetchProfileFromQuery.fulfilled, (state, action) => {
         state.status = "idle";
         state.profile = action.payload;
       })
-      .addCase(fetchUserProfile.rejected, (state) => {
+      .addCase(fetchProfileFromQuery.rejected, (state) => {
         state.status = "failed";
       });
   },

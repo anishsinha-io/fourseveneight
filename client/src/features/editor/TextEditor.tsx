@@ -52,6 +52,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
 
   const fileSelectedHandler = (e: any) => {
     const file = e.target.files[0];
+    console.log(file);
     setImage(file);
   };
 
@@ -169,6 +170,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
             onChange={fieldChangeHandler}
             value={title}
           />
+
           <input
             className="form-input"
             type="summary"
@@ -185,15 +187,13 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
             value={imageAlt}
             onChange={fieldChangeHandler}
           />
-          <input
-            type="file"
-            id="file"
-            accept="image/*"
-            onChange={fileSelectedHandler}
-          />
-          <label htmlFor="file" className="btn-3">
-            <span>Upload Cover Image</span>
-          </label>
+          <div className="file-input">
+            <input type="file" onChange={fileSelectedHandler} />
+            <span className="button">Choose</span>
+            <span className="label">
+              {image ? image.name : "No file selected"}
+            </span>
+          </div>
         </form>
         <Editor
           wrapperClassName="editor-main__editor"

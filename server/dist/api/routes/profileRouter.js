@@ -24,11 +24,11 @@ var express_1 = require("express");
 var security = __importStar(require("../../auth/security"));
 var profileController = __importStar(require("../controllers/profileController"));
 var router = express_1.Router();
-//All routes are private
+router.route("/").get(profileController.getUserProfile);
+router.route("/:username").get(profileController.getProfileFromQuery);
 router.use(security.authenticateUser, security.authenticateToken);
 router
     .route("/")
-    .get(profileController.getUserProfile)
     .post(profileController.createProfile)
     .delete(profileController.clearUserProfile);
 router.route("/experience").put(profileController.addProfileExperience);

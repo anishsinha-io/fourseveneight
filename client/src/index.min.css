@@ -117,6 +117,39 @@
   .editor-main > button {
     margin-bottom: 1rem; }
 
+.file-input {
+  display: flex;
+  place-items: center;
+  background: #fff;
+  padding: 1rem;
+  position: relative;
+  border-radius: 3px; }
+  .file-input > [type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 10;
+    cursor: pointer; }
+  .file-input > .button {
+    display: inline-block;
+    cursor: pointer;
+    background: #eee;
+    padding: 8px 16px;
+    border-radius: 2px;
+    margin-right: 8px; }
+  .file-input:hover > .button {
+    background: #051e3e;
+    color: white; }
+  .file-input > .label {
+    color: #7e7e7e;
+    white-space: nowrap;
+    opacity: 0.3; }
+  .file-input > .label {
+    opacity: 1; }
+
 .comment-main {
   margin-top: 1rem;
   border-top: 1px solid #051e3e;
@@ -185,6 +218,53 @@
   .comments-container .comments-container {
     width: 100%; }
 
+.settings-container {
+  display: flex;
+  border: 1px solid #051e3e;
+  font-family: inherit;
+  margin: 5rem;
+  place-items: center; }
+  .settings-container .settings-profile {
+    display: flex;
+    place-items: center; }
+    .settings-container .settings-profile__main {
+      font-family: inherit;
+      display: flex;
+      flex-direction: column;
+      place-items: center;
+      margin: 0.5rem; }
+      .settings-container .settings-profile__main .bio-text {
+        width: 100%; }
+        .settings-container .settings-profile__main .bio-text__input {
+          width: 100%;
+          font-family: "Hind Madurai"; }
+      .settings-container .settings-profile__main .file-input {
+        font-family: inherit;
+        display: flex;
+        place-items: center; }
+        .settings-container .settings-profile__main .file-input__image {
+          max-width: 3rem;
+          margin-right: 0.5rem; }
+  .settings-container .settings-general {
+    display: flex;
+    flex-direction: column; }
+    .settings-container .settings-general__element > input {
+      width: 100%;
+      padding: 0.1rem;
+      margin-bottom: 0.25rem;
+      font-size: 1rem; }
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #051e3e;
+  margin-left: 10rem;
+  margin-right: 10rem; }
+  @media (max-width: 700px) {
+    .profile-container {
+      margin-left: 0rem;
+      margin-right: 0rem; } }
+
 .post-page {
   border: 1px solid #051e3e;
   padding: 2rem;
@@ -220,7 +300,8 @@
 * {
   box-sizing: border-box;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  font-family: "Hind Madurai"; }
 
 body {
   margin: 0;
@@ -244,58 +325,8 @@ img {
 *:placeholder-shown {
   font-style: italic; }
 
-[type="file"] {
-  height: 0;
-  overflow: hidden;
-  width: 0; }
-
-[type="file"] + label {
-  border: none;
-  border-radius: 5px;
-  color: #fff;
-  cursor: pointer;
-  display: inline-block;
-  font-size: inherit;
-  font-weight: 500;
-  margin-bottom: 1rem;
-  outline: none;
-  padding: 1rem 50px;
-  position: relative;
-  transition: all 0.3s;
-  vertical-align: middle; }
-  [type="file"] + label.btn-3 {
-    background-color: #051e3e;
-    border-radius: 3px;
-    overflow: hidden;
-    display: flex;
-    place-items: center;
-    margin-top: 0.75rem; }
-    [type="file"] + label.btn-3 span {
-      display: inline-block;
-      height: 100%;
-      transition: all 0.3s;
-      width: 100%; }
-    [type="file"] + label.btn-3::before {
-      color: #fff;
-      display: flex;
-      place-items: center;
-      content: "\f382";
-      font-family: "Font Awesome 5 Free";
-      font-weight: 900;
-      font-size: 100%;
-      height: 100%;
-      left: 42.5%;
-      line-height: 2.6;
-      position: absolute;
-      top: -180%;
-      transition: all 0.3s;
-      width: 100%; }
-    [type="file"] + label.btn-3:hover {
-      background-color: #09356d; }
-      [type="file"] + label.btn-3:hover span {
-        transform: translateY(300%); }
-      [type="file"] + label.btn-3:hover::before {
-        top: 0; }
+textarea {
+  resize: none; }
 
 pre,
 code {

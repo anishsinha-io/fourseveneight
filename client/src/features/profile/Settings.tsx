@@ -1,18 +1,16 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-import {
-  fetchUserProfile,
-  ISocial,
-  IProfile,
-  IExperience,
-  IEducation,
-} from "./profileSlice";
+import { ISocial, IProfile, IExperience, IEducation } from "./profileSlice";
 import Spinner from "../spinner/Spinner";
 
 const Settings: React.FC = () => {
   const profileStatus = useAppSelector((state) => state.profile.status);
   const currentUserProfile = useAppSelector((state) => state.profile.profile);
+  const { firstName, lastName } = useAppSelector((state) => state.auth.user);
+  const [image, setImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const [imageAlt, setImageAlt] = useState<string>("");
 
   const [profileState, setProfileState] = useState({
     photo: currentUserProfile.photo || "",
@@ -24,7 +22,7 @@ const Settings: React.FC = () => {
     bio: currentUserProfile.bio || "",
     githubUsername: currentUserProfile.githubUsername || "",
     experience: currentUserProfile.experience || ([] as IExperience[]),
-    education: currentUserProfile.education || ([] as IEducation),
+    education: currentUserProfile.education || ([] as IEducation[]),
     social: currentUserProfile.social || ({} as ISocial),
   });
   const {
@@ -41,22 +39,55 @@ const Settings: React.FC = () => {
     social,
   } = profileState;
 
-  const fieldChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const fieldChangeHandler = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setProfileState({ ...profileState, [e.target.name]: e.target.value });
   };
-
+  const fileSelectedHandler = (e: any) => {
+    const file = e.target.files[0];
+    const objectURL = URL.createObjectURL(file);
+    setImageUrl(objectURL);
+    setImageAlt(`${firstName} ${lastName}'s profile`);
+    setImage(file);
+  };
   if (profileStatus === "loading") return <Spinner />;
 
   return (
     <Fragment>
-      <div className="settings-container">
+      <form className="settings-container">
+        <div className="settings-profile">
+          <div className="settings-profile__main">
+            <div className="file-input">
+              <input type="file" onChange={fileSelectedHandler} />
+              <img
+                className="file-input__image"
+                src={imageUrl || "#"}
+                alt={imageAlt || ``}
+              />
+              <span className="button">Choose</span>
+              <span className="label">
+                {image ? image.name : "No file selected"}
+              </span>
+            </div>
+            <div className="bio-text">
+              <textarea
+                value={bio}
+                name="bio"
+                className="bio-text__input"
+                onChange={fieldChangeHandler}
+              />
+            </div>
+          </div>
+          <div className="settings-profile__bio"></div>
+        </div>
         <div className="settings-general">
-          <div className="settings-general__company">
+          <div className="settings-general__element">
+            <label htmlFor="company">Company</label>
             <input
               type="text"
               name="company"
               placeholder="company"
-              className="settings-general__element"
               onChange={fieldChangeHandler}
               value={company}
             />
@@ -66,7 +97,6 @@ const Settings: React.FC = () => {
               type="text"
               name="website"
               placeholder="website"
-              className="settings-general__element"
               onChange={fieldChangeHandler}
               value={website}
             />
@@ -76,7 +106,6 @@ const Settings: React.FC = () => {
               type="text"
               name="location"
               placeholder="location"
-              className="settings-general__website"
               onChange={fieldChangeHandler}
               value={location}
             />
@@ -86,7 +115,6 @@ const Settings: React.FC = () => {
               type="text"
               name="status"
               placeholder="status"
-              className="settings-general__website"
               onChange={fieldChangeHandler}
               value={status}
             />
@@ -96,7 +124,6 @@ const Settings: React.FC = () => {
               type="text"
               name="githubUsername"
               placeholder="githubUsername"
-              className="settings-general__website"
               onChange={fieldChangeHandler}
               value={githubUsername}
             />
@@ -105,7 +132,7 @@ const Settings: React.FC = () => {
         <div className="settings-social"></div>
         <div className="settings-education"></div>
         <div className="settings-experience"></div>
-      </div>
+      </form>
     </Fragment>
   );
 };

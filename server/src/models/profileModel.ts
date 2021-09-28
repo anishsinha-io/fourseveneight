@@ -1,6 +1,9 @@
 //Implements database schema for profiles
 
 import { Schema, model, Document } from "mongoose";
+
+import User from "./userModel";
+
 export interface IExperience {
   title?: string;
   company?: string;
@@ -32,6 +35,7 @@ export interface ISocial {
 
 export interface IProfile extends Document {
   user: Schema.Types.ObjectId;
+  username?: string;
   photo?: string;
   company?: string;
   website?: string;
@@ -51,9 +55,12 @@ const profileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  username: {
+    type: String,
+  },
   photo: {
     type: String,
-    default: "default.jpg",
+    default: "fse-default-profile",
   },
   company: {
     type: String,
@@ -143,7 +150,6 @@ const profileSchema = new Schema({
         },
         slug: {
           type: String,
-          unique: true,
         },
         required: false,
       },
@@ -174,6 +180,19 @@ const profileSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+profileSchema.pre("save", async function (next) {
+  try {
+    const user = await User.findById(this.user);
+    if (user) {
+      const username = user.username;
+      this.username = username;
+      next();
+    }
+  } catch (err) {}
+
+  next();
 });
 
 const Profile = model<IProfile>("Profile", profileSchema);

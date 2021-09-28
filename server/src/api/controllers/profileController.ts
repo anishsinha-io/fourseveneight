@@ -12,6 +12,7 @@ import Profile, {
   IProfile,
   ISocial,
 } from "../../models/profileModel";
+import { HeadObjectRequest } from "@aws-sdk/client-s3";
 
 export const removeProfileExperience: RequestHandler =
   factory.removeGenericProfileField({} as IExperience, "experience");
@@ -108,9 +109,11 @@ export const createProfile: RequestHandler = async (req, res) => {
       return res.status(200).json({ msg: "Profile updated successfully" });
     }
     const newProfile = new Profile(profileFields);
+    console.log(newProfile);
     await newProfile.save();
     return res.status(201).json({ msg: "Profile created successfully!" });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ msg: "Internal server error" });
   }
 };
@@ -154,6 +157,16 @@ export const clearUserProfile: RequestHandler = async (req, res) => {
       return res.status(200).json({ profile });
     }
     return res.status(404).json({ msg: "Profile not found" });
+  } catch (err) {
+    return res.status(500).json({ msg: "Internal server error" });
+  }
+};
+
+export const getProfileFromQuery: RequestHandler = async (req, res) => {
+  try {
+    const queriedUser = req.params.username;
+    const profile = await Profile.findOne({ username: queriedUser });
+    return res.status(200).json({ profile });
   } catch (err) {
     return res.status(500).json({ msg: "Internal server error" });
   }

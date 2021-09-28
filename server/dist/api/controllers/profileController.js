@@ -59,7 +59,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.clearUserProfile = exports.getUserProfile = exports.createProfile = exports.addProfileEducation = exports.addProfileExperience = exports.removeProfileEducation = exports.removeProfileExperience = void 0;
+exports.getProfileFromQuery = exports.clearUserProfile = exports.getUserProfile = exports.createProfile = exports.addProfileEducation = exports.addProfileExperience = exports.removeProfileEducation = exports.removeProfileExperience = void 0;
 var factory = __importStar(require("./handlerFactory"));
 var security = __importStar(require("../../auth/security"));
 var profileModel_1 = __importDefault(require("../../models/profileModel"));
@@ -118,12 +118,14 @@ var createProfile = function (req, res) { return __awaiter(void 0, void 0, void 
                 return [2 /*return*/, res.status(200).json({ msg: "Profile updated successfully" })];
             case 4:
                 newProfile = new profileModel_1.default(profileFields);
+                console.log(newProfile);
                 return [4 /*yield*/, newProfile.save()];
             case 5:
                 _a.sent();
                 return [2 /*return*/, res.status(201).json({ msg: "Profile created successfully!" })];
             case 6:
                 err_1 = _a.sent();
+                console.log(err_1);
                 return [2 /*return*/, res.status(500).json({ msg: "Internal server error" })];
             case 7: return [2 /*return*/];
         }
@@ -194,3 +196,22 @@ var clearUserProfile = function (req, res) { return __awaiter(void 0, void 0, vo
     });
 }); };
 exports.clearUserProfile = clearUserProfile;
+var getProfileFromQuery = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var queriedUser, profile, err_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                queriedUser = req.params.username;
+                return [4 /*yield*/, profileModel_1.default.findOne({ username: queriedUser })];
+            case 1:
+                profile = _a.sent();
+                return [2 /*return*/, res.status(200).json({ profile: profile })];
+            case 2:
+                err_4 = _a.sent();
+                return [2 /*return*/, res.status(500).json({ msg: "Internal server error" })];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.getProfileFromQuery = getProfileFromQuery;

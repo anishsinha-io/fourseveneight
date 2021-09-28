@@ -1,0 +1,11 @@
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $color-primary;
+  margin-left: 10rem;
+  margin-right: 10rem;
+  @media (max-width: 700px) {
+    margin-left: 0rem;
+    margin-right: 0rem;
+  }
+}

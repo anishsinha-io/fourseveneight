@@ -7,13 +7,13 @@ import * as profileController from "../controllers/profileController";
 
 const router = Router();
 
-//All routes are private
+router.route("/").get(profileController.getUserProfile);
+router.route("/:username").get(profileController.getProfileFromQuery);
 
 router.use(security.authenticateUser, security.authenticateToken);
 
 router
   .route("/")
-  .get(profileController.getUserProfile)
   .post(profileController.createProfile)
   .delete(profileController.clearUserProfile);
 router.route("/experience").put(profileController.addProfileExperience);

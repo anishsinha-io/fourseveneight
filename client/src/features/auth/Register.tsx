@@ -1,13 +1,15 @@
 import React, { Fragment, useState } from "react";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { registerUserAndLoginWithToken } from "../auth/authSlice";
 import validateInputs from "../../util/validateInputs";
 import { setAlert, removeAlertAsync } from "../alert/alertSlice";
+import { createEmptyProfile } from "../profile/profileSlice";
 
 // import api from "../../app/api";
 
 const Register = () => {
   const dispatch = useAppDispatch();
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -58,6 +60,7 @@ const Register = () => {
       passwordConfirm: "",
     });
   };
+  isAuthenticated && dispatch(createEmptyProfile());
   return (
     <Fragment>
       <div className="form-wrapper">

@@ -9,7 +9,7 @@ import Dashboard from "../features/profile/Dashboard";
 import PostForm from "../features/post/PostForm";
 import Post from "../features/post/Post";
 import UpdateForm from "../features/post/UpdateForm";
-import Settings from "../features/profile/Settings";
+import Profile from "../features/profile/Profile";
 
 const Routes: React.FC = () => {
   return (
@@ -21,6 +21,7 @@ const Routes: React.FC = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/post/:slug" component={Post} />
+          <Route exact path="/profiles/:username" component={Profile} />
           <PrivateRoute
             exact
             path="/update/:slug"

@@ -5,6 +5,7 @@ import { Schema, model } from "mongoose";
 //(abstract) User interface
 export interface IUser {
   id: Schema.Types.ObjectId;
+  photo?: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -35,6 +36,9 @@ const userSchema: Schema = new Schema({
   lastName: {
     type: String,
     required: true,
+  },
+  photo: {
+    type: String,
   },
   username: {
     type: String,
@@ -76,6 +80,11 @@ const userSchema: Schema = new Schema({
     enum: ["user", "admin", "root"],
     default: "user",
   },
+});
+
+userSchema.pre(/^find/, async function (next) {
+  try {
+  } catch (err) {}
 });
 
 const User = model<IUser>("User", userSchema);

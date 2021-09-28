@@ -1,0 +1,48 @@
+.settings-container {
+  display: flex;
+  border: 1px solid $color-primary;
+  font-family: inherit;
+  margin: 5rem;
+  place-items: center;
+
+  .settings-profile {
+    display: flex;
+    place-items: center;
+
+    &__main {
+      font-family: inherit;
+      display: flex;
+      flex-direction: column;
+      place-items: center;
+      margin: 0.5rem;
+      .bio-text {
+        width: 100%;
+        &__input {
+          width: 100%;
+          font-family: "Hind Madurai";
+        }
+      }
+      .file-input {
+        font-family: inherit;
+        display: flex;
+        place-items: center;
+        &__image {
+          max-width: 3rem;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+  .settings-general {
+    display: flex;
+    flex-direction: column;
+    &__element {
+      & > input {
+        width: 100%;
+        padding: 0.1rem;
+        margin-bottom: 0.25rem;
+        font-size: 1rem;
+      }
+    }
+  }
+}
