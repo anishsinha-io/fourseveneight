@@ -8,6 +8,9 @@ import JsxParser from "react-jsx-parser";
 import Gist from "super-react-gist";
 import { MathComponent } from "mathjax-react";
 import JSSoup from "jssoup";
+import Chips from "react-chips";
+import Dropdown from "react-dropdown";
+import "react-dropdown/style.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 import {
@@ -31,7 +34,8 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
   const oldPost = useAppSelector((state) => state.post.post);
   const [showConfirmButton, setShowConfirmButton] = useState<boolean>(false);
   const [showDeleteButton, setShowDeleteButton] = useState<boolean>(false);
-  const [image, setImage] = useState<any>(null);
+  const [image, setImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string>("");
   const [formData, setFormData] = useState<INewPost>({
     title: oldPost.title || "",
     image: null,
@@ -39,6 +43,28 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     summary: oldPost.summary || "",
     content: "",
   });
+  const postCategoryOptions: string[] = [
+    "computer science",
+    "politics",
+    "mathematics",
+    "history",
+    "entertainment",
+  ];
+
+  const [shownCategoryOption, setShownCategoryOption] = useState<string>(
+    postCategoryOptions[0]
+  );
+
+  const handleDropdownChange = (e: any) => {
+    console.log(e);
+    setShownCategoryOption(e.value);
+  };
+
+  const [chipItems, setChipItems] = useState<string[]>([]);
+
+  const handleChipChange = (chips: string[]) => {
+    setChipItems(chips);
+  };
 
   const { title, summary, imageAlt } = formData;
 
@@ -46,14 +72,17 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     (state) => state.post.post.content || null
   );
 
-  const fieldChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const fileSelectedHandler = (e: any) => {
+  const handleFileSelect = (e: any) => {
     const file = e.target.files[0];
-    console.log(file);
-    setImage(file);
+    if (file) {
+      const objectURL = URL.createObjectURL(file);
+      setImageUrl(objectURL);
+      setImage(file);
+    }
   };
 
   const [editorState, setEditorState] = useState(() => {
@@ -109,6 +138,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
       __html: DOMPurify.sanitize(html),
     };
   };
+
   const formSubmitHandler = async (e: any) => {
     try {
       e.preventDefault();
@@ -167,7 +197,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
             type="text"
             name="title"
             placeholder="Your post title"
-            onChange={fieldChangeHandler}
+            onChange={handleFieldChange}
             value={title}
           />
 
@@ -176,7 +206,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
             type="summary"
             name="summary"
             placeholder="Your post description"
-            onChange={fieldChangeHandler}
+            onChange={handleFieldChange}
             value={summary}
           />
           <input
@@ -185,14 +215,47 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
             name="imageAlt"
             placeholder="your image description"
             value={imageAlt}
-            onChange={fieldChangeHandler}
+            onChange={handleFieldChange}
           />
-          <div className="file-input">
-            <input type="file" onChange={fileSelectedHandler} />
-            <span className="button">Choose</span>
-            <span className="label">
-              {image ? image.name : "No file selected"}
-            </span>
+          <div className="editor__meta">
+            <div className="editor__meta-file file-input">
+              <label htmlFor="file-input">
+                <em>Cover Image: </em>
+              </label>
+              {imageUrl && (
+                <img
+                  className="file-input__image"
+                  src={imageUrl || ""}
+                  alt={imageAlt || ``}
+                />
+              )}
+              <input type="file" onChange={handleFileSelect} />
+              <span className="button">Choose</span>
+              <span className="label">
+                {image ? image.name : "No file selected"}
+              </span>
+            </div>
+            <div className="editor__meta-dropdown">
+              <label htmlFor="editor-dropdown">
+                <em>Category: </em>
+              </label>
+              <Dropdown
+                options={postCategoryOptions}
+                value={shownCategoryOption}
+                onChange={handleDropdownChange}
+              />
+            </div>
+
+            <div className="editor__meta-chips">
+              <label htmlFor="editor-chips">
+                <em>Tags: </em>
+              </label>
+              <Chips
+                value={chipItems}
+                onChange={handleChipChange}
+                suggestions={["Your", "Data", "Here"]}
+              />
+            </div>
           </div>
         </form>
         <Editor
@@ -234,7 +297,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
             onClick={formSubmitHandler}
             className="btn btn-action"
           >
-            Create
+            <span>Create</span>
           </button>
         )}
       </div>

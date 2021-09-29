@@ -20,12 +20,12 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Hind Madurai";
+  font-family: "Source Sans Pro";
 }
 
 body {
   margin: 0;
-  font-family: "Hind Madurai", -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -39,7 +39,7 @@ code {
 
 a {
   text-decoration: none;
-  color: $color-primary;
+  color: $color-black;
 }
 
 ul {
@@ -48,6 +48,7 @@ ul {
 
 img {
   width: 100%;
+  height: 100%;
 }
 
 *:placeholder-shown {
@@ -63,6 +64,12 @@ code {
   display: inline-block;
   font-size: 1rem;
   background-color: #ebebeb;
+}
+
+input {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid $color-black;
 }
 
 // [type="file"] {
@@ -87,7 +94,7 @@ code {
 //   vertical-align: middle;
 
 //   &.btn-3 {
-//     background-color: $color-primary;
+//     background-color: $color-black;
 //     border-radius: 3px;
 //     overflow: hidden;
 //     display: flex;
@@ -119,7 +126,7 @@ code {
 //     }
 
 //     &:hover {
-//       background-color: lighten($color-primary, 10%);
+//       background-color: lighten($color-black, 10%);
 
 //       span {
 //         transform: translateY(300%);

@@ -54,6 +54,7 @@ var profileSchema = new mongoose_1.Schema({
         type: String,
         default: "fse-default-profile",
     },
+    backgroundPhoto: { type: String },
     company: {
         type: String,
     },

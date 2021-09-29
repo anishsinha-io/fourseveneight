@@ -1,5 +1,5 @@
 .form-wrapper {
-  border: 1px solid #051e3e;
+  border: 1px solid #000;
   border-radius: 3px;
   width: min-content;
   display: flex;
@@ -30,20 +30,18 @@
 
 .btn {
   background: #fff;
-  color: #051e3e;
-  border: 1px solid #051e3e;
+  color: #000;
+  border: 1px solid #000;
   cursor: pointer;
   font-size: 1rem;
   padding: 0.5rem;
-  outline: none;
-  transition: all 0.3s ease-in;
-  border-radius: 3px; }
+  outline: none; }
   .btn.btn-action {
-    background-color: #051e3e;
+    background-color: #000;
     color: #fff; }
     .btn.btn-action:hover {
       background: #fff;
-      color: #051e3e; }
+      color: #000; }
   .btn.btn-confirm {
     border: 1px solid #851e3e;
     color: #851e3e;
@@ -55,7 +53,7 @@
 
 .bg-action {
   background-color: #fff;
-  color: #051e3e;
+  color: #000;
   border: #000 1px solid; }
 
 .reply-btn {
@@ -66,7 +64,7 @@
   color: #7e7e7e; }
 
 .reply-highlight {
-  color: #051e3e; }
+  color: #000; }
 
 .navbar {
   display: flex;
@@ -82,11 +80,25 @@
       margin-right: 1rem; }
 
 .posts-container {
-  border: 1px solid #051e3e;
-  width: 60%; }
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+  justify-items: center;
+  border-right: 1px solid #000;
+  width: 60%;
+  padding: 2rem; }
 
 .post-container {
-  display: grid; }
+  border: 1px solid #000;
+  display: flex;
+  place-items: center;
+  flex-direction: column; }
+  .post-container__title {
+    margin-top: 0.5rem; }
+    .post-container__title:hover {
+      cursor: pointer; }
+  .post-container__meta {
+    margin-bottom: 0.5rem; }
 
 .editor-main {
   display: flex;
@@ -96,7 +108,7 @@
   margin-bottom: 4rem; }
   .editor-main__preview {
     margin-bottom: 5rem;
-    border-top: 1px solid #051e3e; }
+    border-top: 1px solid #000; }
   .editor-main__form {
     display: flex;
     place-items: center;
@@ -108,9 +120,22 @@
       font-size: 1rem; }
     .editor-main__form .form-heading {
       margin-bottom: 1rem; }
+    .editor-main__form .editor__meta {
+      display: flex;
+      place-items: center; }
+      .editor-main__form .editor__meta-file, .editor-main__form .editor__meta-dropdown, .editor-main__form .editor__meta-chips {
+        margin-right: 1rem; }
+        .editor-main__form .editor__meta-file > label, .editor-main__form .editor__meta-dropdown > label, .editor-main__form .editor__meta-chips > label {
+          margin-right: 0.5rem; }
+      .editor-main__form .editor__meta-dropdown, .editor-main__form .editor__meta-chips {
+        display: flex;
+        place-items: center; }
+      .editor-main__form .editor__meta-file .file-input__image {
+        max-width: 3rem;
+        margin-right: 0.5rem; }
   .editor-main__editor {
     min-height: 35rem;
-    border: 1px solid #051e3e;
+    border: 1px solid #000;
     border-radius: 3px;
     line-height: 100%;
     margin-bottom: 1rem; }
@@ -141,7 +166,7 @@
     border-radius: 2px;
     margin-right: 8px; }
   .file-input:hover > .button {
-    background: #051e3e;
+    background: #000;
     color: white; }
   .file-input > .label {
     color: #7e7e7e;
@@ -152,7 +177,7 @@
 
 .comment-main {
   margin-top: 1rem;
-  border-top: 1px solid #051e3e;
+  border-top: 1px solid #000;
   display: flex;
   flex-direction: column; }
   .comment-main .comment-section-heading {
@@ -175,7 +200,7 @@
       width: 20%; }
 
 .comments-container {
-  border-left: 1px solid #051e3e;
+  border-left: 1px solid #000;
   padding-left: 0.5rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -220,7 +245,7 @@
 
 .settings-container {
   display: flex;
-  border: 1px solid #051e3e;
+  border: 1px solid #000;
   font-family: inherit;
   margin: 5rem;
   place-items: center; }
@@ -254,19 +279,54 @@
       margin-bottom: 0.25rem;
       font-size: 1rem; }
 
-.profile-container {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #051e3e;
-  margin-left: 10rem;
-  margin-right: 10rem; }
-  @media (max-width: 700px) {
-    .profile-container {
-      margin-left: 0rem;
-      margin-right: 0rem; } }
+.profile-wrapper {
+  width: 100%;
+  margin-top: 20px; }
+  .profile-wrapper .profile-card {
+    margin: 0 auto;
+    margin-left: 10rem;
+    margin-right: 10rem;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22), 0 14px 56px rgba(0, 0, 0, 0.25); }
+    .profile-wrapper .profile-card .card__header {
+      width: 100%;
+      height: 10rem; }
+    .profile-wrapper .profile-card .card__image {
+      display: flex;
+      place-items: center;
+      width: 125px;
+      height: 125px;
+      margin-left: -62.5px;
+      position: absolute;
+      left: 50%;
+      top: 100px;
+      border-radius: 50%;
+      border: 1px solid #cccccc; }
+      .profile-wrapper .profile-card .card__image > img {
+        min-width: 100%;
+        min-height: 100%;
+        border-radius: 50%;
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%);
+        -webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out; }
+    .profile-wrapper .profile-card .card__info {
+      background-color: #eee;
+      height: 100%; }
+      .profile-wrapper .profile-card .card__info .details {
+        display: flex;
+        flex-direction: column;
+        place-items: center; }
+        .profile-wrapper .profile-card .card__info .details__text-header {
+          margin-top: 5rem; }
+      .profile-wrapper .profile-card .card__info-section {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #000; }
 
 .post-page {
-  border: 1px solid #051e3e;
+  border: 1px solid #000;
   padding: 2rem;
   margin-left: 16rem;
   margin-right: 16rem;
@@ -279,7 +339,7 @@
     display: flex;
     place-items: center;
     margin-bottom: 1rem;
-    border-bottom: 1px solid #051e3e;
+    border-bottom: 1px solid #000;
     padding: 1rem; }
   .post-page .post-title {
     text-align: center; }
@@ -301,11 +361,11 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Hind Madurai"; }
+  font-family: "Source Sans Pro"; }
 
 body {
   margin: 0;
-  font-family: "Hind Madurai", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
@@ -314,13 +374,14 @@ code {
 
 a {
   text-decoration: none;
-  color: #051e3e; }
+  color: #000; }
 
 ul {
   list-style-type: none; }
 
 img {
-  width: 100%; }
+  width: 100%;
+  height: 100%; }
 
 *:placeholder-shown {
   font-style: italic; }
@@ -333,3 +394,8 @@ code {
   display: inline-block;
   font-size: 1rem;
   background-color: #ebebeb; }
+
+input {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #000; }

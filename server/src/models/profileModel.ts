@@ -37,6 +37,7 @@ export interface IProfile extends Document {
   user: Schema.Types.ObjectId;
   username?: string;
   photo?: string;
+  backgroundPhoto?: string;
   company?: string;
   website?: string;
   location?: string;
@@ -62,6 +63,7 @@ const profileSchema = new Schema({
     type: String,
     default: "fse-default-profile",
   },
+  backgroundPhoto: { type: String },
   company: {
     type: String,
   },

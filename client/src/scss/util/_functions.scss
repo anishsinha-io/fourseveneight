@@ -1,4 +1,4 @@
-@function set-text-color($color, $current-text-color: $color-primary) {
+@function set-text-color($color, $current-text-color: $color-black) {
   @if (lightness($color) > 60) {
     @return $current-text-color;
   } @else {

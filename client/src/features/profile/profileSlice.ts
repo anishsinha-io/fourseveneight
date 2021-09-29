@@ -33,6 +33,8 @@ export interface ISocial {
 
 export interface IProfile {
   user: string;
+  username: string;
+  backgroundPhoto?: string;
   photo?: string;
   company?: string;
   website?: string;

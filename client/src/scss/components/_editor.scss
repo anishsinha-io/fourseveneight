@@ -6,7 +6,7 @@
   margin-bottom: 4rem;
   &__preview {
     margin-bottom: 5rem;
-    border-top: 1px solid $color-primary;
+    border-top: 1px solid $color-black;
   }
   &__form {
     display: flex;
@@ -21,10 +21,35 @@
     .form-heading {
       margin-bottom: 1rem;
     }
+    .editor__meta {
+      display: flex;
+      place-items: center;
+      &-file,
+      &-dropdown,
+      &-chips {
+        margin-right: 1rem;
+        & > label {
+          margin-right: 0.5rem;
+        }
+      }
+      &-dropdown,
+      &-chips {
+        display: flex;
+        place-items: center;
+      }
+      &-file {
+        .file-input {
+          &__image {
+            max-width: 3rem;
+            margin-right: 0.5rem;
+          }
+        }
+      }
+    }
   }
   &__editor {
     min-height: 35rem;
-    border: 1px solid $color-primary;
+    border: 1px solid $color-black;
     border-radius: 3px;
     line-height: 100%;
     margin-bottom: 1rem;
@@ -60,7 +85,7 @@
     margin-right: 8px;
   }
   &:hover > .button {
-    background: $color-primary;
+    background: $color-black;
     color: white;
   }
   & > .label {

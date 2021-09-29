@@ -1,8 +1,26 @@
 .posts-container {
-  border: 1px solid $color-primary;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+  justify-items: center;
+  // border: 1px solid $color-black;
+  border-right: 1px solid $color-black;
   width: 60%;
+  padding: 2rem;
 }
 
 .post-container {
-  display: grid;
+  border: 1px solid $color-black;
+  display: flex;
+  place-items: center;
+  flex-direction: column;
+  &__title {
+    margin-top: 0.5rem;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &__meta {
+    margin-bottom: 0.5rem;
+  }
 }
