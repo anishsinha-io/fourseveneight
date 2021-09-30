@@ -47,3 +47,10 @@
 .reply-highlight {
   color: $color-black;
 }
+
+.alert-dismiss {
+  text-decoration: underline;
+  border: none;
+  cursor: pointer;
+  background: none;
+}

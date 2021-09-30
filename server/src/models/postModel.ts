@@ -17,6 +17,8 @@ export interface IPost extends Document {
   slug: string;
   deleted: boolean;
   date: Date;
+  tags: string[];
+  category: string;
 }
 
 const postSchema: Schema = new Schema({
@@ -68,6 +70,8 @@ const postSchema: Schema = new Schema({
     type: Boolean,
     default: false,
   },
+  tags: [{ type: String }],
+  category: { type: String },
   slug: {
     type: String,
     unique: true,

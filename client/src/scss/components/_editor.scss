@@ -8,10 +8,12 @@
     margin-bottom: 5rem;
     border-top: 1px solid $color-black;
   }
+
   &__form {
     display: flex;
     place-items: center;
     flex-direction: column;
+
     .form-input {
       width: 100%;
       padding: 0.1rem;
@@ -54,6 +56,13 @@
     border-radius: 3px;
     line-height: 100%;
     margin-bottom: 1rem;
+    .editor-main__toolbar {
+      & > div {
+        & > div {
+          min-height: 1.7rem;
+        }
+      }
+    }
   }
   & > button {
     margin-bottom: 1rem;

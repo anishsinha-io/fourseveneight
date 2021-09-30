@@ -15,9 +15,10 @@ export const createPost: RequestHandler = async (req, res) => {
       return res.status(403).json({
         msg: "You must activate your account to access this resource!",
       });
-    const { content, title, summary, imageAlt } = req.body;
+    const { content, title, summary, imageAlt, tags, category } = req.body;
     const file = req.file;
 
+    const parsedTags = JSON.parse(tags);
     const postFields = {
       user: user.id,
       image: `image-fse-${file?.filename}`,
@@ -27,6 +28,8 @@ export const createPost: RequestHandler = async (req, res) => {
       content: content,
       rootComments: [] as ObjectId[],
       likes: [] as ObjectId[],
+      tags: parsedTags,
+      category,
     } as IPost;
 
     const newPost = new Post(postFields);
@@ -66,7 +69,9 @@ export const updatePost: RequestHandler = async (req, res) => {
         .status(403)
         .json({ msg: "Current account not authorized for this action" });
 
-    const { title, content, summary, imageAlt } = req.body;
+    const { title, content, summary, imageAlt, tags, category } = req.body;
+
+    const parsedTags = JSON.parse(tags);
 
     const slug = slugify(title, { lower: true });
     const file = req.file;
@@ -77,7 +82,16 @@ export const updatePost: RequestHandler = async (req, res) => {
 
     await Post.findOneAndUpdate(
       { slug: req.params.slug },
-      { title, content, summary, slug, image, imageAlt },
+      {
+        title,
+        content,
+        summary,
+        slug,
+        image,
+        imageAlt,
+        tags: parsedTags,
+        category,
+      },
       {
         new: true,
         runValidators: true,

@@ -1,15 +1,16 @@
 import React, { Fragment, useState } from "react";
+import { Redirect } from "react-router";
+
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { registerUserAndLoginWithToken } from "../auth/authSlice";
 import validateInputs from "../../util/validateInputs";
 import { setAlert } from "../alert/alertSlice";
 import { createEmptyProfile } from "../profile/profileSlice";
 
-// import api from "../../app/api";
-
 const Register = () => {
   const dispatch = useAppDispatch();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const status = useAppSelector((state) => state.auth.status);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -58,7 +59,14 @@ const Register = () => {
       passwordConfirm: "",
     });
   };
-  isAuthenticated && dispatch(createEmptyProfile());
+  if (isAuthenticated) {
+    dispatch(createEmptyProfile());
+    dispatch(setAlert("success", "Successfully registered! Logging you in..."));
+    return <Redirect to="/" />;
+  }
+  if (status === "failed") {
+    dispatch(setAlert("danger", "Unexpected error, Please try again later"));
+  }
   return (
     <Fragment>
       <div className="form-wrapper">

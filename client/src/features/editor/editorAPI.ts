@@ -7,6 +7,7 @@ export const editorOptions = {
     "history",
     "image",
     "link",
+    "embedded",
   ],
   inline: {
     inDropdown: false,
@@ -19,5 +20,30 @@ export const editorOptions = {
   textAlign: { inDropdown: false },
   link: { inDropdown: false },
   history: { inDropdown: false },
-  image: { inDropdown: true },
+  image: {
+    className: undefined,
+    component: undefined,
+    popupClassName: undefined,
+    urlEnabled: true,
+    uploadEnabled: true,
+    alignmentEnabled: true,
+    uploadCallback: undefined,
+    previewImage: true,
+    inputAccept: "image/gif,image/jpeg,image/jpg,image/png,image/svg",
+    alt: { present: true, mandatory: true },
+    defaultSize: {
+      height: "auto",
+      width: "auto",
+    },
+  },
+  embedded: {
+    className: undefined,
+    component: undefined,
+    popupClassName: undefined,
+    embedCallback: undefined,
+    defaultSize: {
+      height: "auto",
+      width: "auto",
+    },
+  },
 };

@@ -11,6 +11,8 @@ export interface INewPost {
   imageAlt: string;
   summary: string;
   content: string;
+  tags: string[];
+  category: string;
 }
 
 export interface IPost {
@@ -27,6 +29,8 @@ export interface IPost {
   slug: string;
   deleted: boolean;
   _id: string;
+  tags: string[];
+  category: string;
 }
 
 export interface IPostState {
@@ -73,12 +77,14 @@ export const createPost = createAsyncThunk(
   async (args: INewPost, { dispatch, rejectWithValue }) => {
     try {
       const formData = new FormData();
-      const { title, image, imageAlt, summary, content } = args;
+      const { title, image, imageAlt, summary, content, tags, category } = args;
       formData.append("image", image);
       formData.append("title", title);
       formData.append("imageAlt", imageAlt);
       formData.append("summary", summary);
       formData.append("content", content);
+      formData.append("tags", JSON.stringify(tags));
+      formData.append("category", category);
 
       const apiInstance = axios.create({
         baseURL: "http://localhost:8000/api",
@@ -100,13 +106,16 @@ export const updatePost = createAsyncThunk(
   "post/updatePost",
   async (args: INewPost, { dispatch, rejectWithValue }) => {
     try {
-      const { title, image, imageAlt, summary, content, slug } = args;
+      const { title, image, imageAlt, summary, content, slug, tags, category } =
+        args;
       const formData = new FormData();
       formData.append("image", image);
       formData.append("title", title);
       formData.append("imageAlt", imageAlt);
       formData.append("summary", summary);
       formData.append("content", content);
+      formData.append("tags", JSON.stringify(tags));
+      formData.append("category", category);
 
       const apiInstance = axios.create({
         baseURL: "http://localhost:8000/api",

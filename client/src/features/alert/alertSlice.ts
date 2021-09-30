@@ -34,7 +34,7 @@ export const { setAlert, removeAlert } = alertSlice.actions;
 export const removeAlertAsync = () => (dispatch: any) => {
   setTimeout(() => {
     dispatch(removeAlert());
-  }, 5000);
+  }, 7500);
 };
 
 export default alertSlice.reducer;

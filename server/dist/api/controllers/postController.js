@@ -45,7 +45,7 @@ var slugify_1 = __importDefault(require("slugify"));
 var postModel_1 = __importDefault(require("../../models/postModel"));
 var csTags_1 = __importDefault(require("../../tags/csTags"));
 var createPost = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, _a, content, title, summary, imageAlt, file, postFields, newPost, err_1;
+    var user, _a, content, title, summary, imageAlt, tags, category, file, parsedTags, postFields, newPost, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -55,8 +55,9 @@ var createPost = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                     return [2 /*return*/, res.status(403).json({
                             msg: "You must activate your account to access this resource!",
                         })];
-                _a = req.body, content = _a.content, title = _a.title, summary = _a.summary, imageAlt = _a.imageAlt;
+                _a = req.body, content = _a.content, title = _a.title, summary = _a.summary, imageAlt = _a.imageAlt, tags = _a.tags, category = _a.category;
                 file = req.file;
+                parsedTags = JSON.parse(tags);
                 postFields = {
                     user: user.id,
                     image: "image-fse-" + (file === null || file === void 0 ? void 0 : file.filename),
@@ -66,6 +67,8 @@ var createPost = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                     content: content,
                     rootComments: [],
                     likes: [],
+                    tags: parsedTags,
+                    category: category,
                 };
                 newPost = new postModel_1.default(postFields);
                 return [4 /*yield*/, newPost.save()];
@@ -111,7 +114,7 @@ var deletePost = function (req, res) { return __awaiter(void 0, void 0, void 0, 
 }); };
 exports.deletePost = deletePost;
 var updatePost = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, post, _a, title, content, summary, imageAlt, slug, file, image, err_3;
+    var user, post, _a, title, content, summary, imageAlt, tags, category, parsedTags, slug, file, image, err_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -126,14 +129,24 @@ var updatePost = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                     return [2 /*return*/, res
                             .status(403)
                             .json({ msg: "Current account not authorized for this action" })];
-                _a = req.body, title = _a.title, content = _a.content, summary = _a.summary, imageAlt = _a.imageAlt;
+                _a = req.body, title = _a.title, content = _a.content, summary = _a.summary, imageAlt = _a.imageAlt, tags = _a.tags, category = _a.category;
+                parsedTags = JSON.parse(tags);
                 slug = slugify_1.default(title, { lower: true });
                 file = req.file;
                 image = void 0;
                 if (file) {
                     image = "image-fse-" + (file === null || file === void 0 ? void 0 : file.filename);
                 }
-                return [4 /*yield*/, postModel_1.default.findOneAndUpdate({ slug: req.params.slug }, { title: title, content: content, summary: summary, slug: slug, image: image, imageAlt: imageAlt }, {
+                return [4 /*yield*/, postModel_1.default.findOneAndUpdate({ slug: req.params.slug }, {
+                        title: title,
+                        content: content,
+                        summary: summary,
+                        slug: slug,
+                        image: image,
+                        imageAlt: imageAlt,
+                        tags: parsedTags,
+                        category: category,
+                    }, {
                         new: true,
                         runValidators: true,
                     })];

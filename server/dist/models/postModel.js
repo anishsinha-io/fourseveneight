@@ -92,6 +92,8 @@ var postSchema = new mongoose_1.Schema({
         type: Boolean,
         default: false,
     },
+    tags: [{ type: String }],
+    category: { type: String },
     slug: {
         type: String,
         unique: true,

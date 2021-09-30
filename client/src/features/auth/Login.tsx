@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Redirect } from "react-router-dom";
-// import validateInputs from "../../util/validateInputs";
 import { setAlert } from "../alert/alertSlice";
 import { getTokenAndLogin } from "./authSlice";
 
@@ -10,6 +9,7 @@ const Login: React.FC = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const token = useAppSelector((state) => state.auth.token);
   const user = useAppSelector((state) => state.auth.user);
+  const status = useAppSelector((state) => state.auth.status);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -31,6 +31,9 @@ const Login: React.FC = () => {
     dispatch(setAlert("success", "Logging you in..."));
     return <Redirect to="/" />;
   }
+
+  if (status === "failed")
+    dispatch(setAlert("danger", "Incorrect username or password!"));
   return (
     <Fragment>
       <div className="form-wrapper">

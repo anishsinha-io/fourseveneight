@@ -8,9 +8,9 @@ import JsxParser from "react-jsx-parser";
 import Gist from "super-react-gist";
 import { MathComponent } from "mathjax-react";
 import JSSoup from "jssoup";
-import Dropdown from "react-dropdown";
-import "react-dropdown/style.css";
+import Dropdown, { Option } from "react-dropdown";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import "react-dropdown/style.css";
 import ChipInput from "material-ui-chip-input";
 
 import api from "../../app/api";
@@ -24,7 +24,6 @@ import {
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { editorOptions } from "./editorAPI";
 import Markup from "../post/postAPI";
-import Spinner from "../spinner/Spinner";
 export interface IFileData {
   image: any;
   alt: string;
@@ -39,6 +38,9 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [chipItems, setChipItems] = useState<string[]>([]);
+  const postContent = useAppSelector(
+    (state) => state.post.post.content || null
+  );
   const [editorState, setEditorState] = useState(() => {
     if (!props.updateMode) {
       return EditorState.createEmpty();
@@ -56,10 +58,9 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     imageAlt: oldPost.imageAlt || "",
     summary: oldPost.summary || "",
     content: "",
+    tags: oldPost.tags || ([] as string[]),
+    category: oldPost.category || "",
   });
-  const postContent = useAppSelector(
-    (state) => state.post.post.content || null
-  );
 
   const { title, summary, imageAlt } = formData;
 
@@ -76,12 +77,18 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
   //Event handlers
 
   const handleAddChip = (chip: string) => {
-    setChipItems([...chipItems, chip]);
+    if (chipItems.length < 5) setChipItems([...chipItems, chip]);
+    else return;
   };
 
   const handleDeleteChip = (chip: string) => {
     const newChips = chipItems.filter((chipItem: string) => chipItem !== chip);
     setChipItems(newChips);
+  };
+
+  const handleCategoryChange = (category: Option) => {
+    const value = category.value;
+    setShownCategoryOption(value);
   };
 
   const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,12 +122,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
       console.log(err);
     }
   };
-  const createPreviewMarkup = (html: string) => {
-    const __html = DOMPurify.sanitize(html);
-    const markup = new Markup(__html).finalMarkup;
-    console.log(markup);
-    return markup;
-  };
+
   const handleUpdate = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     convertContentToHTML();
@@ -143,6 +145,8 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
         imageAlt,
         summary,
         content,
+        tags: chipItems,
+        category: shownCategoryOption,
       };
       if (!props.updateMode) {
         dispatch(createPost(submitFields));
@@ -156,6 +160,13 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     } catch (err) {
       //dispatch alert
     }
+  };
+
+  const createPreviewMarkup = (html: string) => {
+    const __html = DOMPurify.sanitize(html);
+    const markup = new Markup(__html).finalMarkup;
+    console.log(markup);
+    return markup;
   };
 
   const createFinalMarkup = (html: string) => {
@@ -240,6 +251,10 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
               <Dropdown
                 options={postCategoryOptions}
                 value={shownCategoryOption}
+                // onChange={(category: any) => {
+                //   console.log(category);
+                // }}
+                onChange={handleCategoryChange}
               />
             </div>
 
@@ -267,9 +282,9 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
           editorState={editorState}
           onEditorStateChange={handleEditorChange}
           toolbar={editorOptions}
-          handlePastedText={() => false}
           stripPastedStyles
           placeholder="Tell your story..."
+          toolbarClassName="editor-main__toolbar"
         />
         <h3>Preview</h3>
         <JsxParser

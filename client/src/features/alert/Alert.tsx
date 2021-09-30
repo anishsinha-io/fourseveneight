@@ -11,7 +11,7 @@ const Alert: React.FC = () => {
   const dispatch = useAppDispatch();
   const alerts = useAppSelector((state) => state.alert);
 
-  const handleDismiss = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleDismiss = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     dispatch(removeAlert());
   };
@@ -39,11 +39,10 @@ const Alert: React.FC = () => {
               {icon && <i className={icon}></i>}
               {alert.msg}
             </div>
-            {alert.alertType === "danger" && (
-              <div className="alert__dismiss">
-                <div onClick={handleDismiss}>Dismiss</div>
-              </div>
-            )}
+
+            <button className="alert-dismiss" onClick={handleDismiss}>
+              <span>Dismiss</span>
+            </button>
           </div>
         </div>
       );

@@ -70,6 +70,12 @@
 .reply-highlight {
   color: #000; }
 
+.alert-dismiss {
+  text-decoration: underline;
+  border: none;
+  cursor: pointer;
+  background: none; }
+
 .navbar {
   display: flex;
   justify-content: center;
@@ -144,6 +150,8 @@
     border-radius: 3px;
     line-height: 100%;
     margin-bottom: 1rem; }
+    .editor-main__editor .editor-main__toolbar > div > div {
+      min-height: 1.7rem; }
   .editor-main > button {
     margin-bottom: 1rem; }
 

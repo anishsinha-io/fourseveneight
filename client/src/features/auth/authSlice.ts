@@ -119,7 +119,9 @@ export const authSlice = createSlice({
       .addCase(getTokenAndLogin.fulfilled, (state, _) => {
         state.status = "idle";
       })
-      .addCase(getTokenAndLogin.rejected, (state, action) => {})
+      .addCase(getTokenAndLogin.rejected, (state, action) => {
+        state.status = "failed";
+      })
       .addCase(loadUserFromToken.pending, (state) => {
         state.status = "loading";
       })
