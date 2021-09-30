@@ -15,6 +15,7 @@ const alertSlice = createSlice({
     setAlert: {
       reducer: (state, action: PayloadAction<IAlert>) => {
         state.push(action.payload);
+        removeAlertAsync();
       },
       prepare: (alertType: string, msg: string) => {
         const id = nanoid();

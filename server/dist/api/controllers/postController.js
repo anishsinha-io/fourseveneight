@@ -40,9 +40,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllPosts = exports.getPost = exports.updatePost = exports.deletePost = exports.createPost = void 0;
+exports.getComputerScienceTags = exports.getAllPosts = exports.getPost = exports.updatePost = exports.deletePost = exports.createPost = void 0;
 var slugify_1 = __importDefault(require("slugify"));
 var postModel_1 = __importDefault(require("../../models/postModel"));
+var csTags_1 = __importDefault(require("../../tags/csTags"));
 var createPost = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, _a, content, title, summary, imageAlt, file, postFields, newPost, err_1;
     return __generator(this, function (_b) {
@@ -179,3 +180,15 @@ var getAllPosts = function (req, res) { return __awaiter(void 0, void 0, void 0,
     });
 }); };
 exports.getAllPosts = getAllPosts;
+var getComputerScienceTags = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        try {
+            return [2 /*return*/, res.status(200).json({ tags: csTags_1.default })];
+        }
+        catch (err) {
+            return [2 /*return*/, res.status(500).json({ msg: "Internal server error" })];
+        }
+        return [2 /*return*/];
+    });
+}); };
+exports.getComputerScienceTags = getComputerScienceTags;

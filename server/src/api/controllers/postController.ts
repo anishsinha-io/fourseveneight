@@ -6,6 +6,7 @@ import { ObjectId } from "mongoose";
 
 import { IUser } from "../../models/userModel";
 import Post, { IPost } from "../../models/postModel";
+import csTags from "../../tags/csTags";
 
 export const createPost: RequestHandler = async (req, res) => {
   try {
@@ -99,6 +100,14 @@ export const getAllPosts: RequestHandler = async (req, res) => {
   try {
     const posts = await Post.find({ deleted: false });
     return res.status(200).json({ posts });
+  } catch (err) {
+    return res.status(500).json({ msg: "Internal server error" });
+  }
+};
+
+export const getComputerScienceTags: RequestHandler = async (req, res) => {
+  try {
+    return res.status(200).json({ tags: csTags });
   } catch (err) {
     return res.status(500).json({ msg: "Internal server error" });
   }

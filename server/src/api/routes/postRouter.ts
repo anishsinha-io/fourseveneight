@@ -11,6 +11,9 @@ const router: Router = Router();
 //public
 
 router.route("/").get(postController.getAllPosts);
+router
+  .route("/tags/computerscience")
+  .get(postController.getComputerScienceTags);
 router.route("/:slug").get(postController.getPost);
 router.route("/uploads/image").post(upload.single("image"), uploadImage);
 router.route("/downloads/image/:key").get(downloadImage);

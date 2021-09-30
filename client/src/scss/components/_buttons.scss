@@ -23,6 +23,10 @@
       color: set-text-color($color-white, $color-accent);
     }
   }
+  &.btn-success {
+    border: none;
+    outline: none;
+  }
 }
 
 .bg {

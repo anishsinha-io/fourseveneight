@@ -1,0 +1,34 @@
+.alert-container {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  .alert {
+    display: flex;
+    margin: 0 auto;
+    margin-bottom: 0.5rem;
+    place-items: center;
+    width: 35%;
+    // height: 2rem;
+    border-radius: 2px;
+    padding: 0.5rem;
+    &-success {
+      background-color: $color-success;
+    }
+    &-danger {
+      background-color: $color-danger;
+    }
+    &__message {
+      display: flex;
+      place-items: center;
+      margin: 0 auto;
+      padding: 0.5rem;
+      & > i {
+        margin-right: 0.5rem;
+      }
+      .alert__dismiss {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+}

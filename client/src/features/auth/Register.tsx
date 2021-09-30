@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { registerUserAndLoginWithToken } from "../auth/authSlice";
 import validateInputs from "../../util/validateInputs";
-import { setAlert, removeAlertAsync } from "../alert/alertSlice";
+import { setAlert } from "../alert/alertSlice";
 import { createEmptyProfile } from "../profile/profileSlice";
 
 // import api from "../../app/api";
@@ -23,7 +23,7 @@ const Register = () => {
   const fieldChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const submitHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const errors = validateInputs({
       firstName,
@@ -35,22 +35,20 @@ const Register = () => {
     });
     if (errors.length > 0) {
       for (let i = 0; i < errors.length; i++) {
-        //todo refactor elegantly
-        dispatch(setAlert(errors[i], "danger"));
-        dispatch(removeAlertAsync());
+        dispatch(setAlert("danger", errors[i]));
       }
-      return;
     }
-    dispatch(
-      registerUserAndLoginWithToken({
-        firstName,
-        lastName,
-        email,
-        username,
-        password,
-        passwordConfirm,
-      })
-    );
+    !errors.length &&
+      dispatch(
+        registerUserAndLoginWithToken({
+          firstName,
+          lastName,
+          email,
+          username,
+          password,
+          passwordConfirm,
+        })
+      );
     setFormData({
       firstName: "",
       lastName: "",
@@ -127,7 +125,7 @@ const Register = () => {
               <button
                 type="button"
                 className="btn btn-action"
-                onClick={submitHandler}
+                onClick={handleSubmit}
               >
                 Register
               </button>

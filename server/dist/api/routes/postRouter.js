@@ -27,6 +27,9 @@ var media_1 = require("../../middleware/media");
 var router = express_1.Router();
 //public
 router.route("/").get(postController.getAllPosts);
+router
+    .route("/tags/computerscience")
+    .get(postController.getComputerScienceTags);
 router.route("/:slug").get(postController.getPost);
 router.route("/uploads/image").post(media_1.upload.single("image"), media_1.uploadImage);
 router.route("/downloads/image/:key").get(media_1.downloadImage);

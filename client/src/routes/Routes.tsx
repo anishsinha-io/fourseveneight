@@ -10,12 +10,14 @@ import PostForm from "../features/post/PostForm";
 import Post from "../features/post/Post";
 import UpdateForm from "../features/post/UpdateForm";
 import Profile from "../features/profile/Profile";
+import Alert from "../features/alert/Alert";
 
 const Routes: React.FC = () => {
   return (
     <Fragment>
       <section className="container">
         <Navbar />
+        <Alert />
         <Switch>
           <Route exact path="/" component={Landing} />
           <Route exact path="/login" component={Login} />

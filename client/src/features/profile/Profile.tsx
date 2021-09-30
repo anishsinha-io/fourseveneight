@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import { RouteComponentProps } from "react-router";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -13,8 +13,7 @@ const Profile = ({ match }: RouteComponentProps<{ username?: string }>) => {
     }
   }, [dispatch, match.params.username]);
 
-  const [itemStyle, setItemStyle] = useState<string>("posts");
-  const profile = useAppSelector((state) => state.profile.profile);
+  // const profile = useAppSelector((state) => state.profile.profile);
 
   const status = useAppSelector((state) => state.auth.status);
 

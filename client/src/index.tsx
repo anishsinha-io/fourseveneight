@@ -7,6 +7,8 @@ import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
+  //* IN DEVELOPMENT, DUE TO <React.StrictMode></React.StrictMode> ALL REDUCERS ARE CALLED TWICE BY REACT TO CHECK FOR PURITY.
+  //* IN PRODUCTION THEY WILL ONLY BE CALLED ONCE, (see: Alert component)
   <React.StrictMode>
     <Provider store={store}>
       <App />

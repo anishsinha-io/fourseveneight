@@ -8,11 +8,12 @@ import JsxParser from "react-jsx-parser";
 import Gist from "super-react-gist";
 import { MathComponent } from "mathjax-react";
 import JSSoup from "jssoup";
-import Chips from "react-chips";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import ChipInput from "material-ui-chip-input";
 
+import api from "../../app/api";
 import {
   getAndLoadPosts,
   INewPost,
@@ -23,6 +24,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { editorOptions } from "./editorAPI";
 import Markup from "../post/postAPI";
+import Spinner from "../spinner/Spinner";
 export interface IFileData {
   image: any;
   alt: string;
@@ -36,6 +38,18 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
   const [showDeleteButton, setShowDeleteButton] = useState<boolean>(false);
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
+  const [chipItems, setChipItems] = useState<string[]>([]);
+  const [editorState, setEditorState] = useState(() => {
+    if (!props.updateMode) {
+      return EditorState.createEmpty();
+    } else {
+      const initialContentState = new JSSoup(postContent).text;
+      return EditorState.createWithContent(
+        ContentState.createFromText(initialContentState)
+      );
+    }
+  });
+  const [convertedContent, setConvertedContent] = useState<any>();
   const [formData, setFormData] = useState<INewPost>({
     title: oldPost.title || "",
     image: null,
@@ -43,6 +57,12 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     summary: oldPost.summary || "",
     content: "",
   });
+  const postContent = useAppSelector(
+    (state) => state.post.post.content || null
+  );
+
+  const { title, summary, imageAlt } = formData;
+
   const postCategoryOptions: string[] = [
     "computer science",
     "politics",
@@ -51,26 +71,18 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     "entertainment",
   ];
 
-  const [shownCategoryOption, setShownCategoryOption] = useState<string>(
-    postCategoryOptions[0]
-  );
+  const [shownCategoryOption, setShownCategoryOption] = useState<string>("");
 
-  const handleDropdownChange = (e: any) => {
-    console.log(e);
-    setShownCategoryOption(e.value);
+  //Event handlers
+
+  const handleAddChip = (chip: string) => {
+    setChipItems([...chipItems, chip]);
   };
 
-  const [chipItems, setChipItems] = useState<string[]>([]);
-
-  const handleChipChange = (chips: string[]) => {
-    setChipItems(chips);
+  const handleDeleteChip = (chip: string) => {
+    const newChips = chipItems.filter((chipItem: string) => chipItem !== chip);
+    setChipItems(newChips);
   };
-
-  const { title, summary, imageAlt } = formData;
-
-  const postContent = useAppSelector(
-    (state) => state.post.post.content || null
-  );
 
   const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -85,26 +97,13 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     }
   };
 
-  const [editorState, setEditorState] = useState(() => {
-    if (!props.updateMode) {
-      return EditorState.createEmpty();
-    } else {
-      const initialContentState = new JSSoup(postContent).text;
-      return EditorState.createWithContent(
-        ContentState.createFromText(initialContentState)
-      );
-    }
-  });
-  const deleteSubmitHandler = async (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleDeleteSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (props.updateMode) dispatch(deletePost(oldPost.slug));
     return history.push("/");
   };
 
-  const [convertedContent, setConvertedContent] = useState<any>();
-  const editorChangeHandler = (state: EditorState) => {
+  const handleEditorChange = (state: EditorState) => {
     setEditorState(state);
     convertContentToHTML();
   };
@@ -122,7 +121,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     console.log(markup);
     return markup;
   };
-  const updateButtonHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleUpdate = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     convertContentToHTML();
     setShowConfirmButton(true);
@@ -133,13 +132,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     setShowDeleteButton(true);
   };
 
-  const createFinalMarkup = (html: string) => {
-    return {
-      __html: DOMPurify.sanitize(html),
-    };
-  };
-
-  const formSubmitHandler = async (e: any) => {
+  const handleFormSubmit = async (e: any) => {
     try {
       e.preventDefault();
       convertContentToHTML();
@@ -165,7 +158,12 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     }
   };
 
-  //todo add onTab, onBlur handlers
+  const createFinalMarkup = (html: string) => {
+    return {
+      __html: DOMPurify.sanitize(html),
+    };
+  };
+
   return (
     <Fragment>
       <div className="editor-main">
@@ -182,7 +180,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
           <button
             type="button"
             className="btn btn-confirm"
-            onClick={deleteSubmitHandler}
+            onClick={handleDeleteSubmit}
           >
             Confirm
           </button>
@@ -242,7 +240,6 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
               <Dropdown
                 options={postCategoryOptions}
                 value={shownCategoryOption}
-                onChange={handleDropdownChange}
               />
             </div>
 
@@ -250,10 +247,17 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
               <label htmlFor="editor-chips">
                 <em>Tags: </em>
               </label>
-              <Chips
+              <ChipInput
                 value={chipItems}
-                onChange={handleChipChange}
-                suggestions={["Your", "Data", "Here"]}
+                newChipKeys={["Enter"]}
+                onAdd={handleAddChip}
+                onDelete={handleDeleteChip}
+                allowDuplicates={false}
+                blurBehavior="clear"
+                placeholder="Add tags to your post"
+                fullWidthInput={true}
+                variant="standard"
+                helperText="Enter between 1 and 5 tags"
               />
             </div>
           </div>
@@ -261,7 +265,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
         <Editor
           wrapperClassName="editor-main__editor"
           editorState={editorState}
-          onEditorStateChange={editorChangeHandler}
+          onEditorStateChange={handleEditorChange}
           toolbar={editorOptions}
           handlePastedText={() => false}
           stripPastedStyles
@@ -277,7 +281,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
           <button
             className="btn btn-action"
             type="button"
-            onClick={updateButtonHandler}
+            onClick={handleUpdate}
           >
             Update
           </button>
@@ -286,7 +290,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
           <button
             className="btn btn-confirm"
             type="button"
-            onClick={formSubmitHandler}
+            onClick={handleFormSubmit}
           >
             Confirm
           </button>
@@ -294,7 +298,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
         {!props.updateMode && (
           <button
             type="button"
-            onClick={formSubmitHandler}
+            onClick={handleFormSubmit}
             className="btn btn-action"
           >
             <span>Create</span>
