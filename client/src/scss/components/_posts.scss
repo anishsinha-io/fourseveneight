@@ -3,9 +3,6 @@
   grid-template-columns: 1fr 1fr;
   grid-gap: 1rem;
   justify-items: center;
-  // border: 1px solid $color-black;
-  border-right: 1px solid $color-black;
-  width: 60%;
   padding: 2rem;
 }
 
@@ -22,5 +19,12 @@
   }
   &__meta {
     margin-bottom: 0.5rem;
+  }
+  &__chips {
+    margin-bottom: 0.5rem;
+    & > div {
+      margin-right: 0.5rem;
+      cursor: pointer;
+    }
   }
 }

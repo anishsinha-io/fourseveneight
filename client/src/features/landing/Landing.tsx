@@ -1,13 +1,15 @@
 import React, { Fragment } from "react";
-// import FileUploader from "../../util/FileUploader";
-// import PostEditor from "../editor/TextEditor";
-import Posts from "../post/Posts";
+
+import Sidebar from "./Sidebar";
+import BasicTabs from "./Tabs";
 
 const Landing: React.FC = () => {
   return (
     <Fragment>
-      Landing
-      <Posts />
+      <div className="landing-container">
+        <BasicTabs />
+        <Sidebar />
+      </div>
     </Fragment>
   );
 };

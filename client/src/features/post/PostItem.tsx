@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { useHistory } from "react-router-dom";
+import { Chip } from "@material-ui/core";
 
 import { IPost } from "./postSlice";
 
@@ -11,6 +12,16 @@ const PostItem: React.FC<{ post: IPost }> = (props) => {
     e.preventDefault();
     return history.push(`/post/${post.slug}`);
   };
+
+  const handleChipClick = (e: any) => {
+    e.preventDefault();
+    console.log(e.target.outerText);
+  };
+
+  const displayedChips = post.tags.map((tag: string) => (
+    <Chip key={tag} label={tag} onClick={handleChipClick} />
+  ));
+
   return (
     <Fragment>
       <div className="post-container">
@@ -34,6 +45,7 @@ const PostItem: React.FC<{ post: IPost }> = (props) => {
             day: "numeric",
           })}
         </div>
+        <div className="post-container__chips">{displayedChips}</div>
       </div>
     </Fragment>
   );

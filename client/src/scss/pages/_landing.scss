@@ -1,0 +1,29 @@
+.landing-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  .landing-sidebar {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0.5rem;
+    .twitter-connect {
+      display: flex;
+      min-height: 10rem;
+      align-items: center;
+      width: 100%;
+      justify-content: center;
+      flex-direction: column;
+      border-bottom: 1px solid $color-gray;
+    }
+    .recommended-topics {
+      min-height: 10rem;
+      justify-content: center;
+      width: 100%;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid $color-gray;
+    }
+  }
+}

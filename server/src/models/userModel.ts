@@ -17,6 +17,7 @@ export interface IUser {
   resetPasswordSentAt: number | undefined;
   deleted: boolean;
   role: string;
+  onboarded?: boolean;
 }
 
 export interface IUserResponse {
@@ -39,6 +40,10 @@ const userSchema: Schema = new Schema({
   },
   photo: {
     type: String,
+  },
+  onboarded: {
+    type: Boolean,
+    default: false,
   },
   username: {
     type: String,
@@ -80,11 +85,6 @@ const userSchema: Schema = new Schema({
     enum: ["user", "admin", "root"],
     default: "user",
   },
-});
-
-userSchema.pre(/^find/, async function (next) {
-  try {
-  } catch (err) {}
 });
 
 const User = model<IUser>("User", userSchema);

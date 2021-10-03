@@ -11,6 +11,7 @@ import Post from "../features/post/Post";
 import UpdateForm from "../features/post/UpdateForm";
 import Profile from "../features/profile/Profile";
 import Alert from "../features/alert/Alert";
+import Onboarding from "../features/onboarding/Onboarding";
 
 const Routes: React.FC = () => {
   return (
@@ -41,6 +42,12 @@ const Routes: React.FC = () => {
             path="/dashboard"
             redirectPath="/login"
             component={Dashboard}
+          />
+          <PrivateRoute
+            exact
+            path="/newuser/onboard"
+            redirectPath="/"
+            component={Onboarding}
           />
         </Switch>
       </section>

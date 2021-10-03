@@ -13,7 +13,6 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "react-dropdown/style.css";
 import ChipInput from "material-ui-chip-input";
 
-import api from "../../app/api";
 import {
   getAndLoadPosts,
   INewPost,
@@ -37,7 +36,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
   const [showDeleteButton, setShowDeleteButton] = useState<boolean>(false);
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
-  const [chipItems, setChipItems] = useState<string[]>([]);
+  const [chipItems, setChipItems] = useState<string[]>(oldPost.tags || []);
   const postContent = useAppSelector(
     (state) => state.post.post.content || null
   );
