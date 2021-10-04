@@ -26,6 +26,7 @@
     "dompurify": "^2.3.2",
     "draft-convert": "^2.1.12",
     "draft-js": "^0.11.7",
+    "i18n-iso-countries": "^6.8.0",
     "jssoup": "0.0.12",
     "lodash": "^4.17.21",
     "material-ui-chip-input": "^2.0.0-beta.2",

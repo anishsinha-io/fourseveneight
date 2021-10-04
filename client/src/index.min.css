@@ -341,6 +341,25 @@
         justify-content: space-between;
         border-bottom: 1px solid #000; }
 
+.setup-profile {
+  display: flex;
+  flex-direction: column;
+  width: 50rem;
+  justify-content: left;
+  align-items: left; }
+  .setup-profile__heading {
+    margin-bottom: 0.5rem; }
+  .setup-profile__main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 1rem; }
+    .setup-profile__main > div {
+      margin-bottom: 1rem; }
+    .setup-profile__main .setup__skills {
+      grid-column: 1/5; }
+  .setup-profile__bio {
+    width: 100%; }
+
 .alert-container {
   display: flex;
   flex-direction: column;

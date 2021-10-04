@@ -38,6 +38,7 @@ export interface IProfile extends Document {
   username?: string;
   photo?: string;
   backgroundPhoto?: string;
+  currentJobTitle?: string;
   company?: string;
   website?: string;
   location?: string;
@@ -74,6 +75,7 @@ const profileSchema = new Schema({
   location: {
     type: String,
   },
+  currentJobTitle: { type: String },
   status: {
     type: String,
   },

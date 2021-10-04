@@ -64,6 +64,7 @@ var profileSchema = new mongoose_1.Schema({
     location: {
         type: String,
     },
+    currentJobTitle: { type: String },
     status: {
         type: String,
     },

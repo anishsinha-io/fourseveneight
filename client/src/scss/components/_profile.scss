@@ -63,3 +63,29 @@
     }
   }
 }
+
+.setup-profile {
+  display: flex;
+  flex-direction: column;
+  width: 50rem;
+  justify-content: left;
+  align-items: left;
+  &__heading {
+    margin-bottom: 0.5rem;
+  }
+  &__main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 1rem;
+
+    & > div {
+      margin-bottom: 1rem;
+    }
+    .setup__skills {
+      grid-column: 1/5;
+    }
+  }
+  &__bio {
+    width: 100%;
+  }
+}

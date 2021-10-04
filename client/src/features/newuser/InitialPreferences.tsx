@@ -3,13 +3,28 @@ import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Preferences from "./Preferences";
+import SetupProfile from "./SetupProfile";
 
 export interface INewUserContext {
   categoryPreferences: string[];
+  employmentStatus: string;
+  jobTitle: string;
+  website: string;
+  github: string;
+  bio: string;
+  skills: string[];
+  location: string;
 }
 
 export const NewUserContext = React.createContext<INewUserContext>({
   categoryPreferences: [] as string[],
+  employmentStatus: "",
+  jobTitle: "",
+  website: "",
+  github: "",
+  bio: "",
+  skills: [],
+  location: "",
 });
 
 declare module "@mui/material/styles" {
@@ -40,16 +55,14 @@ const theme = createTheme({
 });
 
 const InitialPreferences: React.FC = () => {
-  const newUserContext = useContext(NewUserContext);
   const [showPreferenceCards, setShowPreferenceCards] = useState<boolean>(true);
-  const [showSubpreferenceChips, setShowSubpreferenceChips] =
-    useState<boolean>(false);
+  const [showSetupProfile, setShowSetupProfile] = useState<boolean>(false);
   const handlePreferenceSelection = (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
     setShowPreferenceCards(false);
-    console.log(newUserContext.categoryPreferences);
+    setShowSetupProfile(true);
   };
 
   return (
@@ -71,6 +84,7 @@ const InitialPreferences: React.FC = () => {
             </Button>
           </ThemeProvider>
         )}
+        {showSetupProfile && <SetupProfile />}
       </div>
     </Fragment>
   );

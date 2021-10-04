@@ -26,14 +26,14 @@ const CategoryCard: React.FC<{ category: string }> = (props) => {
   return (
     <Fragment>
       <div className="card" onClick={handleCardClick}>
-        <img
+        {/* <img
           className="card__img"
           src={`http://localhost:8000/api/posts/downloads/image/fse-category-${category.replaceAll(
             " ",
             ""
           )}`}
           alt={category}
-        />
+        /> */}
         <div
           className={`card__description  ${hasOverlay ? "card-overlay" : ""}`}
         >
