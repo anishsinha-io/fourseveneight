@@ -167,6 +167,11 @@ var profileSchema = new mongoose_1.Schema({
             type: String,
         },
     },
+    spaces: [
+        {
+            type: String,
+        },
+    ],
     date: {
         type: Date,
         default: Date.now,

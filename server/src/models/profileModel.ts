@@ -49,6 +49,7 @@ export interface IProfile extends Document {
   education?: IEducation[];
   social?: ISocial;
   date?: Date;
+  spaces?: string[];
 }
 
 const profileSchema = new Schema({
@@ -178,6 +179,11 @@ const profileSchema = new Schema({
       type: String,
     },
   },
+  spaces: [
+    {
+      type: String,
+    },
+  ],
   date: {
     type: Date,
     default: Date.now,

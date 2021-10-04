@@ -88,12 +88,20 @@ export const fetchProfileFromQuery = createAsyncThunk(
 
 export const createEmptyProfile = createAsyncThunk(
   "profile/createEmpty",
-  async (_, { dispatch, rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       await api.post("/profiles", {});
     } catch (err) {
       rejectWithValue(err);
     }
+  }
+);
+
+export const updateProfile = createAsyncThunk(
+  "profile/updateProfile",
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+    } catch (err) {}
   }
 );
 

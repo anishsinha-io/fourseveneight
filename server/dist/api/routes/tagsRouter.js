@@ -1,5 +1,4 @@
 "use strict";
-//Implements post api endpoints
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -21,22 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
-var security = __importStar(require("../../auth/security"));
-var postController = __importStar(require("../controllers/postController"));
-var media_1 = require("../../middleware/media");
+var tagsController = __importStar(require("../controllers/tagsController"));
 var router = express_1.Router();
-//public
-router.route("/").get(postController.getAllPosts);
-router.route("/:slug").get(postController.getPost);
-router.route("/uploads/image").post(media_1.upload.single("image"), media_1.uploadImage);
-router.route("/downloads/image/:key").get(media_1.downloadImage);
-//private
-router.use(security.authenticateUser, security.authenticateToken, security.isActive);
-router
-    .route("/")
-    .post(media_1.upload.single("image"), media_1.uploadImage, postController.createPost);
-router
-    .route("/update/:slug")
-    .patch(media_1.upload.single("image"), media_1.uploadImage, postController.updatePost);
-router.route("/delete/:slug").delete(postController.deletePost);
+router.route("/").get(tagsController.getTags);
 exports.default = router;

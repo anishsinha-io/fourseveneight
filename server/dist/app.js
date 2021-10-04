@@ -14,6 +14,7 @@ var adminRouter_1 = __importDefault(require("./api/routes/adminRouter"));
 var profileRouter_1 = __importDefault(require("./api/routes/profileRouter"));
 var postRouter_1 = __importDefault(require("./api/routes/postRouter"));
 var commentRouter_1 = __importDefault(require("./api/routes/commentRouter"));
+var tagsRouter_1 = __importDefault(require("./api/routes/tagsRouter"));
 dotenv_1.default.config({ path: "src/config/config.env" });
 var app = express_1.default();
 app.use(cors_1.default());
@@ -29,6 +30,7 @@ app.use("/api/admin", adminRouter_1.default);
 app.use("/api/profiles", profileRouter_1.default);
 app.use("/api/posts", postRouter_1.default);
 app.use("/api/comments", commentRouter_1.default);
+app.use("/api/tags", tagsRouter_1.default);
 var port = process.env.PORT || 8000;
 var server = app.listen(port);
 process.on("unhandledRejection", function () {

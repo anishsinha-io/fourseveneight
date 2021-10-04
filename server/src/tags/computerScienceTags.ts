@@ -1,4 +1,4 @@
-
+const computerScienceTags:string[] = [
   "javascript",
   "java",
   "python",
@@ -46027,3 +46027,6 @@
   "jenkins-php",
   "jazzylistview",
   "codata",
+];
+
+export default computerScienceTags;
