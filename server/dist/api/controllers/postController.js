@@ -44,7 +44,7 @@ exports.getAllPosts = exports.getPost = exports.updatePost = exports.deletePost 
 var slugify_1 = __importDefault(require("slugify"));
 var postModel_1 = __importDefault(require("../../models/postModel"));
 var createPost = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, _a, content, title, summary, imageAlt, tags, category, file, parsedTags, postFields, newPost, err_1;
+    var user, _a, content, title, summary, imageAlt, tags, category, embeddedMediaFiles, file, parsedTags, parsedMediaFiles, postFields, newPost, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -54,9 +54,11 @@ var createPost = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                     return [2 /*return*/, res.status(403).json({
                             msg: "You must activate your account to access this resource!",
                         })];
-                _a = req.body, content = _a.content, title = _a.title, summary = _a.summary, imageAlt = _a.imageAlt, tags = _a.tags, category = _a.category;
+                _a = req.body, content = _a.content, title = _a.title, summary = _a.summary, imageAlt = _a.imageAlt, tags = _a.tags, category = _a.category, embeddedMediaFiles = _a.embeddedMediaFiles;
                 file = req.file;
+                console.log("embeddedMediaFiles", embeddedMediaFiles);
                 parsedTags = JSON.parse(tags);
+                parsedMediaFiles = JSON.parse(embeddedMediaFiles);
                 postFields = {
                     user: user.id,
                     image: "image-fse-" + (file === null || file === void 0 ? void 0 : file.filename),
@@ -68,6 +70,7 @@ var createPost = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                     likes: [],
                     tags: parsedTags,
                     category: category,
+                    embeddedMediaFiles: parsedMediaFiles,
                 };
                 newPost = new postModel_1.default(postFields);
                 return [4 /*yield*/, newPost.save()];

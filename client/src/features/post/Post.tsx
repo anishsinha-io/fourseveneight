@@ -31,7 +31,9 @@ const Post = ({ match }: RouteComponentProps<{ slug?: string }>) => {
       </Fragment>
     );
 
-  const display = new Markup(post.content);
+  console.log(post.content);
+  const display = new Markup(post.content, post.embeddedMediaFiles);
+  console.log(display);
 
   if (status === "loading") {
     return <Spinner />;
@@ -41,7 +43,7 @@ const Post = ({ match }: RouteComponentProps<{ slug?: string }>) => {
       <div className="post-page">
         <div className="post-image">
           <img
-            src={`http://localhost:8000/api/posts/downloads/image/${post.image}`}
+            src={`http://localhost:8000/api/media/image/${post.image}`}
             alt={post.imageAlt}
           />
         </div>

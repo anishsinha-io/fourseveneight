@@ -14,7 +14,6 @@ import "react-dropdown/style.css";
 import ChipInput from "material-ui-chip-input";
 import axios from "axios";
 
-import api from "../../app/api";
 import {
   getAndLoadPosts,
   INewPost,
@@ -45,7 +44,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [chipItems, setChipItems] = useState<string[]>(oldPost.tags || []);
-  const [mediaFiles, setMediaFiles] = useState<any>([]);
+  const [embeddedMediaFiles, setEmbeddedMediaFiles] = useState<string[]>([]);
 
   const _uploadImageCallback = async (file: File) => {
     try {
@@ -71,7 +70,10 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
         `/media/file/image-fse-${_imageUrl}`
       );
 
+      setEmbeddedMediaFiles([...embeddedMediaFiles, _imageUrl]);
+
       console.log(_imageObjectAWS);
+      console.log("mediaFiles:", embeddedMediaFiles);
 
       return new Promise((resolve, reject) => {
         resolve({
@@ -81,15 +83,6 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
         });
       });
     } catch (err) {}
-    // const _temporaryImageObject: IMediaItem = {
-    //   file,
-    //   localSrc: URL.createObjectURL(file),
-    // };
-    // setMediaFiles([...mediaFiles, _temporaryImageObject]);
-    // console.log(mediaFiles);
-    // return new Promise((resolve, reject) => {
-    //   resolve({ data: { link: _temporaryImageObject.localSrc } });
-    // });
   };
 
   const editorOptions = {
@@ -164,6 +157,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     content: "",
     tags: oldPost.tags || ([] as string[]),
     category: oldPost.category || "",
+    embeddedMediaFiles: oldPost.embeddedMediaFiles || [],
   });
 
   const { title, summary, imageAlt } = formData;
@@ -243,6 +237,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
       e.preventDefault();
       convertContentToHTML();
       const content = createFinalMarkup(convertedContent).__html;
+      console.log(embeddedMediaFiles);
       const submitFields: INewPost = {
         title,
         image,
@@ -251,6 +246,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
         content,
         tags: chipItems,
         category: shownCategoryOption,
+        embeddedMediaFiles,
       };
       if (!props.updateMode) {
         dispatch(createPost(submitFields));
@@ -268,7 +264,8 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
 
   const createPreviewMarkup = (html: string) => {
     const __html = DOMPurify.sanitize(html);
-    const markup = new Markup(__html).finalMarkup;
+    console.log(embeddedMediaFiles);
+    const markup = new Markup(__html, embeddedMediaFiles).finalMarkup;
     console.log(markup);
     return markup;
   };

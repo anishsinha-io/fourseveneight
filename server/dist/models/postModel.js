@@ -94,6 +94,7 @@ var postSchema = new mongoose_1.Schema({
     },
     tags: [{ type: String }],
     category: { type: String },
+    embeddedMediaFiles: [{ type: String }],
     slug: {
         type: String,
         unique: true,

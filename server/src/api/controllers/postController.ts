@@ -14,10 +14,21 @@ export const createPost: RequestHandler = async (req, res) => {
       return res.status(403).json({
         msg: "You must activate your account to access this resource!",
       });
-    const { content, title, summary, imageAlt, tags, category } = req.body;
+    const {
+      content,
+      title,
+      summary,
+      imageAlt,
+      tags,
+      category,
+      embeddedMediaFiles,
+    } = req.body;
     const file = req.file;
 
+    console.log("embeddedMediaFiles", embeddedMediaFiles);
+
     const parsedTags = JSON.parse(tags);
+    const parsedMediaFiles = JSON.parse(embeddedMediaFiles);
     const postFields = {
       user: user.id,
       image: `image-fse-${file?.filename}`,
@@ -29,6 +40,7 @@ export const createPost: RequestHandler = async (req, res) => {
       likes: [] as ObjectId[],
       tags: parsedTags,
       category,
+      embeddedMediaFiles: parsedMediaFiles,
     } as IPost;
 
     const newPost = new Post(postFields);

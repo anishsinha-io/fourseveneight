@@ -21,15 +21,25 @@ export const JsxParserDefaultProps = {
 
 class Markup {
   private html: string;
+  private media: string[];
   public finalMarkup: string = "";
-  constructor(html: string) {
+  constructor(html: string, media: string[]) {
     this.html = html;
+    this.media = media;
     this.generateJsxMarkup();
   }
   private sanitizeHtml() {
+    this.media = this.media.map(
+      (imageId: string) =>
+        `<img src = "http://localhost:8000/api/media/image/image-fse-${imageId.replaceAll(
+          `'`,
+          ""
+        )}"/>`
+    );
     const __html = DOMPurify.sanitize(this.html)
       .replaceAll("<p>", "<div>")
-      .replaceAll("</p>", "</div>");
+      .replaceAll("</p>", "</div>")
+      .replaceAll("<figure> </figure>", () => this.media.shift() || "nothing");
     return __html;
   }
   private splitHtml() {
@@ -59,7 +69,9 @@ class Markup {
     });
     return finalChunksArray;
   }
+
   private generateJsxMarkup() {
+    console.log(this.media);
     const finalHtmlMarkup = this.replaceWithComponent().join("");
     this.finalMarkup = finalHtmlMarkup;
   }

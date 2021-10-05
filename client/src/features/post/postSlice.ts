@@ -13,6 +13,7 @@ export interface INewPost {
   content: string;
   tags: string[];
   category: string;
+  embeddedMediaFiles: string[];
 }
 
 export interface IPost {
@@ -31,6 +32,7 @@ export interface IPost {
   _id: string;
   tags: string[];
   category: string;
+  embeddedMediaFiles: string[];
 }
 
 export interface IPostState {
@@ -77,7 +79,16 @@ export const createPost = createAsyncThunk(
   async (args: INewPost, { dispatch, rejectWithValue }) => {
     try {
       const formData = new FormData();
-      const { title, image, imageAlt, summary, content, tags, category } = args;
+      const {
+        title,
+        image,
+        imageAlt,
+        summary,
+        content,
+        tags,
+        category,
+        embeddedMediaFiles,
+      } = args;
       formData.append("image", image);
       formData.append("title", title);
       formData.append("imageAlt", imageAlt);
@@ -85,6 +96,7 @@ export const createPost = createAsyncThunk(
       formData.append("content", content);
       formData.append("tags", JSON.stringify(tags));
       formData.append("category", category);
+      formData.append("embeddedMediaFiles", JSON.stringify(embeddedMediaFiles));
 
       const apiInstance = axios.create({
         baseURL: "http://localhost:8000/api",

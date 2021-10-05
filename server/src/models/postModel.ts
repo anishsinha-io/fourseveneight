@@ -19,6 +19,7 @@ export interface IPost extends Document {
   date: Date;
   tags: string[];
   category: string;
+  embeddedMediaFiles: string[];
 }
 
 const postSchema: Schema = new Schema({
@@ -72,6 +73,7 @@ const postSchema: Schema = new Schema({
   },
   tags: [{ type: String }],
   category: { type: String },
+  embeddedMediaFiles: [{ type: String }],
   slug: {
     type: String,
     unique: true,
