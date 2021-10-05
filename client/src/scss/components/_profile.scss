@@ -70,6 +70,10 @@
   width: 50rem;
   justify-content: left;
   align-items: left;
+  margin-bottom: 2rem;
+  .social-button {
+    width: 25%;
+  }
   &__heading {
     margin-bottom: 0.5rem;
   }
@@ -87,5 +91,18 @@
   }
   &__bio {
     width: 100%;
+    margin-bottom: 1rem;
+  }
+  .setup__social {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 1rem;
+    &-heading {
+      grid-column: 1/5;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    &-social {
+    }
   }
 }

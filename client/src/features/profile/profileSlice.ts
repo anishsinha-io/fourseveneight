@@ -35,6 +35,7 @@ export interface IProfile {
   user: string;
   username: string;
   backgroundPhoto?: string;
+  currentJobTitle?: string;
   photo?: string;
   company?: string;
   website?: string;
@@ -47,6 +48,7 @@ export interface IProfile {
   education?: IEducation[];
   social?: ISocial;
   date?: Date;
+  spaces?: string[];
 }
 
 export interface IProfileState {
@@ -88,9 +90,9 @@ export const fetchProfileFromQuery = createAsyncThunk(
 
 export const createEmptyProfile = createAsyncThunk(
   "profile/createEmpty",
-  async (_, { rejectWithValue }) => {
+  async (profileObject: IProfile, { rejectWithValue }) => {
     try {
-      await api.post("/profiles", {});
+      await api.post("/profiles", profileObject);
     } catch (err) {
       rejectWithValue(err);
     }

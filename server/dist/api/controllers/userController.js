@@ -374,6 +374,7 @@ var deactivateAccount = function (req, res) { return __awaiter(void 0, void 0, v
     });
 }); };
 exports.deactivateAccount = deactivateAccount;
+//todo fix for security purposes -> destructure elements rather than sending req.body to db
 var updateUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var user, updateObject, confirmationUrl, confirmationToken, err_9;
     return __generator(this, function (_a) {

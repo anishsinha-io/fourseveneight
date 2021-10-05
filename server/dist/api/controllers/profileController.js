@@ -73,7 +73,7 @@ var createProfile = function (req, res) { return __awaiter(void 0, void 0, void 
         switch (_a.label) {
             case 0:
                 user = req.user;
-                profileObject = security.sanitizeBody(req.body, "company", "website", "location", "bio", "status", "githubUsername", "skills", "youtube", "facebook", "twitter", "instagram", "linkedin", "tiktok");
+                profileObject = security.sanitizeBody(req.body, "company", "website", "location", "bio", "status", "githubUsername", "skills", "youtube", "facebook", "twitter", "instagram", "linkedin", "tiktok", "spaces", "currentJobTitle");
                 profileFields = {};
                 profileFields.social = {};
                 profileFields.user = user.id;

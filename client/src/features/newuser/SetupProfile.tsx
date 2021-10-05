@@ -1,23 +1,37 @@
+//todo refactor functions
+
 import React, { Fragment, useState, useContext } from "react";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
 import TextField from "@mui/material/TextField";
+import { ThemeProvider } from "@mui/material/styles";
 import ChipInput from "material-ui-chip-input";
 import countries from "i18n-iso-countries";
 
-import { NewUserContext, INewUserContext } from "./InitialPreferences";
+import { NewUserContext, theme } from "./InitialPreferences";
 
 countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 
 const SetupProfile: React.FC = () => {
   const newUserContext = useContext(NewUserContext);
   const [skills, setSkills] = useState<string[]>(newUserContext.skills);
+  const [showSocial, setShowSocial] = useState<boolean>(false);
 
+  //Standing up for Taiwan below (:
   const countryList = Object.values(
     countries.getNames("en", { select: "official" })
-  ).map((country: string) => <option key={country}>{country}</option>);
+  ).map((country: string) => (
+    <option key={country}>
+      {country === "Taiwan, Province of China" ? "Taiwan" : country}
+    </option>
+  ));
+
+  const suppressSubmitOnEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.key === "Enter" && e.preventDefault();
+  };
 
   const handleAddSkill = (skill: string) => {
     if (newUserContext.skills.length < 5) {
@@ -65,6 +79,53 @@ const SetupProfile: React.FC = () => {
   ) => {
     e.preventDefault();
     newUserContext.bio = e.target.value;
+  };
+
+  const handleShowSocial = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setShowSocial(true);
+  };
+  const handleHideSocial = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setShowSocial(false);
+  };
+
+  const handleFacebookChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    e.preventDefault();
+    newUserContext.facebook = e.target.value;
+  };
+  const handleLinkedinChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    e.preventDefault();
+    newUserContext.linkedin = e.target.value;
+  };
+  const handleTwitterChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    e.preventDefault();
+    newUserContext.twitter = e.target.value;
+  };
+  const handleInstagramChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    e.preventDefault();
+    newUserContext.instagram = e.target.value;
+  };
+  const handleTiktokChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    e.preventDefault();
+    newUserContext.twitter = e.target.value;
+  };
+
+  const handleYoutubeChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    e.preventDefault();
+    newUserContext.youtube = e.target.value;
   };
 
   return (
@@ -123,6 +184,7 @@ const SetupProfile: React.FC = () => {
                 label="Website"
                 variant="standard"
                 onChange={handleWebsiteChange}
+                onKeyPress={suppressSubmitOnEnter}
               />
             </Box>
           </div>
@@ -132,6 +194,7 @@ const SetupProfile: React.FC = () => {
                 label="Github"
                 variant="standard"
                 onChange={handleGithubUsernameChange}
+                onKeyPress={suppressSubmitOnEnter}
               />
             </Box>
           </div>
@@ -143,7 +206,7 @@ const SetupProfile: React.FC = () => {
               onDelete={handleRemoveSkill}
               allowDuplicates={false}
               blurBehavior="clear"
-              placeholder="Add tags to your post"
+              placeholder="Add skills to your profile"
               fullWidthInput={true}
               variant="standard"
               helperText="Enter between 1 and 5 skills"
@@ -181,9 +244,95 @@ const SetupProfile: React.FC = () => {
             />
           </Box>
         </div>
-        <button type="button" onClick={() => console.log(newUserContext)}>
-          submit
-        </button>
+        {!showSocial && (
+          <ThemeProvider theme={theme}>
+            <Button
+              color="confirm"
+              variant="outlined"
+              onClick={handleShowSocial}
+              className="social-button"
+            >
+              Show Social
+            </Button>
+          </ThemeProvider>
+        )}
+        {showSocial && (
+          <ThemeProvider theme={theme}>
+            <Button
+              color="confirm"
+              variant="outlined"
+              onClick={handleHideSocial}
+              className="social-button"
+            >
+              Hide Social
+            </Button>
+          </ThemeProvider>
+        )}
+        {showSocial && (
+          <div className="setup__social">
+            <h3 className="setup__social-heading">Connect your social media</h3>
+            <div className="setup__social-facebook">
+              <Box component="form" noValidate autoComplete="off">
+                <TextField
+                  label="Facebook"
+                  variant="standard"
+                  onChange={handleFacebookChange}
+                  onKeyPress={suppressSubmitOnEnter}
+                />
+              </Box>
+            </div>
+            <div className="setup__social-twitter">
+              <Box component="form" noValidate autoComplete="off">
+                <TextField
+                  label="Twitter"
+                  variant="standard"
+                  onChange={handleTwitterChange}
+                  onKeyPress={suppressSubmitOnEnter}
+                />
+              </Box>
+            </div>
+            <div className="setup__social-instagram">
+              <Box component="form" noValidate autoComplete="off">
+                <TextField
+                  label="Instagram"
+                  variant="standard"
+                  onChange={handleInstagramChange}
+                  onKeyPress={suppressSubmitOnEnter}
+                />
+              </Box>
+            </div>
+            <div className="setup__social-linkedin">
+              <Box component="form" noValidate autoComplete="off">
+                <TextField
+                  label="Linkedin"
+                  variant="standard"
+                  onChange={handleLinkedinChange}
+                  onKeyPress={suppressSubmitOnEnter}
+                />
+              </Box>
+            </div>
+            <div className="setup__social-tiktok">
+              <Box component="form" noValidate autoComplete="off">
+                <TextField
+                  label="Tiktok"
+                  variant="standard"
+                  onChange={handleTiktokChange}
+                  onKeyPress={suppressSubmitOnEnter}
+                />
+              </Box>
+            </div>
+            <div className="setup__social-youtube">
+              <Box component="form" noValidate autoComplete="off">
+                <TextField
+                  label="Youtube"
+                  variant="standard"
+                  onChange={handleYoutubeChange}
+                  onKeyPress={suppressSubmitOnEnter}
+                />
+              </Box>
+            </div>
+          </div>
+        )}
       </div>
     </Fragment>
   );

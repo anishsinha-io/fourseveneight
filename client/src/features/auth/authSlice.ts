@@ -107,6 +107,17 @@ export const loadUserFromToken = createAsyncThunk(
   }
 );
 
+export const onboardUser = createAsyncThunk(
+  "auth/onboardUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      await api.post("/users/edit", { isOnboarded: true });
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,

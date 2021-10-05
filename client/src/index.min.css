@@ -346,7 +346,10 @@
   flex-direction: column;
   width: 50rem;
   justify-content: left;
-  align-items: left; }
+  align-items: left;
+  margin-bottom: 2rem; }
+  .setup-profile .social-button {
+    width: 25%; }
   .setup-profile__heading {
     margin-bottom: 0.5rem; }
   .setup-profile__main {
@@ -358,7 +361,16 @@
     .setup-profile__main .setup__skills {
       grid-column: 1/5; }
   .setup-profile__bio {
-    width: 100%; }
+    width: 100%;
+    margin-bottom: 1rem; }
+  .setup-profile .setup__social {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 1rem; }
+    .setup-profile .setup__social-heading {
+      grid-column: 1/5;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem; }
 
 .alert-container {
   display: flex;

@@ -239,12 +239,15 @@ export const deactivateAccount: RequestHandler = async (req, res) => {
   }
 };
 
+//todo fix for security purposes -> destructure elements rather than sending req.body to db
+
 export const updateUser: RequestHandler = async (req, res) => {
   interface IUserUpdate {
     firstName?: string;
     lastName?: string;
     email?: string;
     active?: boolean;
+    isOnboarded?: boolean;
   }
   try {
     const user = req.user as IUser;

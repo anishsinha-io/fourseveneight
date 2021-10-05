@@ -1,6 +1,9 @@
 import React, { Fragment, useState, useContext } from "react";
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Redirect } from "react-router";
+
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import Preferences from "./Preferences";
 import SetupProfile from "./SetupProfile";
@@ -14,6 +17,12 @@ export interface INewUserContext {
   bio: string;
   skills: string[];
   location: string;
+  facebook: string;
+  twitter: string;
+  instagram: string;
+  linkedin: string;
+  tiktok: string;
+  youtube: string;
 }
 
 export const NewUserContext = React.createContext<INewUserContext>({
@@ -25,6 +34,12 @@ export const NewUserContext = React.createContext<INewUserContext>({
   bio: "",
   skills: [],
   location: "",
+  facebook: "",
+  twitter: "",
+  linkedin: "",
+  tiktok: "",
+  instagram: "",
+  youtube: "",
 });
 
 declare module "@mui/material/styles" {
@@ -45,7 +60,7 @@ declare module "@mui/material/Button" {
   }
 }
 
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
     confirm: {
       main: "#000",
@@ -57,12 +72,21 @@ const theme = createTheme({
 const InitialPreferences: React.FC = () => {
   const [showPreferenceCards, setShowPreferenceCards] = useState<boolean>(true);
   const [showSetupProfile, setShowSetupProfile] = useState<boolean>(false);
+  const newUserContext = useContext(NewUserContext);
+
+  const isOnboarded = useAppSelector((state) => state.auth.user.isOnboarded);
+  if (isOnboarded) return <Redirect to="/" />;
   const handlePreferenceSelection = (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.preventDefault();
     setShowPreferenceCards(false);
     setShowSetupProfile(true);
+  };
+
+  const handleSetupSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    console.log(newUserContext);
   };
 
   return (
@@ -85,6 +109,17 @@ const InitialPreferences: React.FC = () => {
           </ThemeProvider>
         )}
         {showSetupProfile && <SetupProfile />}
+        {showSetupProfile && (
+          <ThemeProvider theme={theme}>
+            <Button
+              color="confirm"
+              variant="outlined"
+              onClick={handleSetupSubmit}
+            >
+              Submit
+            </Button>
+          </ThemeProvider>
+        )}
       </div>
     </Fragment>
   );

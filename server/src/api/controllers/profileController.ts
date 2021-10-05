@@ -66,7 +66,9 @@ export const createProfile: RequestHandler = async (req, res) => {
     "twitter",
     "instagram",
     "linkedin",
-    "tiktok"
+    "tiktok",
+    "spaces",
+    "currentJobTitle"
   );
 
   let profileFields = {} as IProfile;

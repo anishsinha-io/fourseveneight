@@ -60,7 +60,6 @@ const Register = () => {
     });
   };
   if (isAuthenticated) {
-    dispatch(createEmptyProfile());
     dispatch(setAlert("success", "Successfully registered! Logging you in..."));
     return <Redirect to="/" />;
   }
