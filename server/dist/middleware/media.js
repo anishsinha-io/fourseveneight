@@ -84,9 +84,7 @@ var downloadImage = function (req, res) { return __awaiter(void 0, void 0, void 
     var key, readStream;
     return __generator(this, function (_a) {
         key = req.params.key;
-        console.log(key);
         readStream = s3config_1.downloadFile(key);
-        console.log(readStream);
         if (readStream)
             return [2 /*return*/, readStream
                     .on("data", function (data) {

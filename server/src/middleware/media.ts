@@ -36,9 +36,9 @@ export const uploadImages: RequestHandler = async (req, _, next) => {
 
 export const downloadImage: RequestHandler = async (req, res) => {
   const key = req.params.key;
-  console.log(key);
+
   const readStream = downloadFile(key);
-  console.log(readStream);
+
   if (readStream)
     return readStream
       .on("data", (data) => {

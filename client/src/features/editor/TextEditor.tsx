@@ -1,5 +1,11 @@
 import React, { useState, Fragment } from "react";
-import { EditorState, ContentState } from "draft-js";
+import {
+  CompositeDecorator,
+  ContentState,
+  EditorState,
+  convertFromHTML,
+  convertToRaw,
+} from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import { useHistory } from "react-router-dom";
@@ -13,6 +19,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "react-dropdown/style.css";
 import ChipInput from "material-ui-chip-input";
 import axios from "axios";
+import htmlToDraft from "html-to-draftjs";
 
 import {
   getAndLoadPosts,
@@ -44,7 +51,9 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [chipItems, setChipItems] = useState<string[]>(oldPost.tags || []);
-  const [embeddedMediaFiles, setEmbeddedMediaFiles] = useState<string[]>([]);
+  const [embeddedMediaFiles, setEmbeddedMediaFiles] = useState<string[]>(
+    oldPost.embeddedMediaFiles || []
+  );
 
   const _uploadImageCallback = async (file: File) => {
     try {
@@ -139,13 +148,35 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     (state) => state.post.post.content || null
   );
   const [editorState, setEditorState] = useState(() => {
-    if (!props.updateMode) {
+    if (!props.updateMode || !postContent) {
       return EditorState.createEmpty();
     } else {
       const initialContentState = new JSSoup(postContent).text;
-      return EditorState.createWithContent(
-        ContentState.createFromText(initialContentState)
+      // const blocksFromHtml = htmlToDraft(postContent);
+      // const { contentBlocks, entityMap } = blocksFromHtml;
+      // const contentState = ContentState.createFromBlockArray(
+      //   contentBlocks,
+      //   entityMap
+      // );
+      const displayMedia = oldPost.embeddedMediaFiles.map(
+        (imageId: string) =>
+          `<img src = "http://localhost:8000/api/media/image/image-fse-${imageId.replaceAll(
+            `'`,
+            ""
+          )}"/>`
       );
+      const draftInitialContent = postContent.replaceAll(
+        "<figure> </figure>",
+        () => displayMedia.shift() || "nothing"
+      );
+      console.log(postContent);
+      const blocksFromHtml = htmlToDraft(draftInitialContent);
+      const { contentBlocks, entityMap } = blocksFromHtml;
+      const contentState = ContentState.createFromBlockArray(
+        contentBlocks,
+        entityMap
+      );
+      return EditorState.createWithContent(contentState);
     }
   });
   const [convertedContent, setConvertedContent] = useState<any>();
@@ -267,12 +298,24 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     console.log(embeddedMediaFiles);
     const markup = new Markup(__html, embeddedMediaFiles).finalMarkup;
     console.log(markup);
+
     return markup;
   };
 
   const createFinalMarkup = (html: string) => {
+    // const displayFiles = embeddedMediaFiles.map(
+    //   (imageId: string) =>
+    //     `<img src = "http://localhost:8000/api/media/image/image-fse-${imageId.replaceAll(
+    //       `'`,
+    //       ""
+    //     )}"/>`
+    // );
+    // const __html = DOMPurify.sanitize(html)
+    // .replaceAll("<figure> </figure>", () => displayFiles.shift() || "nothing");
+
+    const __html = DOMPurify.sanitize(html);
     return {
-      __html: DOMPurify.sanitize(html),
+      __html,
     };
   };
 
