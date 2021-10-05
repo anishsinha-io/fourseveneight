@@ -27,7 +27,7 @@ const PostItem: React.FC<{ post: IPost }> = (props) => {
       <div className="post-container">
         <div className="post-container__image">
           <img
-            src={`http://localhost:8000/api/posts/downloads/image/${post.image}`}
+            src={`http://localhost:8000/api/media/image/${post.image}`}
             alt={post.imageAlt}
           />
         </div>

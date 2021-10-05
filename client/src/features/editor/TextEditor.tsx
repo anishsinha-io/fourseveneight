@@ -12,7 +12,9 @@ import Dropdown, { Option } from "react-dropdown";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "react-dropdown/style.css";
 import ChipInput from "material-ui-chip-input";
+import axios from "axios";
 
+import api from "../../app/api";
 import {
   getAndLoadPosts,
   INewPost,
@@ -21,11 +23,17 @@ import {
   deletePost,
 } from "../post/postSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { editorOptions } from "./editorAPI";
+
 import Markup from "../post/postAPI";
+
 export interface IFileData {
   image: any;
   alt: string;
+}
+
+export interface IMediaItem {
+  file: File;
+  localSrc: string;
 }
 
 const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
@@ -37,6 +45,103 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
   const [image, setImage] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [chipItems, setChipItems] = useState<string[]>(oldPost.tags || []);
+  const [mediaFiles, setMediaFiles] = useState<any>([]);
+
+  const _uploadImageCallback = async (file: File) => {
+    try {
+      const ApiInstance = axios.create({
+        baseURL: "http://localhost:8000/api",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const token = localStorage.token;
+      if (token) ApiInstance.defaults.headers.common["Authorization"] = token;
+      const formData = new FormData();
+      formData.append("image", file);
+      const res = await ApiInstance.post("/media/upload", formData);
+      const _imageUrl = res.data.split("/")[1];
+      console.log(
+        `http://localhost:8000/api/media/image/image-fse-${_imageUrl}`
+      );
+
+      console.log(_imageUrl);
+
+      const _imageObjectAWS = await ApiInstance.get(
+        `/media/file/image-fse-${_imageUrl}`
+      );
+
+      console.log(_imageObjectAWS);
+
+      return new Promise((resolve, reject) => {
+        resolve({
+          data: {
+            link: `http://localhost:8000/api/media/file/image-fse-${_imageUrl}`,
+          },
+        });
+      });
+    } catch (err) {}
+    // const _temporaryImageObject: IMediaItem = {
+    //   file,
+    //   localSrc: URL.createObjectURL(file),
+    // };
+    // setMediaFiles([...mediaFiles, _temporaryImageObject]);
+    // console.log(mediaFiles);
+    // return new Promise((resolve, reject) => {
+    //   resolve({ data: { link: _temporaryImageObject.localSrc } });
+    // });
+  };
+
+  const editorOptions = {
+    options: [
+      "inline",
+      "blockType",
+      "list",
+      "textAlign",
+      "history",
+      "image",
+      "link",
+      "embedded",
+    ],
+    inline: {
+      inDropdown: false,
+      options: ["bold", "italic", "underline", "strikethrough"],
+    },
+    blockType: {
+      options: ["Normal", "H1", "H2", "H3", "H4", "H5", "H6", "Blockquote"],
+    },
+    list: { inDropdown: false, options: ["ordered", "unordered"] },
+    textAlign: { inDropdown: false },
+    link: { inDropdown: false },
+    history: { inDropdown: false },
+    image: {
+      className: undefined,
+      component: undefined,
+      popupClassName: undefined,
+      urlEnabled: true,
+      uploadEnabled: true,
+      alignmentEnabled: true,
+      uploadCallback: _uploadImageCallback,
+      previewImage: true,
+      inputAccept: "image/gif,image/jpeg,image/jpg,image/png,image/svg",
+      alt: { present: true, mandatory: true },
+      defaultSize: {
+        height: "auto",
+        width: "auto",
+      },
+    },
+    embedded: {
+      className: undefined,
+      component: undefined,
+      popupClassName: undefined,
+      embedCallback: undefined,
+      defaultSize: {
+        height: "auto",
+        width: "auto",
+      },
+    },
+  };
+
   const postContent = useAppSelector(
     (state) => state.post.post.content || null
   );

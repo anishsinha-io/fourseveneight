@@ -35,79 +35,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteImage = exports.downloadImage = exports.uploadImages = exports.uploadImage = exports.upload = exports.unlinkFile = void 0;
-var multer_1 = __importDefault(require("multer"));
-var fs_1 = __importDefault(require("fs"));
-var util_1 = __importDefault(require("util"));
-exports.unlinkFile = util_1.default.promisify(fs_1.default.unlink);
-var s3config_1 = require("../aws/s3config");
-exports.upload = multer_1.default({ dest: "uploads/" });
-var uploadImage = function (req, _, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var file;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                file = req.file;
-                console.log(file);
-                if (!file) return [3 /*break*/, 2];
-                s3config_1.uploadFile(file);
-                console.log("asdf");
-                req.imageLink = file.path;
-                console.log(req.imageLink);
-                return [4 /*yield*/, exports.unlinkFile(file.path)];
-            case 1:
-                _a.sent();
-                _a.label = 2;
-            case 2:
-                next();
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.uploadImage = uploadImage;
-var uploadImages = function (req, _, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var files;
+exports.returnImageLink = void 0;
+var returnImageLink = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         try {
-            files = req.files;
         }
         catch (err) { }
         return [2 /*return*/];
     });
 }); };
-exports.uploadImages = uploadImages;
-var downloadImage = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var key, readStream;
-    return __generator(this, function (_a) {
-        key = req.params.key;
-        console.log(key);
-        readStream = s3config_1.downloadFile(key);
-        console.log(readStream);
-        if (readStream)
-            return [2 /*return*/, readStream
-                    .on("data", function (data) {
-                    res.write(data);
-                })
-                    .on("end", function () { return readStream.pipe(res); })
-                    .on("error", function () { return res.end(); })];
-        return [2 /*return*/];
-    });
-}); };
-exports.downloadImage = downloadImage;
-var deleteImage = function (req, _, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var key;
-    return __generator(this, function (_a) {
-        try {
-            key = req.params.key;
-            s3config_1.deleteFile(key);
-            next();
-        }
-        catch (err) { }
-        return [2 /*return*/];
-    });
-}); };
-exports.deleteImage = deleteImage;
+exports.returnImageLink = returnImageLink;
