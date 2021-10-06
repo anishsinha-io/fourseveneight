@@ -118,8 +118,17 @@ export const updatePost = createAsyncThunk(
   "post/updatePost",
   async (args: INewPost, { dispatch, rejectWithValue }) => {
     try {
-      const { title, image, imageAlt, summary, content, slug, tags, category } =
-        args;
+      const {
+        title,
+        image,
+        imageAlt,
+        summary,
+        content,
+        slug,
+        tags,
+        category,
+        embeddedMediaFiles,
+      } = args;
       const formData = new FormData();
       formData.append("image", image);
       formData.append("title", title);
@@ -128,6 +137,7 @@ export const updatePost = createAsyncThunk(
       formData.append("content", content);
       formData.append("tags", JSON.stringify(tags));
       formData.append("category", category);
+      formData.append("embeddedMediaFiles", JSON.stringify(embeddedMediaFiles));
 
       const apiInstance = axios.create({
         baseURL: "http://localhost:8000/api",

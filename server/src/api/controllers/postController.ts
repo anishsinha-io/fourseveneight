@@ -80,9 +80,18 @@ export const updatePost: RequestHandler = async (req, res) => {
         .status(403)
         .json({ msg: "Current account not authorized for this action" });
 
-    const { title, content, summary, imageAlt, tags, category } = req.body;
+    const {
+      title,
+      content,
+      summary,
+      imageAlt,
+      tags,
+      category,
+      embeddedMediaFiles,
+    } = req.body;
 
     const parsedTags = JSON.parse(tags);
+    const parsedMediaFiles = JSON.parse(embeddedMediaFiles);
 
     const slug = slugify(title, { lower: true });
     const file = req.file;
@@ -102,6 +111,7 @@ export const updatePost: RequestHandler = async (req, res) => {
         imageAlt,
         tags: parsedTags,
         category,
+        embeddedMediaFiles: parsedMediaFiles,
       },
       {
         new: true,

@@ -116,7 +116,7 @@ var deletePost = function (req, res) { return __awaiter(void 0, void 0, void 0, 
 }); };
 exports.deletePost = deletePost;
 var updatePost = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, post, _a, title, content, summary, imageAlt, tags, category, parsedTags, slug, file, image, err_3;
+    var user, post, _a, title, content, summary, imageAlt, tags, category, embeddedMediaFiles, parsedTags, parsedMediaFiles, slug, file, image, err_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -131,8 +131,9 @@ var updatePost = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                     return [2 /*return*/, res
                             .status(403)
                             .json({ msg: "Current account not authorized for this action" })];
-                _a = req.body, title = _a.title, content = _a.content, summary = _a.summary, imageAlt = _a.imageAlt, tags = _a.tags, category = _a.category;
+                _a = req.body, title = _a.title, content = _a.content, summary = _a.summary, imageAlt = _a.imageAlt, tags = _a.tags, category = _a.category, embeddedMediaFiles = _a.embeddedMediaFiles;
                 parsedTags = JSON.parse(tags);
+                parsedMediaFiles = JSON.parse(embeddedMediaFiles);
                 slug = slugify_1.default(title, { lower: true });
                 file = req.file;
                 image = void 0;
@@ -148,6 +149,7 @@ var updatePost = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                         imageAlt: imageAlt,
                         tags: parsedTags,
                         category: category,
+                        embeddedMediaFiles: parsedMediaFiles,
                     }, {
                         new: true,
                         runValidators: true,
