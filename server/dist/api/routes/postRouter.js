@@ -29,6 +29,7 @@ var router = express_1.Router();
 router.route("/").get(postController.getAllPosts);
 router.route("/:slug").get(postController.getPost);
 router.route("/uploads/image").post(media_1.upload.single("image"), media_1.uploadImage);
+router.route("/user/:userId").get(postController.getUserPosts);
 //private
 router.use(security.authenticateUser, security.authenticateToken, security.isActive);
 router

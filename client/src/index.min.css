@@ -113,6 +113,15 @@
       margin-right: 0.5rem;
       cursor: pointer; }
 
+.userposts-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem; }
+
+.post-profile {
+  display: flex;
+  flex-direction: column; }
+
 .editor-main {
   display: flex;
   flex-direction: column;
@@ -299,18 +308,21 @@
   margin: 0 auto;
   display: flex;
   place-items: center;
-  width: 40rem; }
+  width: 50rem; }
   .profile-wrapper .profile-main {
     position: relative;
     display: flex;
     flex-direction: column;
     place-items: center;
-    width: 40rem; }
+    width: 100%; }
     @media (max-width: 700px) {
       .profile-wrapper .profile-main {
         margin-left: 0rem;
         margin-right: 0rem;
         width: 100%; } }
+    .profile-wrapper .profile-main__tabs {
+      margin-top: 0.5rem;
+      width: 100%; }
     .profile-wrapper .profile-main__meta {
       width: 100%;
       display: flex;

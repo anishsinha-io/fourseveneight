@@ -4,8 +4,8 @@ import { Chip } from "@material-ui/core";
 
 import { IPost } from "./postSlice";
 
-const PostItem: React.FC<{ post: IPost }> = (props) => {
-  const { post } = props;
+const PostItem: React.FC<{ post: IPost; showImage: boolean }> = (props) => {
+  const { post, showImage } = props;
   const history = useHistory();
 
   const handleTitleClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -25,12 +25,14 @@ const PostItem: React.FC<{ post: IPost }> = (props) => {
   return (
     <Fragment>
       <div className="post-container">
-        <div className="post-container__image">
-          <img
-            src={`http://localhost:8000/api/media/image/${post.image}`}
-            alt={post.imageAlt}
-          />
-        </div>
+        {showImage && (
+          <div className="post-container__image">
+            <img
+              src={`http://localhost:8000/api/media/image/${post.image}`}
+              alt={post.imageAlt}
+            />
+          </div>
+        )}
         <div className="post-container__title" onClick={handleTitleClick}>
           <h3>{post.title}</h3>
         </div>

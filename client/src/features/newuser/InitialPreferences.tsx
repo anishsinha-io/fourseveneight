@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useContext } from "react";
 import Button from "@mui/material/Button";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import { Redirect } from "react-router";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-
+import { theme } from "../ui/MaterialUIButtonConfig";
 import Preferences from "./Preferences";
 import SetupProfile from "./SetupProfile";
 import { createProfile } from "../profile/profileSlice";
@@ -41,33 +41,6 @@ export const NewUserContext = React.createContext<INewUserContext>({
   tiktok: "",
   instagram: "",
   youtube: "",
-});
-
-declare module "@mui/material/styles" {
-  interface Palette {
-    confirm: Palette["primary"];
-  }
-
-  // allow configuration using `createTheme`
-  interface PaletteOptions {
-    confirm?: PaletteOptions["primary"];
-  }
-}
-
-// Update the Button's color prop options
-declare module "@mui/material/Button" {
-  interface ButtonPropsColorOverrides {
-    confirm: true;
-  }
-}
-
-export const theme = createTheme({
-  palette: {
-    confirm: {
-      main: "#000",
-      contrastText: "#000",
-    },
-  },
 });
 
 const InitialPreferences: React.FC = () => {

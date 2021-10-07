@@ -4,7 +4,7 @@ import { RequestHandler } from "express";
 import slugify from "slugify";
 import { ObjectId } from "mongoose";
 
-import { IUser } from "../../models/userModel";
+import User, { IUser } from "../../models/userModel";
 import Post, { IPost } from "../../models/postModel";
 
 export const createPost: RequestHandler = async (req, res) => {
@@ -135,6 +135,19 @@ export const getAllPosts: RequestHandler = async (req, res) => {
   try {
     const posts = await Post.find({ deleted: false });
     return res.status(200).json({ posts });
+  } catch (err) {
+    return res.status(500).json({ msg: "Internal server error" });
+  }
+};
+
+export const getUserPosts: RequestHandler = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ msg: "User not found" });
+    const userPosts = await Post.find({ user: user._id });
+    if (!userPosts) return res.status(404).json({ msg: "No posts found!" });
+    return res.status(200).json({ userPosts });
   } catch (err) {
     return res.status(500).json({ msg: "Internal server error" });
   }

@@ -39,12 +39,14 @@ export interface IPostState {
   status: "idle" | "loading" | "failed";
   post: IPost;
   posts: IPost[];
+  userPosts: IPost[];
 }
 
 const initialState = {
   status: "idle",
   post: {} as IPost,
   posts: [] as IPost[],
+  userPosts: [] as IPost[],
 };
 
 export const getAndLoadPosts = createAsyncThunk(
@@ -167,6 +169,18 @@ export const deletePost = createAsyncThunk(
   }
 );
 
+export const getUserPosts = createAsyncThunk(
+  "post/getUserPosts",
+  async (userId: string, { dispatch, rejectWithValue }) => {
+    try {
+      const res = await api.get(`/posts/user/${userId}`);
+      return res.data.userPosts;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
 const postSlice = createSlice({
   name: "post",
   initialState,
@@ -199,6 +213,16 @@ const postSlice = createSlice({
       .addCase(loadPost.rejected, (state, action) => {
         state.status = "failed";
         state.post = {} as IPost;
+      })
+      .addCase(getUserPosts.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getUserPosts.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.userPosts = action.payload;
+      })
+      .addCase(getUserPosts.rejected, (state) => {
+        state.status = "failed";
       });
   },
 });

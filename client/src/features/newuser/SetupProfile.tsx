@@ -11,7 +11,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import ChipInput from "material-ui-chip-input";
 import countries from "i18n-iso-countries";
 
-import { NewUserContext, theme } from "./InitialPreferences";
+import { NewUserContext } from "./InitialPreferences";
+import { theme } from "../ui/MaterialUIButtonConfig";
 
 countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 

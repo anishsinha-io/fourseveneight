@@ -20,7 +20,7 @@ const Posts: React.FC = () => {
     );
 
   const postItems = posts.map((post: any) => (
-    <PostItem key={post.slug} post={post} />
+    <PostItem key={post.slug} post={post} showImage={true} />
   ));
   return (
     <Fragment>

@@ -13,6 +13,7 @@ const router: Router = Router();
 router.route("/").get(postController.getAllPosts);
 router.route("/:slug").get(postController.getPost);
 router.route("/uploads/image").post(upload.single("image"), uploadImage);
+router.route("/user/:userId").get(postController.getUserPosts);
 
 //private
 

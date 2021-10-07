@@ -1,9 +1,15 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { fetchProfileFromQuery } from "./profileSlice";
 import Spinner from "../spinner/Spinner";
+import UserPosts from "../post/UserPosts";
+
+import { TabPanel, a11yProps } from "../ui/MaterialUITabConfig";
 
 const Profile = ({ match }: RouteComponentProps<{ username?: string }>) => {
   const dispatch = useAppDispatch();
@@ -12,11 +18,22 @@ const Profile = ({ match }: RouteComponentProps<{ username?: string }>) => {
       dispatch(fetchProfileFromQuery(match.params.username));
     }
   }, [dispatch, match.params.username]);
+  const [value, setValue] = useState<number>(0);
 
-  const status = useAppSelector((state) => state.auth.status);
+  const handleChange = (
+    e: React.SyntheticEvent<Element, Event>,
+    newValue: number
+  ) => {
+    setValue(newValue);
+  };
+
+  const status = useAppSelector((state) => state.profile.status);
   const profile = useAppSelector((state) => state.profile.profile);
 
   if (status === "loading") return <Spinner />;
+
+  if (!profile || !Object.keys(profile).includes("user"))
+    return <div>No profile found!</div>;
 
   return (
     <Fragment>
@@ -44,7 +61,64 @@ const Profile = ({ match }: RouteComponentProps<{ username?: string }>) => {
             </div>
             <div className="meta__bio">{profile.bio}</div>
           </div>
-          <div className="profile-main__tabs"></div>
+          <div className="profile-main__tabs">
+            <Box sx={{ width: "100%" }}>
+              <Box sx={{ borderBottom: 1, borderColor: "#7e7e7e" }}>
+                <Tabs
+                  TabIndicatorProps={{ style: { backgroundColor: "black" } }}
+                  value={value}
+                  onChange={handleChange}
+                  aria-label="basic tabs example"
+                  centered
+                >
+                  <Tab
+                    label={
+                      <span style={{ color: "black", minWidth: "8rem" }}>
+                        Posts
+                      </span>
+                    }
+                    {...a11yProps(0)}
+                  />
+                  <Tab
+                    label={
+                      <span style={{ color: "black", minWidth: "8rem" }}>
+                        Questions
+                      </span>
+                    }
+                    {...a11yProps(1)}
+                  />
+                  <Tab
+                    label={
+                      <span style={{ color: "black", minWidth: "8rem" }}>
+                        Followers
+                      </span>
+                    }
+                    {...a11yProps(2)}
+                  />
+                  <Tab
+                    label={
+                      <span style={{ color: "black", minWidth: "8rem" }}>
+                        Following
+                      </span>
+                    }
+                    {...a11yProps(3)}
+                  />
+                </Tabs>
+              </Box>
+              <TabPanel value={value} index={0}>
+                <UserPosts userId={profile.user._id} />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                Questions
+              </TabPanel>
+              <TabPanel value={value} index={2}>
+                Followers
+              </TabPanel>
+              <TabPanel value={value} index={3}>
+                Following
+              </TabPanel>
+            </Box>
+          </div>
         </div>
       </div>
     </Fragment>
