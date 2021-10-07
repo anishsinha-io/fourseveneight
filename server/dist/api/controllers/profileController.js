@@ -55,6 +55,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -74,6 +79,8 @@ var createProfile = function (req, res) { return __awaiter(void 0, void 0, void 
             case 0:
                 user = req.user;
                 profileObject = security.sanitizeBody(req.body, "company", "website", "location", "bio", "status", "githubUsername", "skills", "youtube", "facebook", "twitter", "instagram", "linkedin", "tiktok", "spaces", "currentJobTitle");
+                console.log(profileObject);
+                console.log(profileObject.skills);
                 profileFields = {};
                 profileFields.social = {};
                 profileFields.user = user.id;
@@ -89,10 +96,9 @@ var createProfile = function (req, res) { return __awaiter(void 0, void 0, void 
                     profileFields.status = profileObject.status;
                 if (profileObject.githubUsername)
                     profileFields.githubUsername = profileObject.githubUsername;
+                //todo fix this for the compiler
                 if (profileObject.skills)
-                    profileFields.skills = profileObject.skills
-                        .split(",")
-                        .map(function (skill) { return skill.trim(); });
+                    profileFields.skills = __spreadArray([], JSON.parse(profileObject.skills));
                 if (profileObject.twitter)
                     profileFields.social.twitter = profileObject.twitter;
                 if (profileObject.youtube)
@@ -105,6 +111,7 @@ var createProfile = function (req, res) { return __awaiter(void 0, void 0, void 
                     profileFields.social.linkedin = profileObject.linkedin;
                 if (profileObject.tiktok)
                     profileFields.social.tiktok = profileObject.tiktok;
+                console.log("here");
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 6, , 7]);
@@ -118,7 +125,7 @@ var createProfile = function (req, res) { return __awaiter(void 0, void 0, void 
                 return [2 /*return*/, res.status(200).json({ msg: "Profile updated successfully" })];
             case 4:
                 newProfile = new profileModel_1.default(profileFields);
-                console.log(newProfile);
+                console.log("here", newProfile);
                 return [4 /*yield*/, newProfile.save()];
             case 5:
                 _a.sent();
@@ -126,7 +133,7 @@ var createProfile = function (req, res) { return __awaiter(void 0, void 0, void 
             case 6:
                 err_1 = _a.sent();
                 console.log(err_1);
-                return [2 /*return*/, res.status(500).json({ msg: "Internal server error" })];
+                return [2 /*return*/, res.status(500).json({ msg: err_1 })];
             case 7: return [2 /*return*/];
         }
     });

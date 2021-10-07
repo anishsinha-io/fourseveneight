@@ -32,7 +32,7 @@ export interface ISocial {
 }
 
 export interface IProfile {
-  user: string;
+  user: any;
   username: string;
   backgroundPhoto?: string;
   currentJobTitle?: string;
@@ -77,9 +77,7 @@ export const fetchProfileFromQuery = createAsyncThunk(
   "profile/queryData",
   async (username: string, { rejectWithValue }) => {
     try {
-      console.log("asdf");
       const res = await api.get(`/profiles/${username}`);
-      console.log("asdf");
       console.log(res.data.profile);
       return res.data.profile;
     } catch (err) {
@@ -91,6 +89,17 @@ export const fetchProfileFromQuery = createAsyncThunk(
 export const createEmptyProfile = createAsyncThunk(
   "profile/createEmpty",
   async (profileObject: IProfile, { rejectWithValue }) => {
+    try {
+      await api.post("/profiles", profileObject);
+    } catch (err) {
+      rejectWithValue(err);
+    }
+  }
+);
+
+export const createProfile = createAsyncThunk(
+  "profile/createProfile",
+  async (profileObject: any, { rejectWithValue }) => {
     try {
       await api.post("/profiles", profileObject);
     } catch (err) {

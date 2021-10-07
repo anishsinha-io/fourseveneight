@@ -13,38 +13,38 @@ const Profile = ({ match }: RouteComponentProps<{ username?: string }>) => {
     }
   }, [dispatch, match.params.username]);
 
-  // const profile = useAppSelector((state) => state.profile.profile);
-
   const status = useAppSelector((state) => state.auth.status);
+  const profile = useAppSelector((state) => state.profile.profile);
 
   if (status === "loading") return <Spinner />;
 
   return (
     <Fragment>
       <div className="profile-wrapper">
-        <div className="profile-card">
-          <div className="card__header">
-            <img
-              src="http://localhost:8000/api/posts/downloads/image/default_background"
-              alt="default background"
-            />
-          </div>
-          <div className="card__image card__image-user">
-            <img
-              className="card__image-user"
-              src="http://localhost:8000/api/posts/downloads/image/fse-default-profile"
-              alt="default profile"
-            />
-          </div>
-          <div className="card__info">
-            <div className="details">
-              <span className="details__text-header">
-                <h3>User</h3>
-              </span>
-              <span className="details__text-subheader">React dev</span>
+        <div className="profile-main">
+          <div className="profile-main__head">
+            <div className="head__background">
+              <img
+                src="http://localhost:8000/api/media/image/default_background"
+                alt="background"
+              />
             </div>
-            <div className="card__info-tabs"></div>
+            <div className="head__image">
+              <img
+                className="image-profile"
+                src="http://localhost:8000/api/media/image/fse-default-profile"
+                alt="profile"
+              />
+            </div>
           </div>
+          <div className="profile-main__meta">
+            <div className="meta__user">
+              <div className="meta__user-username">@{profile.username}</div>
+              <div className="meta__user-name">{profile.user.firstName}</div>
+            </div>
+            <div className="meta__bio">{profile.bio}</div>
+          </div>
+          <div className="profile-main__tabs"></div>
         </div>
       </div>
     </Fragment>

@@ -5,6 +5,7 @@ import express from "express";
 import http from "http";
 import passport from "passport";
 import cors from "cors";
+import mongoSanitize from "express-mongo-sanitize";
 
 import connectDatabase from "./config/db";
 import userRouter from "./api/routes/userRouter";
@@ -24,6 +25,7 @@ process.on("uncaughtException", () => {
   process.exit(1);
 });
 
+app.use(mongoSanitize());
 app.use(express.json());
 
 connectDatabase();

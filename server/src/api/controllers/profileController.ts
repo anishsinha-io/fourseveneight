@@ -12,7 +12,6 @@ import Profile, {
   IProfile,
   ISocial,
 } from "../../models/profileModel";
-import { HeadObjectRequest } from "@aws-sdk/client-s3";
 
 export const removeProfileExperience: RequestHandler =
   factory.removeGenericProfileField({} as IExperience, "experience");
@@ -52,6 +51,7 @@ export const addProfileEducation: RequestHandler =
 
 export const createProfile: RequestHandler = async (req, res) => {
   const user = req.user as IUser;
+
   const profileObject: Body = security.sanitizeBody(
     req.body,
     "company",
@@ -71,6 +71,9 @@ export const createProfile: RequestHandler = async (req, res) => {
     "currentJobTitle"
   );
 
+  console.log(profileObject);
+  console.log(profileObject.skills);
+
   let profileFields = {} as IProfile;
   profileFields.social = {} as ISocial;
 
@@ -83,11 +86,10 @@ export const createProfile: RequestHandler = async (req, res) => {
   if (profileObject.status) profileFields.status = profileObject.status;
   if (profileObject.githubUsername)
     profileFields.githubUsername = profileObject.githubUsername;
-  if (profileObject.skills)
-    profileFields.skills = profileObject.skills
-      .split(",")
-      .map((skill: string) => skill.trim());
 
+  //todo fix this for the compiler
+  if (profileObject.skills)
+    profileFields.skills = [...JSON.parse(profileObject.skills)];
   if (profileObject.twitter)
     profileFields.social.twitter = profileObject.twitter;
   if (profileObject.youtube)
@@ -100,6 +102,7 @@ export const createProfile: RequestHandler = async (req, res) => {
     profileFields.social.linkedin = profileObject.linkedin;
   if (profileObject.tiktok) profileFields.social.tiktok = profileObject.tiktok;
 
+  console.log("here");
   try {
     const profile = await Profile.findOne({ user: user.id });
     if (profile) {
@@ -111,12 +114,12 @@ export const createProfile: RequestHandler = async (req, res) => {
       return res.status(200).json({ msg: "Profile updated successfully" });
     }
     const newProfile = new Profile(profileFields);
-    console.log(newProfile);
+    console.log("here", newProfile);
     await newProfile.save();
     return res.status(201).json({ msg: "Profile created successfully!" });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ msg: "Internal server error" });
+    return res.status(500).json({ msg: err });
   }
 };
 

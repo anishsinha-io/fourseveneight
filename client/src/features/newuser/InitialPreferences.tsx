@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 import Preferences from "./Preferences";
 import SetupProfile from "./SetupProfile";
+import { createProfile } from "../profile/profileSlice";
 
 export interface INewUserContext {
   categoryPreferences: string[];
@@ -70,11 +71,12 @@ export const theme = createTheme({
 });
 
 const InitialPreferences: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [showPreferenceCards, setShowPreferenceCards] = useState<boolean>(true);
   const [showSetupProfile, setShowSetupProfile] = useState<boolean>(false);
   const newUserContext = useContext(NewUserContext);
 
-  const isOnboarded = useAppSelector((state) => state.auth.user.isOnboarded);
+  const isOnboarded = useAppSelector((state) => state.auth.user.onboarded);
   if (isOnboarded) return <Redirect to="/" />;
   const handlePreferenceSelection = (
     e: React.MouseEvent<HTMLButtonElement>
@@ -86,7 +88,8 @@ const InitialPreferences: React.FC = () => {
 
   const handleSetupSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log(newUserContext);
+    console.log("here");
+    dispatch(createProfile(newUserContext));
   };
 
   return (

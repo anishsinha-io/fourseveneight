@@ -61,7 +61,7 @@ const Register = () => {
   };
   if (isAuthenticated) {
     dispatch(setAlert("success", "Successfully registered! Logging you in..."));
-    return <Redirect to="/" />;
+    return <Redirect to="/newuser/setup" />;
   }
   if (status === "failed") {
     dispatch(setAlert("danger", "Unexpected error, Please try again later"));

@@ -37,11 +37,6 @@ export interface IFileData {
   alt: string;
 }
 
-export interface IMediaItem {
-  file: File;
-  localSrc: string;
-}
-
 const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
@@ -294,7 +289,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
   };
 
   const createPreviewMarkup = (html: string) => {
-    const __html = DOMPurify.sanitize(html);
+    const __html = DOMPurify.sanitize(`<div>${html}</div>`);
     console.log(embeddedMediaFiles);
     const markup = new Markup(__html, embeddedMediaFiles).finalMarkup;
     console.log(markup);
@@ -313,7 +308,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     // const __html = DOMPurify.sanitize(html)
     // .replaceAll("<figure> </figure>", () => displayFiles.shift() || "nothing");
 
-    const __html = DOMPurify.sanitize(html);
+    const __html = DOMPurify.sanitize(`<div>${html}</div>`);
     return {
       __html,
     };

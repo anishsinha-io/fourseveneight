@@ -211,6 +211,7 @@ const SetupProfile: React.FC = () => {
               variant="standard"
               helperText="Enter between 1 and 5 skills"
               fullWidth={true}
+              onKeyPress={suppressSubmitOnEnter}
             />
           </div>
           <div className="setup-profile__github">

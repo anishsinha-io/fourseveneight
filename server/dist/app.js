@@ -8,6 +8,7 @@ var dotenv_1 = __importDefault(require("dotenv"));
 var express_1 = __importDefault(require("express"));
 var passport_1 = __importDefault(require("passport"));
 var cors_1 = __importDefault(require("cors"));
+var express_mongo_sanitize_1 = __importDefault(require("express-mongo-sanitize"));
 var db_1 = __importDefault(require("./config/db"));
 var userRouter_1 = __importDefault(require("./api/routes/userRouter"));
 var adminRouter_1 = __importDefault(require("./api/routes/adminRouter"));
@@ -22,6 +23,7 @@ app.use(cors_1.default());
 process.on("uncaughtException", function () {
     process.exit(1);
 });
+app.use(express_mongo_sanitize_1.default());
 app.use(express_1.default.json());
 db_1.default();
 app.use(passport_1.default.initialize());

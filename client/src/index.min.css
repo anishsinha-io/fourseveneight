@@ -296,50 +296,45 @@
       font-size: 1rem; }
 
 .profile-wrapper {
-  width: 100%;
-  margin-top: 20px; }
-  .profile-wrapper .profile-card {
-    margin: 0 auto;
-    margin-left: 10rem;
-    margin-right: 10rem;
+  margin: 0 auto;
+  display: flex;
+  place-items: center;
+  width: 40rem; }
+  .profile-wrapper .profile-main {
     position: relative;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22), 0 14px 56px rgba(0, 0, 0, 0.25); }
-    .profile-wrapper .profile-card .card__header {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    width: 40rem; }
+    @media (max-width: 700px) {
+      .profile-wrapper .profile-main {
+        margin-left: 0rem;
+        margin-right: 0rem;
+        width: 100%; } }
+    .profile-wrapper .profile-main__meta {
       width: 100%;
-      height: 10rem; }
-    .profile-wrapper .profile-card .card__image {
       display: flex;
-      place-items: center;
-      width: 125px;
-      height: 125px;
-      margin-left: -62.5px;
-      position: absolute;
-      left: 50%;
-      top: 100px;
-      border-radius: 50%;
-      border: 1px solid #cccccc; }
-      .profile-wrapper .profile-card .card__image > img {
-        min-width: 100%;
-        min-height: 100%;
-        border-radius: 50%;
-        -webkit-filter: grayscale(100%);
-        filter: grayscale(100%);
-        -webkit-transition: all 0.2s ease-in-out;
-        -moz-transition: all 0.2s ease-in-out;
-        transition: all 0.2s ease-in-out; }
-    .profile-wrapper .profile-card .card__info {
-      background-color: #eee;
-      height: 100%; }
-      .profile-wrapper .profile-card .card__info .details {
-        display: flex;
-        flex-direction: column;
-        place-items: center; }
-        .profile-wrapper .profile-card .card__info .details__text-header {
-          margin-top: 5rem; }
-      .profile-wrapper .profile-card .card__info-section {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid #000; }
+      flex-direction: column;
+      justify-content: left;
+      align-items: left;
+      margin-top: 3rem;
+      margin-left: 1rem; }
+      .profile-wrapper .profile-main__meta .meta__bio {
+        margin-top: 0.5rem; }
+    .profile-wrapper .profile-main__head {
+      flex-direction: column;
+      width: 100%; }
+      .profile-wrapper .profile-main__head .head__background {
+        width: 100%;
+        height: 10rem; }
+      .profile-wrapper .profile-main__head .head__image {
+        position: absolute;
+        top: 7.5rem;
+        left: 3rem; }
+        .profile-wrapper .profile-main__head .head__image .image-profile {
+          width: 5rem;
+          height: 5rem;
+          border-radius: 50%; }
 
 .setup-profile {
   display: flex;

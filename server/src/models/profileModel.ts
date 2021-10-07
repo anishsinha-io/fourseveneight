@@ -36,6 +36,7 @@ export interface ISocial {
 export interface IProfile extends Document {
   user: Schema.Types.ObjectId;
   username?: string;
+  userFullName?: string;
   photo?: string;
   backgroundPhoto?: string;
   currentJobTitle?: string;
@@ -59,6 +60,9 @@ const profileSchema = new Schema({
     ref: "User",
   },
   username: {
+    type: String,
+  },
+  userFullName: {
     type: String,
   },
   photo: {
@@ -198,10 +202,21 @@ profileSchema.pre("save", async function (next) {
     if (user) {
       const username = user.username;
       this.username = username;
+
       next();
     }
   } catch (err) {}
 
+  next();
+});
+
+profileSchema.pre(/^find/, async function (next) {
+  try {
+    this.populate({
+      path: "user",
+      select: "_id firstName lastName",
+    });
+  } catch (err) {}
   next();
 });
 

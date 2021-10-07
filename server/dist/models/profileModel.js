@@ -50,6 +50,9 @@ var profileSchema = new mongoose_1.Schema({
     username: {
         type: String,
     },
+    userFullName: {
+        type: String,
+    },
     photo: {
         type: String,
         default: "fse-default-profile",
@@ -201,6 +204,21 @@ profileSchema.pre("save", function (next) {
                     next();
                     return [2 /*return*/];
             }
+        });
+    });
+});
+profileSchema.pre(/^find/, function (next) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            try {
+                this.populate({
+                    path: "user",
+                    select: "_id firstName lastName",
+                });
+            }
+            catch (err) { }
+            next();
+            return [2 /*return*/];
         });
     });
 });
