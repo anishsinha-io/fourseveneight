@@ -41,12 +41,14 @@ export const editQuestion: RequestHandler = async (req, res) => {
   try {
     const user = req.user as IUser;
     const questionId = req.params.questionId;
-    const { content } = req.body;
+    const { content, category, tags } = req.body;
     const question = await Question.findById(questionId);
     if (!question) return res.status(404).json({ msg: "Question not found" });
     if (question.user.toString() !== user.id.toString())
       return res.status(403).json({ msg: "Unable to authorize!" });
-    await Question.findByIdAndUpdate(questionId, { content });
+
+    console.log(questionId);
+    await Question.findByIdAndUpdate(questionId, { content, category, tags });
     return res.status(200).json({ msg: "Question successfully updated" });
   } catch (err) {
     return res.status(500).json({ msg: "Internal server error!" });
@@ -69,6 +71,21 @@ export const getAllQuestions: RequestHandler = async (req, res) => {
     const questions = await Question.find();
     if (!questions) return res.status(404).json({ msg: "No questions found!" });
     return res.status(200).json({ questions });
+  } catch (err) {
+    return res.status(500).json({ msg: "Internal server error" });
+  }
+};
+
+export const getUserQuestions: RequestHandler = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ msg: "User not found" });
+    const userQuestions = await Question.find(
+      { user: user._id },
+      { deleted: false }
+    );
+    return res.status(200).json({ userQuestions });
   } catch (err) {
     return res.status(500).json({ msg: "Internal server error" });
   }

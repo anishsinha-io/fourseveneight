@@ -1,7 +1,5 @@
 import { Schema, model, Document } from "mongoose";
 
-import User from "./userModel";
-
 export interface IQuestion extends Document {
   user: Schema.Types.ObjectId;
   content: string;
@@ -26,16 +24,16 @@ const questionSchema = new Schema({
   deleted: { type: Boolean, default: false },
 });
 
-questionSchema.pre(/^find/, function (next) {
-  try {
-    this.populate({
-      path: "user",
-      select: "_id username",
-      match: { active: true },
-    });
-    next();
-  } catch (err) {}
-});
+// questionSchema.pre(/^find/, function (next) {
+//   try {
+//     this.populate({
+//       path: "user",
+//       select: "_id username",
+//       match: { active: true },
+//     });
+//     next();
+//   } catch (err) {}
+// });
 
 const Question = model<IQuestion>("Question", questionSchema);
 

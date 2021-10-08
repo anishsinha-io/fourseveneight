@@ -15,16 +15,15 @@ var questionSchema = new mongoose_1.Schema({
     date: { type: Date, default: Date.now() },
     deleted: { type: Boolean, default: false },
 });
-questionSchema.pre(/^find/, function (next) {
-    try {
-        this.populate({
-            path: "user",
-            select: "_id username",
-            match: { active: true },
-        });
-        next();
-    }
-    catch (err) { }
-});
+// questionSchema.pre(/^find/, function (next) {
+//   try {
+//     this.populate({
+//       path: "user",
+//       select: "_id username",
+//       match: { active: true },
+//     });
+//     next();
+//   } catch (err) {}
+// });
 var Question = mongoose_1.model("Question", questionSchema);
 exports.default = Question;

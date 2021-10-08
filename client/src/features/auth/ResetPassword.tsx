@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
-const Questions: React.FC = () => {
+const ResetPassword: React.FC = () => {
   return <Fragment></Fragment>;
 };
 
-export default Questions;
+export default ResetPassword;
