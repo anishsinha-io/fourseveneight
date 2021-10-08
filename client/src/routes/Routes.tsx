@@ -5,7 +5,6 @@ import Register from "../features/auth/Register";
 import Navbar from "../features/navbar/Navbar";
 import Landing from "../features/landing/Landing";
 import PrivateRoute from "./PrivateRoute";
-import Dashboard from "../features/profile/Dashboard";
 import PostForm from "../features/post/PostForm";
 import Post from "../features/post/Post";
 import UpdateForm from "../features/post/UpdateForm";
@@ -36,12 +35,6 @@ const Routes: React.FC = () => {
             path="/create"
             redirectPath="/login"
             component={PostForm}
-          />
-          <PrivateRoute
-            exact
-            path="/dashboard"
-            redirectPath="/login"
-            component={Dashboard}
           />
           <PrivateRoute
             exact

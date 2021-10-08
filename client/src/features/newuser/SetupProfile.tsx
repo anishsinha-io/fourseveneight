@@ -242,7 +242,7 @@ const SetupProfile: React.FC = () => {
               minRows={4}
               maxRows={4}
               fullWidth={true}
-              placeholder="But most of all, autumn is my hero."
+              placeholder="But most of all, samy is my hero."
             />
           </Box>
         </div>

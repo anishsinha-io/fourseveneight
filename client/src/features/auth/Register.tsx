@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { registerUserAndLoginWithToken } from "../auth/authSlice";
 import validateInputs from "../../util/validateInputs";
 import { setAlert } from "../alert/alertSlice";
-import { createEmptyProfile } from "../profile/profileSlice";
 
 const Register = () => {
   const dispatch = useAppDispatch();

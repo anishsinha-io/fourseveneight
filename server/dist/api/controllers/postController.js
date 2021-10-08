@@ -210,7 +210,7 @@ var getUserPosts = function (req, res) { return __awaiter(void 0, void 0, void 0
                 user = _a.sent();
                 if (!user)
                     return [2 /*return*/, res.status(404).json({ msg: "User not found" })];
-                return [4 /*yield*/, postModel_1.default.find({ user: user._id })];
+                return [4 /*yield*/, postModel_1.default.find({ user: user._id, deleted: false })];
             case 2:
                 userPosts = _a.sent();
                 if (!userPosts)

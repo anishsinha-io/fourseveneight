@@ -1,11 +1,5 @@
 import React, { useState, Fragment } from "react";
-import {
-  CompositeDecorator,
-  ContentState,
-  EditorState,
-  convertFromHTML,
-  convertToRaw,
-} from "draft-js";
+import { ContentState, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import { useHistory } from "react-router-dom";
@@ -13,7 +7,6 @@ import DOMPurify from "dompurify";
 import JsxParser from "react-jsx-parser";
 import Gist from "super-react-gist";
 import { MathComponent } from "mathjax-react";
-import JSSoup from "jssoup";
 import Dropdown, { Option } from "react-dropdown";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "react-dropdown/style.css";
@@ -146,13 +139,6 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
     if (!props.updateMode || !postContent) {
       return EditorState.createEmpty();
     } else {
-      const initialContentState = new JSSoup(postContent).text;
-      // const blocksFromHtml = htmlToDraft(postContent);
-      // const { contentBlocks, entityMap } = blocksFromHtml;
-      // const contentState = ContentState.createFromBlockArray(
-      //   contentBlocks,
-      //   entityMap
-      // );
       const displayMedia = oldPost.embeddedMediaFiles.map(
         (imageId: string) =>
           `<img src = "http://localhost:8000/api/media/image/image-fse-${imageId.replaceAll(
@@ -298,16 +284,6 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
   };
 
   const createFinalMarkup = (html: string) => {
-    // const displayFiles = embeddedMediaFiles.map(
-    //   (imageId: string) =>
-    //     `<img src = "http://localhost:8000/api/media/image/image-fse-${imageId.replaceAll(
-    //       `'`,
-    //       ""
-    //     )}"/>`
-    // );
-    // const __html = DOMPurify.sanitize(html)
-    // .replaceAll("<figure> </figure>", () => displayFiles.shift() || "nothing");
-
     const __html = DOMPurify.sanitize(`<div>${html}</div>`);
     return {
       __html,

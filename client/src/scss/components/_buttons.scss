@@ -27,6 +27,28 @@
     border: none;
     outline: none;
   }
+  &.btn-update {
+    color: $color-update;
+    border: 1px solid $color-white;
+    @include set-background($color-update);
+    &:hover {
+      border: 1px solid $color-update;
+      background: $color-white;
+
+      color: set-text-color($color-white, $color-update);
+    }
+  }
+  &.btn-danger {
+    color: $color-danger;
+    border: 1px solid $color-white;
+    @include set-background($color-danger);
+    &:hover {
+      border: 1px solid $color-danger;
+      background: $color-white;
+
+      color: set-text-color($color-white, $color-danger);
+    }
+  }
 }
 
 .bg {

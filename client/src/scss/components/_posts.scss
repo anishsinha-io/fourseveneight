@@ -7,7 +7,6 @@
 }
 
 .post-container {
-  border: 1px solid $color-black;
   display: flex;
   place-items: center;
   flex-direction: column;
@@ -27,12 +26,25 @@
       cursor: pointer;
     }
   }
+  &__buttons {
+    margin-top: auto;
+    margin-bottom: 0.5rem;
+    .post-button {
+      margin-left: 0.5rem;
+      min-width: 4rem;
+    }
+  }
 }
 
 .userposts-main {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 1rem;
+  grid-auto-rows: 1fr;
+
+  & > div {
+    border: 1px solid $color-black;
+  }
 }
 
 .post-profile {

@@ -145,7 +145,7 @@ export const getUserPosts: RequestHandler = async (req, res) => {
     const userId = req.params.userId;
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ msg: "User not found" });
-    const userPosts = await Post.find({ user: user._id });
+    const userPosts = await Post.find({ user: user._id, deleted: false });
     if (!userPosts) return res.status(404).json({ msg: "No posts found!" });
     return res.status(200).json({ userPosts });
   } catch (err) {

@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { fetchProfileFromQuery } from "./profileSlice";
 import Spinner from "../spinner/Spinner";
 import UserPosts from "../post/UserPosts";
+import { getUserPosts } from "../post/postSlice";
 
 import { TabPanel, a11yProps } from "../ui/MaterialUITabConfig";
 
@@ -18,6 +19,7 @@ const Profile = ({ match }: RouteComponentProps<{ username?: string }>) => {
       dispatch(fetchProfileFromQuery(match.params.username));
     }
   }, [dispatch, match.params.username]);
+
   const [value, setValue] = useState<number>(0);
 
   const handleChange = (
@@ -29,6 +31,12 @@ const Profile = ({ match }: RouteComponentProps<{ username?: string }>) => {
 
   const status = useAppSelector((state) => state.profile.status);
   const profile = useAppSelector((state) => state.profile.profile);
+
+  useEffect(() => {
+    try {
+      dispatch(getUserPosts(profile.user._id));
+    } catch (err) {}
+  });
 
   if (status === "loading") return <Spinner />;
 

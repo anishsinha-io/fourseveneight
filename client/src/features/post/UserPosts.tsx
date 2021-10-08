@@ -1,32 +1,25 @@
-import React, { Fragment, useEffect } from "react";
-import { ThemeProvider } from "@mui/material/styles";
-import Button from "@mui/material/Button";
+import React, { Fragment } from "react";
 
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../app/hooks";
 import PostItem from "./PostItem";
-import { getUserPosts, IPost } from "./postSlice";
-import Spinner from "../spinner/Spinner";
+import { IPost } from "./postSlice";
 
 const UserPosts: React.FC<{ userId: string }> = (props) => {
-  const dispatch = useAppDispatch();
-  const userPosts = useAppSelector((state) => state.post.userPosts);
   const { userId } = props;
-  const status = useAppSelector((state) => state.post.status);
+  const userPosts = useAppSelector((state) => state.post.userPosts);
 
-  useEffect(() => {
-    dispatch(getUserPosts(userId));
-  }, [dispatch, userId]);
-
-  if (status === "loading") return <Spinner />;
+  const currentUser = useAppSelector((state) => state.auth.user);
 
   const userPostItems = userPosts.map((post: IPost) => (
     <div className="post-profile">
-      <PostItem key={post._id} post={post} showImage={false} />
-      {post.user === userId && (
-        <div className="post-profile__buttons">
-          <Button color="secondary">Update</Button>
-        </div>
-      )}
+      <PostItem
+        key={post._id}
+        post={post}
+        showImage={false}
+        showActionButtons={
+          currentUser && currentUser._id === userId ? true : false
+        }
+      />
     </div>
   ));
 

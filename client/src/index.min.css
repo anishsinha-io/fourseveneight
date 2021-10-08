@@ -54,6 +54,24 @@
   .btn.btn-success {
     border: none;
     outline: none; }
+  .btn.btn-update {
+    color: rgba(208, 159, 255, 0.8);
+    border: 1px solid #fff;
+    background-color: rgba(208, 159, 255, 0.8);
+    color: #000; }
+    .btn.btn-update:hover {
+      border: 1px solid rgba(208, 159, 255, 0.8);
+      background: #fff;
+      color: rgba(208, 159, 255, 0.8); }
+  .btn.btn-danger {
+    color: rgba(191, 63, 63, 0.55);
+    border: 1px solid #fff;
+    background-color: rgba(191, 63, 63, 0.55);
+    color: #fff; }
+    .btn.btn-danger:hover {
+      border: 1px solid rgba(191, 63, 63, 0.55);
+      background: #fff;
+      color: rgba(191, 63, 63, 0.55); }
 
 .bg-action {
   background-color: #fff;
@@ -97,7 +115,6 @@
   padding: 2rem; }
 
 .post-container {
-  border: 1px solid #000;
   display: flex;
   place-items: center;
   flex-direction: column; }
@@ -112,11 +129,20 @@
     .post-container__chips > div {
       margin-right: 0.5rem;
       cursor: pointer; }
+  .post-container__buttons {
+    margin-top: auto;
+    margin-bottom: 0.5rem; }
+    .post-container__buttons .post-button {
+      margin-left: 0.5rem;
+      min-width: 4rem; }
 
 .userposts-main {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 1rem; }
+  grid-gap: 1rem;
+  grid-auto-rows: 1fr; }
+  .userposts-main > div {
+    border: 1px solid #000; }
 
 .post-profile {
   display: flex;
