@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Route, Switch } from "react-router-dom";
 import Login from "../features/auth/Login";
 import Register from "../features/auth/Register";
-import Navbar from "../features/navbar/Navbar";
+import Navbar from "../features/Navbar";
 import Landing from "../features/landing/Landing";
 import PrivateRoute from "./PrivateRoute";
 import PostForm from "../features/post/PostForm";

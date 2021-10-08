@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
-import { logoutUser } from "../auth/authSlice";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppSelector } from "../app/hooks";
+import { logoutUser } from "./auth/authSlice";
+import { useAppDispatch } from "../app/hooks";
 import { useHistory } from "react-router-dom";
 
 const Navbar: React.FC = () => {
