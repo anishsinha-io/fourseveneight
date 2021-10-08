@@ -1,11 +1,150 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const initialState = {};
+import api from "../../app/api";
+
+export interface IQuestion {
+  _id: string;
+  user: string;
+  content: string;
+  category: string;
+  tags: string[];
+  date: Date;
+}
+
+export interface IQuestionState {
+  questions: IQuestion[];
+  userQuestions: IQuestion[];
+  status: "idle" | "loading" | "failed";
+}
+
+const initialState: IQuestionState = {
+  questions: [],
+  userQuestions: [],
+  status: "idle",
+};
+
+export const loadQuestions = createAsyncThunk(
+  "question/loadQuestions",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.get("/questions");
+      const questions = res.data;
+      return questions;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const loadUserQuestions = createAsyncThunk(
+  "question/loadUserQuestions",
+  async (userId: string, { rejectWithValue }) => {
+    try {
+      const res = await api.get(`/questions/${userId}`);
+      const userQuestions = res.data;
+      return userQuestions;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const createQuestion = createAsyncThunk(
+  "question/createQuestion",
+  async (args: IQuestion, { dispatch, rejectWithValue }) => {
+    try {
+      await api.post("/questions/create", args);
+      dispatch(loadQuestions);
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const editQuestion = createAsyncThunk(
+  "question/editQuestion",
+  async (args: IQuestion, { dispatch, rejectWithValue }) => {
+    try {
+      const { content, category, tags } = args;
+      await api.post(`/questions/edit/${args._id}`, {
+        content,
+        category,
+        tags,
+      });
+      dispatch(loadQuestions);
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const removeQuestion = createAsyncThunk(
+  "question/deleteQuestion",
+  async (questionId: string, { dispatch, rejectWithValue }) => {
+    try {
+      await api.delete(questionId);
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
 
 const questionSlice = createSlice({
   name: "question",
   initialState,
   reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadQuestions.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(loadQuestions.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.questions = action.payload;
+      })
+      .addCase(loadQuestions.rejected, (state) => {
+        state.status = "failed";
+        state.questions = [];
+      })
+      .addCase(loadUserQuestions.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(loadUserQuestions.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.userQuestions = action.payload;
+      })
+      .addCase(loadUserQuestions.rejected, (state) => {
+        state.status = "failed";
+        state.userQuestions = [];
+      })
+      .addCase(createQuestion.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(createQuestion.fulfilled, (state) => {
+        state.status = "idle";
+      })
+      .addCase(createQuestion.rejected, (state) => {
+        state.status = "failed";
+      })
+      .addCase(editQuestion.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(editQuestion.fulfilled, (state) => {
+        state.status = "idle";
+      })
+      .addCase(editQuestion.rejected, (state) => {
+        state.status = "failed";
+      })
+      .addCase(removeQuestion.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(removeQuestion.fulfilled, (state) => {
+        state.status = "idle";
+      })
+      .addCase(removeQuestion.rejected, (state) => {
+        state.status = "failed";
+      });
+  },
 });
 
 export default questionSlice.reducer;

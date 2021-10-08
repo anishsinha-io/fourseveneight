@@ -5,6 +5,7 @@ import alertReducer from "../features/alert/alertSlice";
 import postReducer from "../features/post/postSlice";
 import commentReducer from "../features/comment/commentSlice";
 import profileReducer from "../features/profile/profileSlice";
+import questionReducer from "../features/question/questionSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     post: postReducer,
     comment: commentReducer,
     profile: profileReducer,
+    question: questionReducer,
   },
 });
 
