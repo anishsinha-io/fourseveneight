@@ -2,10 +2,13 @@
 
 import slugify from "slugify";
 import { Schema, model, Document, ObjectId } from "mongoose";
+
 import User from "./userModel";
+import Question from "./questionModel";
 
 export interface IPost extends Document {
   user: ObjectId;
+  question?: Schema.Types.ObjectId;
   image: string;
   imageAlt: string;
   title: string;
@@ -27,6 +30,10 @@ const postSchema: Schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
+  },
+  question: {
+    type: Schema.Types.ObjectId,
+    ref: "Question",
   },
   image: {
     type: String,

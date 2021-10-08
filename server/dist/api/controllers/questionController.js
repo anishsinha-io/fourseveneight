@@ -146,7 +146,7 @@ var getQuestion = function (req, res) { return __awaiter(void 0, void 0, void 0,
     });
 }); };
 exports.getQuestion = getQuestion;
-var getAllQuestions = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var getAllQuestions = function (_, res) { return __awaiter(void 0, void 0, void 0, function () {
     var questions, err_5;
     return __generator(this, function (_a) {
         switch (_a.label) {

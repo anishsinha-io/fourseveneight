@@ -49,6 +49,10 @@ var postSchema = new mongoose_1.Schema({
         ref: "User",
         required: true,
     },
+    question: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Question",
+    },
     image: {
         type: String,
     },

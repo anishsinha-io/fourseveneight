@@ -44,3 +44,4 @@ process.on("unhandledRejection", function () {
         process.exit(1);
     });
 });
+exports.default = server;

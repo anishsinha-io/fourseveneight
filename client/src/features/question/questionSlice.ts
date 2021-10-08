@@ -2,13 +2,16 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import api from "../../app/api";
 
-export interface IQuestion {
-  _id: string;
-  user: string;
+export interface INewQuestion {
   content: string;
   category: string;
-  tags: string[];
+  tags: string;
+}
+
+export interface IQuestion extends INewQuestion {
+  _id: string;
   date: Date;
+  user: string;
 }
 
 export interface IQuestionState {

@@ -8,6 +8,7 @@ import cors from "cors";
 import mongoSanitize from "express-mongo-sanitize";
 
 import connectDatabase from "./config/db";
+
 import userRouter from "./api/routes/userRouter";
 import adminRouter from "./api/routes/adminRouter";
 import profileRouter from "./api/routes/profileRouter";
@@ -52,3 +53,5 @@ process.on("unhandledRejection", () => {
     process.exit(1);
   });
 });
+
+export default server;

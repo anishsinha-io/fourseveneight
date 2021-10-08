@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 
 import Question, { IQuestion } from "../../models/questionModel";
+
 import User, { IUser } from "../../models/userModel";
 
 export const createQuestion: RequestHandler = async (req, res) => {
@@ -66,7 +67,7 @@ export const getQuestion: RequestHandler = async (req, res) => {
   }
 };
 
-export const getAllQuestions: RequestHandler = async (req, res) => {
+export const getAllQuestions: RequestHandler = async (_, res) => {
   try {
     const questions = await Question.find();
     if (!questions) return res.status(404).json({ msg: "No questions found!" });
