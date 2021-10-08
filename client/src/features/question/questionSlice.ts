@@ -12,12 +12,14 @@ export interface IQuestion {
 }
 
 export interface IQuestionState {
+  question: IQuestion;
   questions: IQuestion[];
   userQuestions: IQuestion[];
   status: "idle" | "loading" | "failed";
 }
 
 const initialState: IQuestionState = {
+  question: {} as IQuestion,
   questions: [],
   userQuestions: [],
   status: "idle",
@@ -89,6 +91,18 @@ export const removeQuestion = createAsyncThunk(
   }
 );
 
+export const loadQuestion = createAsyncThunk(
+  "question/loadQuestion",
+  async (questionId: string, { dispatch, rejectWithValue }) => {
+    try {
+      const res = await api.get(`/questions/${questionId}`);
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
 const questionSlice = createSlice({
   name: "question",
   initialState,
@@ -143,6 +157,17 @@ const questionSlice = createSlice({
       })
       .addCase(removeQuestion.rejected, (state) => {
         state.status = "failed";
+      })
+      .addCase(loadQuestion.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(loadQuestion.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.question = action.payload;
+      })
+      .addCase(loadQuestion.rejected, (state) => {
+        state.status = "failed";
+        state.question = {} as IQuestion;
       });
   },
 });
