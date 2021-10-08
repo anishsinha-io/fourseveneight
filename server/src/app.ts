@@ -15,6 +15,7 @@ import postRouter from "./api/routes/postRouter";
 import commentRouter from "./api/routes/commentRouter";
 import tagsRouter from "./api/routes/tagsRouter";
 import mediaRouter from "./api/routes/mediaRouter";
+import questionRouter from "./api/routes/questionRouter";
 
 dotenv.config({ path: "src/config/config.env" });
 
@@ -40,6 +41,7 @@ app.use("/api/posts", postRouter);
 app.use("/api/comments", commentRouter);
 app.use("/api/tags", tagsRouter);
 app.use("/api/media", mediaRouter);
+app.use("/api/questions", questionRouter);
 
 const port = process.env.PORT || 8000;
 
