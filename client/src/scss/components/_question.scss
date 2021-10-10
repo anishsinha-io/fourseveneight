@@ -1,0 +1,32 @@
+.question-form {
+  display: flex;
+  flex-direction: column;
+  width: 50rem;
+  margin: 0 auto;
+}
+
+.question-dialog {
+  display: flex;
+  flex-direction: column;
+  background-color: $color-transparent-black;
+  width: 100%;
+  padding: 1rem;
+  &__title {
+    margin: 0 auto;
+    margin-bottom: 0.5rem;
+  }
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    width: 100%;
+
+    & > button {
+      width: 100%;
+
+      margin-bottom: 0.5rem;
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+    }
+  }
+}

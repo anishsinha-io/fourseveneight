@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { ContentState, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
@@ -23,7 +23,7 @@ import {
 } from "../post/postSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-import Markup from "../post/postAPI";
+import Markup from "./EditorApi";
 
 export interface IFileData {
   image: any;
@@ -42,6 +42,10 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
   const [embeddedMediaFiles, setEmbeddedMediaFiles] = useState<string[]>(
     oldPost.embeddedMediaFiles || []
   );
+
+  useEffect(() => {
+    convertContentToHTML();
+  });
 
   const _uploadImageCallback = async (file: File) => {
     try {
@@ -63,14 +67,14 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
 
       console.log(_imageUrl);
 
-      const _imageObjectAWS = await ApiInstance.get(
-        `/media/file/image-fse-${_imageUrl}`
-      );
+      await ApiInstance.get(`/media/file/image-fse-${_imageUrl}`);
 
-      setEmbeddedMediaFiles([...embeddedMediaFiles, _imageUrl]);
+      setEmbeddedMediaFiles((prevEmbeddedMediaFiles) => [
+        ...prevEmbeddedMediaFiles,
+        _imageUrl,
+      ]);
 
-      console.log(_imageObjectAWS);
-      console.log("mediaFiles:", embeddedMediaFiles);
+      console.log("HERE/mediaFiles: ", embeddedMediaFiles);
 
       return new Promise((resolve, reject) => {
         resolve({
@@ -148,7 +152,7 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
       );
       const draftInitialContent = postContent.replaceAll(
         "<figure> </figure>",
-        () => displayMedia.shift() || "nothing"
+        () => displayMedia.shift() || ""
       );
       console.log(postContent);
       const blocksFromHtml = htmlToDraft(draftInitialContent);
@@ -226,7 +230,9 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
   };
   const convertContentToHTML = () => {
     try {
-      let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
+      const currentContentAsHTML = convertToHTML(
+        editorState.getCurrentContent()
+      );
       setConvertedContent(currentContentAsHTML);
     } catch (err) {
       console.log(err);
@@ -276,10 +282,9 @@ const TextEditor: React.FC<{ updateMode?: boolean }> = (props) => {
 
   const createPreviewMarkup = (html: string) => {
     const __html = DOMPurify.sanitize(`<div>${html}</div>`);
-    console.log(embeddedMediaFiles);
+    console.log("here: ", embeddedMediaFiles);
     const markup = new Markup(__html, embeddedMediaFiles).finalMarkup;
     console.log(markup);
-
     return markup;
   };
 

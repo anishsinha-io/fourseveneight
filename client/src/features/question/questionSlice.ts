@@ -5,7 +5,8 @@ import api from "../../app/api";
 export interface INewQuestion {
   content: string;
   category: string;
-  tags: string;
+  tags: string[];
+  embeddedMediaFiles: string[];
 }
 
 export interface IQuestion extends INewQuestion {

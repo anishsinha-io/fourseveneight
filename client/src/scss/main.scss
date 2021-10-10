@@ -14,11 +14,13 @@
 @import "./components/alert.scss";
 @import "./components/categories.scss";
 @import "./components/questions.scss";
+@import "./components/question.scss";
 
 @import "./pages/post.scss";
 @import "./pages/dashboard.scss";
 @import "./pages/post-form.scss";
 @import "./pages/landing.scss";
+
 * {
   box-sizing: border-box;
   margin: 0;

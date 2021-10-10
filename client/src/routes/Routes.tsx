@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Route, Switch } from "react-router-dom";
 import Login from "../features/auth/Login";
 import Register from "../features/auth/Register";
-import Navbar from "../features/Navbar";
+import Navbar from "../features/navbar/Navbar";
 import Landing from "../features/landing/Landing";
 import PrivateRoute from "./PrivateRoute";
 import PostForm from "../features/post/PostForm";
@@ -11,6 +11,7 @@ import UpdateForm from "../features/post/UpdateForm";
 import Profile from "../features/profile/Profile";
 import Alert from "../features/alert/Alert";
 import InitialPreferences from "../features/newuser/InitialPreferences";
+import QuestionForm from "../features/question/QuestionForm";
 
 const Routes: React.FC = () => {
   return (
@@ -41,6 +42,12 @@ const Routes: React.FC = () => {
             path="/newuser/setup"
             redirectPath="/"
             component={InitialPreferences}
+          />
+          <PrivateRoute
+            exact
+            path="/question/create"
+            redirectPath="/"
+            component={QuestionForm}
           />
         </Switch>
       </section>
