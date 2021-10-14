@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../app/api";
 
 export interface INewQuestion {
+  title: string;
   content: string;
   category: string;
   tags: string[];
@@ -11,6 +12,7 @@ export interface INewQuestion {
 
 export interface IQuestion extends INewQuestion {
   _id: string;
+  author: string;
   date: Date;
   user: string;
 }
@@ -57,9 +59,10 @@ export const loadUserQuestions = createAsyncThunk(
 
 export const createQuestion = createAsyncThunk(
   "question/createQuestion",
-  async (args: IQuestion, { dispatch, rejectWithValue }) => {
+  async (args: INewQuestion, { dispatch, rejectWithValue }) => {
     try {
       await api.post("/questions/create", args);
+      console.log("here");
       dispatch(loadQuestions);
     } catch (err) {
       return rejectWithValue(err);
@@ -71,11 +74,13 @@ export const editQuestion = createAsyncThunk(
   "question/editQuestion",
   async (args: IQuestion, { dispatch, rejectWithValue }) => {
     try {
-      const { content, category, tags } = args;
-      await api.post(`/questions/edit/${args._id}`, {
+      const { content, category, tags, embeddedMediaFiles, title } = args;
+      await api.patch(`/questions/edit/${args._id}`, {
         content,
         category,
         tags,
+        embeddedMediaFiles,
+        title,
       });
       dispatch(loadQuestions);
     } catch (err) {
@@ -97,10 +102,10 @@ export const removeQuestion = createAsyncThunk(
 
 export const loadQuestion = createAsyncThunk(
   "question/loadQuestion",
-  async (questionId: string, { dispatch, rejectWithValue }) => {
+  async (questionId: string, { rejectWithValue }) => {
     try {
       const res = await api.get(`/questions/${questionId}`);
-      return res.data;
+      return res.data.question;
     } catch (err) {
       return rejectWithValue(err);
     }

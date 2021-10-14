@@ -6,6 +6,7 @@ import Routes from "./routes/Routes";
 
 import { loadUserFromToken } from "./features/auth/authSlice";
 import { getAndLoadPosts } from "./features/post/postSlice";
+import { loadQuestions } from "./features/question/questionSlice";
 import { store } from "./app/store";
 import { useAppDispatch } from "./app/hooks";
 import { setAlert } from "./features/alert/alertSlice";
@@ -26,6 +27,7 @@ const App: React.FC = () => {
   useEffect(() => {
     store.dispatch(loadUserFromToken());
     store.dispatch(getAndLoadPosts());
+    store.dispatch(loadQuestions());
   }, []);
 
   return (

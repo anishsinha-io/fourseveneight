@@ -5,26 +5,32 @@ import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import NativeSelect from "@mui/material/NativeSelect";
+import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
+import JSSoup from "jssoup";
 
 import RichTextEditor, { EditorContext } from "../editor/RichTextEditor";
-import { INewQuestion } from "./questionSlice";
+import { createQuestion, INewQuestion } from "./questionSlice";
+import validateQuestionForm from "../../util/validateQuestionForm";
+import { useAppDispatch } from "../../app/hooks";
+import Markup from "../editor/EditorApi";
 
 const QuestionForm: React.FC = () => {
+  const dispatch = useAppDispatch();
   const [tags, setTags] = useState<string[]>([]);
   const [showConfirmDialog, setShowConfirmDialog] = useState<boolean>(false);
-  const [category, setCategory] = useState<string>("");
   const editorContext = useContext(EditorContext);
 
   const [questionFormData, setQuestionFormData] = useState<INewQuestion>({
+    title: "",
     content: editorContext.content || "",
     tags: [],
     category: "",
     embeddedMediaFiles: editorContext.embeddedMediaFiles || [],
   });
-
   const handleAddTag = (tag: string) => {
     if (tags.length < 5) {
+      setTags(() => [...tags, tag]);
       setQuestionFormData(() => {
         return { ...questionFormData, tags: [...tags, tag] };
       });
@@ -33,7 +39,6 @@ const QuestionForm: React.FC = () => {
 
   const handleRemoveTag = (skill: string) => {
     const newTags = tags.filter((skillItem: string) => skillItem !== skill);
-
     setTags(newTags);
     setQuestionFormData(() => {
       return { ...questionFormData, tags: newTags };
@@ -46,15 +51,24 @@ const QuestionForm: React.FC = () => {
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
-    setCategory(() => e.target.value);
+
     setQuestionFormData(() => {
-      return { ...questionFormData, category: category };
+      return { ...questionFormData, category: e.target.value };
     });
   };
 
   const handleQuestionFormSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setShowConfirmDialog(true);
+    const markup = new Markup(
+      editorContext.content,
+      editorContext.embeddedMediaFiles
+    ).finalMarkup;
+    let imgArray = new JSSoup(markup).findAll("img");
+    imgArray = imgArray.map((imgSoup: any) =>
+      imgSoup.attrs.src.split("/").pop().replace("image-fse-", "")
+    );
+    editorContext.embeddedMediaFiles = imgArray;
     setQuestionFormData(() => {
       return {
         ...questionFormData,
@@ -69,9 +83,56 @@ const QuestionForm: React.FC = () => {
     setShowConfirmDialog(false);
   };
 
+  const handleFinalFormSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const errors = validateQuestionForm(questionFormData);
+    if (errors.length > 0) {
+      //dispatch alerts and close dialog
+      console.log(errors);
+      return;
+    }
+    console.log("here");
+    // const markup = new Markup(
+    //   editorContext.content,
+    //   editorContext.embeddedMediaFiles
+    // ).finalMarkup;
+    // let imgArray = new JSSoup(markup).findAll("img");
+    // imgArray = imgArray.map((imgSoup: any) =>
+    //   imgSoup.attrs.src.split("/").pop().replace("image-fse-", "")
+    // );
+
+    // editorContext.embeddedMediaFiles = imgArray;
+    console.log(editorContext.embeddedMediaFiles);
+    dispatch(createQuestion(questionFormData));
+  };
+
+  const handleQuestionTitleChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    e.preventDefault();
+    setQuestionFormData(() => {
+      return { ...questionFormData, title: e.target.value };
+    });
+  };
+
   return (
     <Fragment>
       <div className="question-form">
+        <div className="question-form__title">
+          <Box component="form" noValidate autoComplete="off">
+            <TextField
+              label="Question"
+              variant="standard"
+              onKeyPress={suppressSubmitOnEnter}
+              multiline={true}
+              minRows={1}
+              maxRows={4}
+              fullWidth={true}
+              placeholder="Add as many details as you can"
+              onChange={handleQuestionTitleChange}
+            />
+          </Box>
+        </div>
         <div className="question-form__category">
           <Box>
             <FormControl fullWidth>
@@ -122,10 +183,9 @@ const QuestionForm: React.FC = () => {
             onKeyPress={suppressSubmitOnEnter}
           />
         </div>
-        <RichTextEditor featureType="question" />
-
+        <RichTextEditor />
         <button
-          className="btn btn-action"
+          className="btn btn-primary"
           type="button"
           onClick={handleQuestionFormSubmit}
         >
@@ -137,14 +197,14 @@ const QuestionForm: React.FC = () => {
               <h3 className="question-dialog__title">Confirm submit?</h3>
               <div className="question-dialog__actions">
                 <button
-                  className="pure-material-button-contained"
+                  className="btn btn-primary"
                   type="button"
-                  onClick={() => console.log(editorContext)}
+                  onClick={handleFinalFormSubmit}
                 >
                   Confirm
                 </button>
                 <button
-                  className="pure-material-button-contained"
+                  className="btn btn-danger"
                   type="button"
                   onClick={handleDialogClose}
                 >

@@ -1,8 +1,19 @@
 .question-form {
   display: flex;
   flex-direction: column;
-  width: 50rem;
+  width: 65rem;
   margin: 0 auto;
+  margin-bottom: 5rem;
+  &__title {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  &__category {
+    margin-bottom: 1rem;
+  }
+  &__tags {
+    margin-bottom: 2rem;
+  }
 }
 
 .question-dialog {
@@ -15,6 +26,7 @@
     margin: 0 auto;
     margin-bottom: 0.5rem;
   }
+
   &__actions {
     display: flex;
     flex-direction: column;
@@ -28,5 +40,28 @@
       margin-left: 0.5rem;
       margin-right: 0.5rem;
     }
+  }
+}
+
+.question-page {
+  border: 1px solid $color-black;
+  padding: 2rem;
+  margin-left: 16rem;
+  margin-right: 16rem;
+  @media (max-width: 700px) {
+    margin-left: 0rem;
+    margin-right: 0rem;
+  }
+}
+
+.questionupdate-container {
+  border: 1px solid $color-black;
+  padding: 2rem;
+  margin-left: 10rem;
+  margin-right: 10rem;
+  margin-bottom: 2rem;
+  @media (max-width: 700px) {
+    margin-left: 0rem;
+    margin-right: 0rem;
   }
 }

@@ -1,3 +1,5 @@
+//TODO refactor -> embedded media files and embedded image files need to be condensed to one state value
+
 import React, { Fragment, useContext, useState, useEffect } from "react";
 import { ContentState, EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
@@ -10,12 +12,9 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "react-dropdown/style.css";
 import axios from "axios";
 import htmlToDraft from "html-to-draftjs";
+import JSSoup from "jssoup";
 
 import Markup from "./EditorApi";
-
-import { INewPost } from "../post/postSlice";
-import { INewQuestion } from "../question/questionSlice";
-import { useAppSelector } from "../../app/hooks";
 
 export interface IEditorContext {
   content: string;
@@ -29,13 +28,20 @@ export const EditorContext = React.createContext<IEditorContext>({
 
 const RichTextEditor: React.FC<{
   updateMode?: boolean;
-  featureType: "post" | "question";
-  object?: INewPost | INewQuestion;
+  object?: IEditorContext;
 }> = (props) => {
-  const { updateMode, featureType, object } = props;
+  const { updateMode, object } = props;
   const [embeddedMediaFiles, setEmbeddedMediaFiles] = useState<string[]>(
     (object && object.embeddedMediaFiles) || []
   );
+
+  //todo refactor here -> eslint disabled for now
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [embeddedImageFiles, setEmbeddedImageFiles] = useState<{
+    [key: number]: string;
+  }>({});
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [linesArray, setLinesArray] = useState<number[]>([]);
 
   const editorContext = useContext(EditorContext);
 
@@ -43,7 +49,90 @@ const RichTextEditor: React.FC<{
     convertContentToHTML();
   });
 
-  //upload image callback -> send media to AWS, get a link, and immediately return its id.
+  const objectContent = object && object.content;
+  const [editorState, setEditorState] = useState<EditorState>(() => {
+    if (!updateMode || !objectContent) {
+      return EditorState.createEmpty();
+    } else {
+      const displayMedia = object?.embeddedMediaFiles.map(
+        (imageId: string) =>
+          `<img src = "http://localhost:8000/api/media/image/image-fse-${imageId.replaceAll(
+            `'`,
+            ""
+          )}"/>`
+      );
+      const draftInitialContent = objectContent
+        .replaceAll("<figure> </figure>", () => displayMedia?.shift() || "")
+        .trim();
+      const blocksFromHtml = htmlToDraft(draftInitialContent);
+      const { contentBlocks, entityMap } = blocksFromHtml;
+      const contentState = ContentState.createFromBlockArray(
+        contentBlocks,
+        entityMap
+      );
+      return EditorState.createWithContent(contentState);
+    }
+  });
+
+  const [convertedContent, setConvertedContent] = useState<string>("");
+
+  const convertContentToHTML = () => {
+    try {
+      const currentContentAsHTML = convertToHTML(
+        editorState.getCurrentContent()
+      );
+      setConvertedContent(currentContentAsHTML);
+      //   setHtmlMarkup(() => createFinalMarkup(currentContentAsHTML).__html);
+    } catch (err) {
+      //dispatch alert with error message
+    }
+  };
+  const handleEditorChange = (state: EditorState) => {
+    setEditorState(state);
+    convertContentToHTML();
+    const currentBlockKey = editorState.getSelection().getStartKey();
+    const currentBlockIndex = editorState
+      .getCurrentContent()
+      .getBlockMap()
+      .keySeq()
+      .findIndex((k) => k === currentBlockKey);
+
+    setLinesArray((prevLinesArray) => {
+      return [...prevLinesArray, currentBlockIndex + 1];
+    });
+  };
+
+  const createFinalMarkup = (html: string) => {
+    const __html = DOMPurify.sanitize(`<div>${html}</div>`);
+    return {
+      __html,
+    };
+  };
+
+  const createPreviewMarkup = (html: string) => {
+    const __html = DOMPurify.sanitize(`<div>${html}</div>`);
+    console.log(embeddedMediaFiles);
+    const markup = new Markup(__html, embeddedMediaFiles).finalMarkup;
+    const finalEditorContent = createFinalMarkup(__html);
+
+    console.log("markup", markup);
+    // console.log(editorContext.content);
+    console.log(editorContext.embeddedMediaFiles);
+    let imgArray = new JSSoup(markup).findAll("img");
+
+    imgArray = imgArray.map((imgSoup: any) =>
+      imgSoup.attrs.src.split("/").pop().replace("image-fse-", "")
+    );
+
+    console.log("imgArray", imgArray);
+    editorContext.content = finalEditorContent.__html;
+    // console.log(editorContext.content);
+    editorContext.embeddedMediaFiles = embeddedMediaFiles;
+
+    return markup;
+  };
+
+  //todo refactor here
   const _uploadImageCallback = async (file: File) => {
     try {
       const ApiInstance = axios.create({
@@ -61,10 +150,47 @@ const RichTextEditor: React.FC<{
 
       await ApiInstance.get(`/media/file/image-fse-${_imageUrl}`);
 
-      setEmbeddedMediaFiles((prevEmbeddedMediaFiles) => [
-        ...prevEmbeddedMediaFiles,
-        _imageUrl,
-      ]);
+      let prevLines: number[] = [];
+      setLinesArray((prevLinesArray) => {
+        prevLines = [...prevLinesArray];
+        const lastLineNumber = prevLines.pop();
+        const maxLine = Math.max(...prevLines);
+        setEmbeddedImageFiles((prevEmbeddedImageFiles) => {
+          setEmbeddedMediaFiles(() => Object.values(prevEmbeddedImageFiles));
+          const relativeImagePosition = lastLineNumber || 1 / maxLine;
+          return {
+            ...prevEmbeddedImageFiles,
+            [relativeImagePosition]: _imageUrl,
+          };
+        });
+        return [...prevLinesArray, 0];
+      });
+
+      console.log(editorContext);
+      // const markup = new Markup(
+      //   editorContext.content,
+      //   editorContext.embeddedMediaFiles
+      // ).finalMarkup;
+      // console.log("markup", markup);
+      // console.log(editorContext.content);
+      // console.log(editorContext.embeddedMediaFiles);
+      // let imgArray = new JSSoup(markup).findAll("img");
+
+      // imgArray = imgArray.map((imgSoup: any) =>
+      //   imgSoup.attrs.src.split("/").pop().replace("image-fse-", "")
+      // );
+
+      // console.log("imgArray pre-filter", imgArray);
+
+      setEmbeddedMediaFiles((prevEmbeddedMediaFiles) => {
+        console.log("here", prevEmbeddedMediaFiles);
+        // imgArray = imgArray.filter((img: string) =>
+        //   prevEmbeddedMediaFiles.includes(img)
+        // );
+
+        // console.log("imgArray", imgArray);
+        return [...prevEmbeddedMediaFiles];
+      });
 
       return new Promise((resolve, _) => {
         resolve({
@@ -128,71 +254,6 @@ const RichTextEditor: React.FC<{
         width: "auto",
       },
     },
-  };
-
-  const objectContent = useAppSelector((state) =>
-    featureType === "post"
-      ? state.post.post.content
-      : state.question.question.content || null
-  );
-
-  const [editorState, setEditorState] = useState<EditorState>(() => {
-    if (!updateMode || !objectContent) {
-      return EditorState.createEmpty();
-    } else {
-      const displayMedia = object?.embeddedMediaFiles.map(
-        (imageId: string) =>
-          `<img src = "http://localhost:8000/api/media/image/image-fse-${imageId.replaceAll(
-            `'`,
-            ""
-          )}"/>`
-      );
-      const draftInitialContent = objectContent.replaceAll(
-        "<figure> </figure>",
-        () => displayMedia?.shift() || ""
-      );
-      const blocksFromHtml = htmlToDraft(draftInitialContent);
-      const { contentBlocks, entityMap } = blocksFromHtml;
-      const contentState = ContentState.createFromBlockArray(
-        contentBlocks,
-        entityMap
-      );
-      return EditorState.createWithContent(contentState);
-    }
-  });
-
-  const [convertedContent, setConvertedContent] = useState<string>("");
-
-  const convertContentToHTML = () => {
-    try {
-      const currentContentAsHTML = convertToHTML(
-        editorState.getCurrentContent()
-      );
-      setConvertedContent(currentContentAsHTML);
-      //   setHtmlMarkup(() => createFinalMarkup(currentContentAsHTML).__html);
-    } catch (err) {
-      //dispatch alert with error message
-    }
-  };
-  const handleEditorChange = (state: EditorState) => {
-    setEditorState(state);
-    convertContentToHTML();
-  };
-
-  const createFinalMarkup = (html: string) => {
-    const __html = DOMPurify.sanitize(`<div>${html}</div>`);
-    return {
-      __html,
-    };
-  };
-
-  const createPreviewMarkup = (html: string) => {
-    const __html = DOMPurify.sanitize(`<div>${html}</div>`);
-    const markup = new Markup(__html, embeddedMediaFiles).finalMarkup;
-    const finalEditorContent = createFinalMarkup(__html);
-    editorContext.content = finalEditorContent.__html;
-    editorContext.embeddedMediaFiles = embeddedMediaFiles;
-    return markup;
   };
 
   return (

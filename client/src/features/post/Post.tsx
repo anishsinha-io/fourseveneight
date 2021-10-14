@@ -2,10 +2,10 @@ import { Fragment, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { loadPost } from "./postSlice";
 import { RouteComponentProps } from "react-router";
-import Markup from "./postAPI";
+import Markup from "../editor/EditorApi";
 import JsxParser from "react-jsx-parser";
 import { MathComponent } from "mathjax-react";
-import JsxParserDefaultProps from "./postAPI";
+import JsxParserDefaultProps from "../editor/EditorApi";
 import Gist from "super-react-gist";
 import Comments from "../comment/Comments";
 
@@ -23,7 +23,6 @@ const Post = ({ match }: RouteComponentProps<{ slug?: string }>) => {
     //dispatch alert
   }, [dispatch, match.params.slug]);
 
-  //todo change to 404 page
   if (!post.content)
     return (
       <Fragment>

@@ -6,7 +6,7 @@
   margin-bottom: 4rem;
   &__preview {
     margin-bottom: 5rem;
-    border-top: 1px solid $color-black;
+    border-top: 1px solid $color-light-gray;
   }
 
   &__form {
@@ -52,7 +52,7 @@
   }
   &__editor {
     min-height: 35rem;
-    border: 1px solid $color-black;
+    border: 1px solid $color-light-gray;
     border-radius: 3px;
     line-height: 100%;
     margin-bottom: 1rem;

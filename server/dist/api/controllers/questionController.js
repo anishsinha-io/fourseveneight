@@ -43,18 +43,20 @@ exports.getUserQuestions = exports.getAllQuestions = exports.getQuestion = expor
 var questionModel_1 = __importDefault(require("../../models/questionModel"));
 var userModel_1 = __importDefault(require("../../models/userModel"));
 var createQuestion = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, _a, content, category, tags, newQuestionFields, newQuestion, err_1;
+    var user, _a, content, category, tags, embeddedMediaFiles, title, newQuestionFields, newQuestion, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 2, , 3]);
                 user = req.user;
-                _a = req.body, content = _a.content, category = _a.category, tags = _a.tags;
+                _a = req.body, content = _a.content, category = _a.category, tags = _a.tags, embeddedMediaFiles = _a.embeddedMediaFiles, title = _a.title;
                 newQuestionFields = {
+                    title: title,
                     user: user.id,
                     content: content,
                     category: category,
                     tags: tags,
+                    embeddedMediaFiles: embeddedMediaFiles,
                 };
                 newQuestion = new questionModel_1.default(newQuestionFields);
                 return [4 /*yield*/, newQuestion.save()];
@@ -97,14 +99,14 @@ var removeQuestion = function (req, res) { return __awaiter(void 0, void 0, void
 }); };
 exports.removeQuestion = removeQuestion;
 var editQuestion = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, questionId, _a, content, category, tags, question, err_3;
+    var user, questionId, _a, content, category, tags, embeddedMediaFiles, title, question, err_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 3, , 4]);
                 user = req.user;
                 questionId = req.params.questionId;
-                _a = req.body, content = _a.content, category = _a.category, tags = _a.tags;
+                _a = req.body, content = _a.content, category = _a.category, tags = _a.tags, embeddedMediaFiles = _a.embeddedMediaFiles, title = _a.title;
                 return [4 /*yield*/, questionModel_1.default.findById(questionId)];
             case 1:
                 question = _b.sent();
@@ -112,8 +114,13 @@ var editQuestion = function (req, res) { return __awaiter(void 0, void 0, void 0
                     return [2 /*return*/, res.status(404).json({ msg: "Question not found" })];
                 if (question.user.toString() !== user.id.toString())
                     return [2 /*return*/, res.status(403).json({ msg: "Unable to authorize!" })];
-                console.log(questionId);
-                return [4 /*yield*/, questionModel_1.default.findByIdAndUpdate(questionId, { content: content, category: category, tags: tags })];
+                return [4 /*yield*/, questionModel_1.default.findByIdAndUpdate(questionId, {
+                        content: content,
+                        category: category,
+                        tags: tags,
+                        embeddedMediaFiles: embeddedMediaFiles,
+                        title: title,
+                    })];
             case 2:
                 _b.sent();
                 return [2 /*return*/, res.status(200).json({ msg: "Question successfully updated" })];
@@ -131,7 +138,7 @@ var getQuestion = function (req, res) { return __awaiter(void 0, void 0, void 0,
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                questionId = req.params.id;
+                questionId = req.params.questionId;
                 return [4 /*yield*/, questionModel_1.default.findById(questionId)];
             case 1:
                 question = _a.sent();

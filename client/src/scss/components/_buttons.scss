@@ -1,109 +1,110 @@
+// .btn {
+//   background: $color-white;
+//   color: $color-black;
+
+//   border: 1px solid $color-black;
+//   cursor: pointer;
+//   font-size: 1rem;
+//   padding: 0.5rem;
+//   outline: none;
+//   &.btn-action {
+//     @include set-background($color-black);
+//     &:hover {
+//       background: $color-white;
+//       color: set-text-color($color-white, $color-black);
+//     }
+//   }
+//   &.btn-confirm {
+//     border: 1px solid $color-accent;
+//     color: $color-accent;
+//     @include set-background($color-accent);
+//     &:hover {
+//       background: $color-white;
+//       color: set-text-color($color-white, $color-accent);
+//     }
+//   }
+//   &.btn-success {
+//     color: $color-success;
+//     border: 1px solid $color-success;
+//     @include set-background($color-success);
+//     &:hover {
+//       border: 1px solid $color-success;
+//       background: $color-white;
+//       color: set-text-color($color-white, $color-success);
+//     }
+//   }
+//   &.btn-update {
+//     color: $color-update;
+//     border: 1px solid $color-white;
+//     @include set-background($color-update);
+//     &:hover {
+//       border: 1px solid $color-update;
+//       background: $color-white;
+//       color: set-text-color($color-white, $color-update);
+//     }
+//   }
+//   &.btn-danger {
+//     color: $color-danger;
+//     border: 1px solid $color-danger;
+//     @include set-background($color-danger);
+//     &:hover {
+//       border: 1px solid $color-danger;
+//       background: $color-white;
+//       color: set-text-color($color-white, $color-danger);
+//     }
+//   }
+// }
+
+// .btn-secondary {
+//   background: $color-white;
+//   color: $color-black;
+
+//   border: 1px solid $color-black;
+//   cursor: pointer;
+//   font-size: 1rem;
+//   padding: 0.5rem;
+//   outline: none;
+//   &__danger {
+//     background: none;
+//     &:hover {
+//       border: 1px solid $color-danger;
+//       background: none;
+//       color: set-text-color($color-white, $color-danger);
+//     }
+//   }
+// }
+
+// .bg {
+//   &-action {
+//     @include set-background(#fff);
+//     border: #000 1px solid;
+//   }
+// }
+
+// .reply-btn {
+//   background: none;
+//   border: none;
+//   text-decoration: underline;
+//   cursor: pointer;
+//   color: $color-gray;
+// }
+
+// .reply-highlight {
+//   color: $color-black;
+// }
+
+// .alert-dismiss {
+//   text-decoration: underline;
+//   border: none;
+//   cursor: pointer;
+//   background: none;
+// }
+
 .btn {
-  background: $color-white;
-  color: $color-black;
-
-  border: 1px solid $color-black;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 0.5rem;
-  outline: none;
-  &.btn-action {
-    @include set-background($color-black);
-    &:hover {
-      background: $color-white;
-      color: set-text-color($color-white, $color-black);
-    }
-  }
-  &.btn-confirm {
-    border: 1px solid $color-accent;
-    color: $color-accent;
-    @include set-background($color-accent);
-    &:hover {
-      background: $color-white;
-      color: set-text-color($color-white, $color-accent);
-    }
-  }
-  &.btn-success {
-    color: $color-success;
-    border: 1px solid $color-success;
-    @include set-background($color-success);
-    &:hover {
-      border: 1px solid $color-success;
-      background: $color-white;
-      color: set-text-color($color-white, $color-success);
-    }
-  }
-  &.btn-update {
-    color: $color-update;
-    border: 1px solid $color-white;
-    @include set-background($color-update);
-    &:hover {
-      border: 1px solid $color-update;
-      background: $color-white;
-      color: set-text-color($color-white, $color-update);
-    }
-  }
-  &.btn-danger {
-    color: $color-danger;
-    border: 1px solid $color-danger;
-    @include set-background($color-danger);
-    &:hover {
-      border: 1px solid $color-danger;
-      background: $color-white;
-      color: set-text-color($color-white, $color-danger);
-    }
-  }
-}
-
-.btn-secondary {
-  background: $color-white;
-  color: $color-black;
-
-  border: 1px solid $color-black;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 0.5rem;
-  outline: none;
-  &__danger {
-    background: none;
-    &:hover {
-      border: 1px solid $color-danger;
-      background: none;
-      color: set-text-color($color-white, $color-danger);
-    }
-  }
-}
-
-.bg {
-  &-action {
-    @include set-background(#fff);
-    border: #000 1px solid;
-  }
-}
-
-.reply-btn {
-  background: none;
-  border: none;
-  text-decoration: underline;
-  cursor: pointer;
-  color: $color-gray;
-}
-
-.reply-highlight {
-  color: $color-black;
-}
-
-.alert-dismiss {
-  text-decoration: underline;
-  border: none;
-  cursor: pointer;
-  background: none;
-}
-
-.pure-material-button-contained {
   position: relative;
   display: inline-block;
   box-sizing: border-box;
+  color: $color-white;
   border: none;
   font-size: 1rem;
   padding: 0.5rem;
@@ -111,7 +112,7 @@
   text-align: center;
   text-overflow: ellipsis;
   text-transform: uppercase;
-  background-color: $color-success;
+  // background-color: $color-success;
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
   overflow: hidden;
@@ -128,7 +129,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: $color-success;
+    // background-color: $color-success;
     opacity: 0;
     transition: opacity 0.2s;
   }
@@ -186,10 +187,13 @@
       opacity: 0;
     }
   }
-  &__success {
+  &-primary {
+    background-color: $color-success;
   }
-  &__danger {
+  &-danger {
+    background-color: $color-danger;
   }
-  &__action {
+  &-action {
+    background-color: $color-black;
   }
 }

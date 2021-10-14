@@ -12,6 +12,8 @@ import Profile from "../features/profile/Profile";
 import Alert from "../features/alert/Alert";
 import InitialPreferences from "../features/newuser/InitialPreferences";
 import QuestionForm from "../features/question/QuestionForm";
+import Question from "../features/question/Question";
+import QuestionUpdateForm from "../features/question/UpdateForm";
 
 const Routes: React.FC = () => {
   return (
@@ -25,6 +27,7 @@ const Routes: React.FC = () => {
           <Route exact path="/register" component={Register} />
           <Route exact path="/post/:slug" component={Post} />
           <Route exact path="/profiles/:username" component={Profile} />
+          <Route exact path="/questions/:questionId" component={Question} />
           <PrivateRoute
             exact
             path="/update/:slug"
@@ -48,6 +51,12 @@ const Routes: React.FC = () => {
             path="/question/create"
             redirectPath="/"
             component={QuestionForm}
+          />
+          <PrivateRoute
+            exact
+            path="/question/update/:questionId"
+            redirectPath="/login"
+            component={QuestionUpdateForm}
           />
         </Switch>
       </section>

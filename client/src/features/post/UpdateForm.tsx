@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { RouteComponentProps, Redirect } from "react-router";
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
