@@ -2,6 +2,7 @@
 
 import jwtStrategy from "passport-jwt";
 import passport from "passport";
+import fs from "fs";
 
 import User, { IUser } from "../models/userModel";
 

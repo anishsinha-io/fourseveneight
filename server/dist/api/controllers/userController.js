@@ -59,7 +59,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserByUsername = exports.auth = exports.updateUser = exports.deactivateAccount = exports.resendConfirmationEmail = exports.confirmAccountEmail = exports.logoutUser = exports.resetPassword = exports.sendPasswordResetEmail = exports.getCurrentUser = exports.loginUser = exports.registerUser = void 0;
+exports.getAllUsers = exports.getUserByUsername = exports.auth = exports.updateUser = exports.deactivateAccount = exports.resendConfirmationEmail = exports.confirmAccountEmail = exports.logoutUser = exports.resetPassword = exports.sendPasswordResetEmail = exports.getCurrentUser = exports.loginUser = exports.registerUser = void 0;
 var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var userModel_1 = __importDefault(require("../../models/userModel"));
@@ -163,12 +163,13 @@ var getCurrentUser = function (req, res) { return __awaiter(void 0, void 0, void
     return __generator(this, function (_a) {
         try {
             user = req.user;
+            console.log(user);
             return [2 /*return*/, res
                     .status(200)
                     .json({ id: user.id, email: user.email, username: user.username })];
         }
         catch (err) {
-            return [2 /*return*/, res.status(500).json({ msg: "Internal server" })];
+            return [2 /*return*/, res.status(500).json({ msg: "Internal server error" })];
         }
         return [2 /*return*/];
     });
@@ -454,3 +455,26 @@ var getUserByUsername = function (req, res) { return __awaiter(void 0, void 0, v
     });
 }); };
 exports.getUserByUsername = getUserByUsername;
+var getAllUsers = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var users, userObjects, err_12;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, userModel_1.default.find()];
+            case 1:
+                users = _a.sent();
+                if (!users)
+                    return [2 /*return*/, res.status(404).json({ msg: "No users not found" })];
+                userObjects = users.map(function (user) {
+                    return { name: user.username, id: user.id };
+                });
+                return [2 /*return*/, res.status(200).json({ userObjects: userObjects })];
+            case 2:
+                err_12 = _a.sent();
+                return [2 /*return*/, res.status(500).json({ msg: "Internal server error" })];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.getAllUsers = getAllUsers;

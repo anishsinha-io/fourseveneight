@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect, Route, RouteProps } from "react-router";
 import { useAppSelector } from "../app/hooks";
-import LoadingSpinner from "../features/spinner/Spinner";
+import LoadingSpinner from "../components/spinner/Spinner";
 
 export interface IPrivateRouteProps extends RouteProps {
   redirectPath: string;

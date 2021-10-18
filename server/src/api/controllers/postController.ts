@@ -14,21 +14,11 @@ export const createPost: RequestHandler = async (req, res) => {
       return res.status(403).json({
         msg: "You must activate your account to access this resource!",
       });
-    const {
-      content,
-      title,
-      summary,
-      imageAlt,
-      tags,
-      category,
-      embeddedMediaFiles,
-    } = req.body;
+    const { content, title, summary, imageAlt, tags, category } = req.body;
     const file = req.file;
 
-    console.log("embeddedMediaFiles", embeddedMediaFiles);
-
     const parsedTags = JSON.parse(tags);
-    const parsedMediaFiles = JSON.parse(embeddedMediaFiles);
+
     const postFields = {
       user: user.id,
       image: `image-fse-${file?.filename}`,
@@ -40,7 +30,6 @@ export const createPost: RequestHandler = async (req, res) => {
       likes: [] as ObjectId[],
       tags: parsedTags,
       category,
-      embeddedMediaFiles: parsedMediaFiles,
     } as IPost;
 
     const newPost = new Post(postFields);
@@ -48,7 +37,8 @@ export const createPost: RequestHandler = async (req, res) => {
 
     return res.status(201).json({ newPost });
   } catch (err) {
-    return res.status(500).json({ msg: "Internal server error" });
+    console.log(err);
+    return res.status(500).json({ msg: err });
   }
 };
 
@@ -80,18 +70,9 @@ export const updatePost: RequestHandler = async (req, res) => {
         .status(403)
         .json({ msg: "Current account not authorized for this action" });
 
-    const {
-      title,
-      content,
-      summary,
-      imageAlt,
-      tags,
-      category,
-      embeddedMediaFiles,
-    } = req.body;
+    const { title, content, summary, imageAlt, tags, category } = req.body;
 
     const parsedTags = JSON.parse(tags);
-    const parsedMediaFiles = JSON.parse(embeddedMediaFiles);
 
     const slug = slugify(title, { lower: true });
     const file = req.file;
@@ -111,7 +92,6 @@ export const updatePost: RequestHandler = async (req, res) => {
         imageAlt,
         tags: parsedTags,
         category,
-        embeddedMediaFiles: parsedMediaFiles,
       },
       {
         new: true,

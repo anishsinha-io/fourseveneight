@@ -18,6 +18,7 @@ var commentRouter_1 = __importDefault(require("./api/routes/commentRouter"));
 var tagsRouter_1 = __importDefault(require("./api/routes/tagsRouter"));
 var mediaRouter_1 = __importDefault(require("./api/routes/mediaRouter"));
 var questionRouter_1 = __importDefault(require("./api/routes/questionRouter"));
+var tmceRouter_1 = __importDefault(require("./api/routes/tmceRouter"));
 dotenv_1.default.config({ path: "src/config/config.env" });
 var app = express_1.default();
 app.use(cors_1.default());
@@ -37,6 +38,7 @@ app.use("/api/comments", commentRouter_1.default);
 app.use("/api/tags", tagsRouter_1.default);
 app.use("/api/media", mediaRouter_1.default);
 app.use("/api/questions", questionRouter_1.default);
+app.use("/api/tmce", tmceRouter_1.default);
 var port = process.env.PORT || 8000;
 var server = app.listen(port);
 process.on("unhandledRejection", function () {

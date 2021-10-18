@@ -1,4 +1,4 @@
-import { INewQuestion } from "../features/question/questionSlice";
+import { INewQuestion } from "../components/question/questionSlice";
 
 //An empty editor will output '<div><div><p></p></div></div>', so this is the equivalent of typing nothing
 
@@ -32,7 +32,8 @@ const validateQuestionForm = (questionForm: INewQuestion): string[] => {
     !category ||
     !tags ||
     !content ||
-    content === "<div><div><p></p></div></div>"
+    content === "<div><div><p></p></div></div>" ||
+    category === " -- select an option -- "
   ) {
     errors.push("Please fill out all fields to proceed");
   }

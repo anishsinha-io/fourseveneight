@@ -117,7 +117,7 @@
 
 .posts-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 1rem;
   justify-items: center;
   padding: 2rem; }
@@ -226,7 +226,7 @@
     border-radius: 2px;
     margin-right: 8px; }
   .file-input:hover > .button {
-    background: #000;
+    background: #03a9f4;
     color: white; }
   .file-input > .label {
     color: #7e7e7e;
@@ -482,6 +482,39 @@
   place-items: center;
   flex-direction: column; }
 
+.question-container {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  border: 1px solid #03a9f4;
+  padding: 1rem; }
+  .question-container__title {
+    margin-top: 0.5rem; }
+    .question-container__title:hover {
+      cursor: pointer; }
+  .question-container__meta {
+    margin-bottom: 0.5rem; }
+  .question-container__chips {
+    margin-bottom: 0.5rem;
+    display: flex;
+    place-items: center; }
+    .question-container__chips > div {
+      margin: 0.25rem;
+      cursor: pointer; }
+  .question-container__buttons {
+    margin-top: auto;
+    margin-bottom: 0.5rem; }
+    .question-container__buttons .question-button {
+      margin-left: 0.5rem;
+      min-width: 4rem; }
+
+.questions-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 1rem;
+  justify-items: center;
+  padding: 2rem; }
+
 .question-form {
   display: flex;
   flex-direction: column;
@@ -495,6 +528,16 @@
     margin-bottom: 1rem; }
   .question-form__tags {
     margin-bottom: 2rem; }
+  .question-form__actionbuttons {
+    display: flex;
+    margin-bottom: 4rem;
+    place-items: center;
+    width: 100%;
+    flex-grow: 1; }
+    .question-form__actionbuttons > button {
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+      width: 100%; }
 
 .question-dialog {
   display: flex;
@@ -519,8 +562,8 @@
 .question-page {
   border: 1px solid #000;
   padding: 2rem;
-  margin-left: 16rem;
-  margin-right: 16rem; }
+  margin-left: 10rem;
+  margin-right: 10rem; }
   @media (max-width: 700px) {
     .question-page {
       margin-left: 0rem;
@@ -537,11 +580,45 @@
       margin-left: 0rem;
       margin-right: 0rem; } }
 
+.question-preview {
+  width: 75%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  place-items: center; }
+  .question-preview > button {
+    margin-top: 2rem;
+    margin-left: auto; }
+  .question-preview__title {
+    margin-top: 1rem;
+    margin-right: auto;
+    border-bottom: 1px solid #7e7e7e;
+    margin-bottom: 1rem; }
+  .question-preview__nocontent {
+    margin-top: 2rem;
+    margin-bottom: 2rem; }
+  .question-preview__meta {
+    display: flex;
+    place-items: center; }
+    .question-preview__meta .question-meta__list {
+      display: flex;
+      margin: 0 auto; }
+      .question-preview__meta .question-meta__list--item {
+        margin: 0.25rem; }
+
+.richtexteditor-main {
+  width: 65rem;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  border-radius: 0.2rem;
+  margin-bottom: 4rem; }
+
 .post-page {
   border: 1px solid #000;
   padding: 2rem;
-  margin-left: 16rem;
-  margin-right: 16rem;
+  margin-left: 10rem;
+  margin-right: 10rem;
   margin-bottom: 2rem; }
   @media (max-width: 700px) {
     .post-page {
@@ -553,6 +630,8 @@
     margin-bottom: 1rem;
     border-bottom: 1px solid #000;
     padding: 1rem; }
+    .post-page .post-image__main {
+      background: rgba(0, 0, 0, 0.2); }
   .post-page .post-title {
     text-align: center; }
   .post-page .post-meta {
@@ -566,34 +645,88 @@
   .post-page .post-content {
     margin-top: 2rem; }
 
+.post-main {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  place-items: center;
+  width: 65rem; }
+  .post-main__heading {
+    margin-right: auto; }
+  .post-main__actionbuttons {
+    display: flex;
+    margin-bottom: 4rem;
+    place-items: center;
+    width: 100%;
+    flex-grow: 1; }
+    .post-main__actionbuttons > button {
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+      width: 100%; }
+  .post-main__form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    width: 100%; }
+    .post-main__form .form__title,
+    .post-main__form .form__summary {
+      grid-column: 1/5;
+      margin-bottom: 0.5rem; }
+    .post-main__form .form__category {
+      grid-column: 1/5;
+      margin-bottom: 0.5rem; }
+    .post-main__form .form__tags {
+      grid-column: 1/5;
+      margin-bottom: 0.5rem; }
+    .post-main__form .form__meta {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+      grid-column: 1/5;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      align-items: center; }
+      .post-main__form .form__meta--file label {
+        margin-right: 0.5rem; }
+      .post-main__form .form__meta--file img {
+        max-width: 3rem;
+        border: 1px solid #03a9f4;
+        margin: 0.2rem; }
+  .post-main > button {
+    width: 100%;
+    margin-bottom: 4rem; }
+
+.post-preview {
+  width: 75%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  place-items: center; }
+  .post-preview > button {
+    margin-top: 2rem;
+    margin-left: auto; }
+  .post-preview__title {
+    margin-top: 1rem;
+    margin-right: auto;
+    border-bottom: 1px solid #7e7e7e;
+    margin-bottom: 1rem; }
+  .post-preview__image {
+    width: 100%;
+    margin-bottom: 1rem; }
+  .post-preview__meta {
+    display: flex;
+    place-items: center; }
+    .post-preview__meta .post-meta__list {
+      display: flex;
+      margin: 0 auto; }
+      .post-preview__meta .post-meta__list--item {
+        margin: 0.25rem; }
+
 .post-form__heading {
   margin: 0 auto; }
 
 .landing-container {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
+  display: flex;
   margin-left: 2rem;
   margin-right: 2rem; }
-  .landing-container .landing-sidebar {
-    display: flex;
-    flex-direction: column;
-    padding-left: 0.5rem; }
-    .landing-container .landing-sidebar .twitter-connect {
-      display: flex;
-      min-height: 10rem;
-      align-items: center;
-      width: 100%;
-      justify-content: center;
-      flex-direction: column;
-      border-bottom: 1px solid #7e7e7e; }
-    .landing-container .landing-sidebar .recommended-topics {
-      min-height: 10rem;
-      justify-content: center;
-      width: 100%;
-      align-items: center;
-      display: flex;
-      flex-direction: column;
-      border-bottom: 1px solid #7e7e7e; }
 
 * {
   box-sizing: border-box;
@@ -628,9 +761,8 @@ textarea {
 
 pre,
 code {
-  display: inline-block;
-  font-size: 1rem;
-  background-color: #ebebeb; }
+  display: flex;
+  font-size: 1rem; }
 
 input {
   outline: none;

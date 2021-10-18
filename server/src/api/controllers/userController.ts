@@ -95,11 +95,12 @@ export const loginUser: RequestHandler = async (req, res) => {
 export const getCurrentUser: RequestHandler = async (req, res) => {
   try {
     const user = req.user as IUser;
+    console.log(user);
     return res
       .status(200)
       .json({ id: user.id, email: user.email, username: user.username });
   } catch (err) {
-    return res.status(500).json({ msg: "Internal server" });
+    return res.status(500).json({ msg: "Internal server error" });
   }
 };
 
@@ -293,6 +294,19 @@ export const getUserByUsername: RequestHandler = async (req, res) => {
     const user = await User.findOne({ username: username });
     if (user) return res.status(200).json({ data: user });
     else return res.status(404).json({ data: "User not found" });
+  } catch (err) {
+    return res.status(500).json({ msg: "Internal server error" });
+  }
+};
+
+export const getAllUsers: RequestHandler = async (req, res) => {
+  try {
+    const users = await User.find();
+    if (!users) return res.status(404).json({ msg: "No users not found" });
+    const userObjects = users.map((user: IUser) => {
+      return { name: user.username, id: user.id };
+    });
+    return res.status(200).json({ userObjects });
   } catch (err) {
     return res.status(500).json({ msg: "Internal server error" });
   }

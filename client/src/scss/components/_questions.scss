@@ -1,0 +1,41 @@
+.question-container {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  border: 1px solid $color-success;
+  padding: 1rem;
+  &__title {
+    margin-top: 0.5rem;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &__meta {
+    margin-bottom: 0.5rem;
+  }
+  &__chips {
+    margin-bottom: 0.5rem;
+    display: flex;
+    place-items: center;
+    & > div {
+      margin: 0.25rem;
+      cursor: pointer;
+    }
+  }
+  &__buttons {
+    margin-top: auto;
+    margin-bottom: 0.5rem;
+    .question-button {
+      margin-left: 0.5rem;
+      min-width: 4rem;
+    }
+  }
+}
+
+.questions-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 1rem;
+  justify-items: center;
+  padding: 2rem;
+}

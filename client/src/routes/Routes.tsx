@@ -1,45 +1,59 @@
 import React, { Fragment } from "react";
 import { Route, Switch } from "react-router-dom";
-import Login from "../features/auth/Login";
-import Register from "../features/auth/Register";
-import Navbar from "../features/navbar/Navbar";
-import Landing from "../features/landing/Landing";
+
+//auth
+import Login from "../components/auth/Login";
+import Register from "../components/auth/Register";
+
+//misc
+import Navbar from "../components/navbar/Navbar";
+import Landing from "../components/landing/Landing";
+
+//util
 import PrivateRoute from "./PrivateRoute";
-import PostForm from "../features/post/PostForm";
-import Post from "../features/post/Post";
-import UpdateForm from "../features/post/UpdateForm";
-import Profile from "../features/profile/Profile";
-import Alert from "../features/alert/Alert";
-import InitialPreferences from "../features/newuser/InitialPreferences";
-import QuestionForm from "../features/question/QuestionForm";
-import Question from "../features/question/Question";
-import QuestionUpdateForm from "../features/question/UpdateForm";
+
+//post
+import PostForm from "../components/post/PostForm";
+import Post from "../components/post/Post";
+import UpdatePostForm from "../components/post/UpdatePostForm";
+
+//profile
+import Profile from "../components/profile/Profile";
+import InitialPreferences from "../components/newuser/InitialPreferences";
+
+//question
+import QuestionForm from "../components/question/QuestionForm";
+import Question from "../components/question/Question";
+import UpdateQuestionForm from "../components/question/UpdateQuestionForm";
+
+//editor
+import RichTextEditor from "../components/editor/RichTextEditor";
 
 const Routes: React.FC = () => {
   return (
     <Fragment>
       <section className="container">
         <Navbar />
-        <Alert />
         <Switch>
           <Route exact path="/" component={Landing} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/post/:slug" component={Post} />
           <Route exact path="/profiles/:username" component={Profile} />
-          <Route exact path="/questions/:questionId" component={Question} />
+          <Route exact path="/question/:questionId" component={Question} />
+          <PrivateRoute
+            exact
+            path="/test"
+            redirectPath="/login"
+            component={RichTextEditor}
+          />
           <PrivateRoute
             exact
             path="/update/:slug"
             redirectPath="/login"
-            component={UpdateForm}
+            component={UpdatePostForm}
           />
-          <PrivateRoute
-            exact
-            path="/create"
-            redirectPath="/login"
-            component={PostForm}
-          />
+
           <PrivateRoute
             exact
             path="/newuser/setup"
@@ -48,7 +62,7 @@ const Routes: React.FC = () => {
           />
           <PrivateRoute
             exact
-            path="/question/create"
+            path="/create/question"
             redirectPath="/"
             component={QuestionForm}
           />
@@ -56,7 +70,13 @@ const Routes: React.FC = () => {
             exact
             path="/question/update/:questionId"
             redirectPath="/login"
-            component={QuestionUpdateForm}
+            component={UpdateQuestionForm}
+          />
+          <PrivateRoute
+            exact
+            path="/create/post"
+            redirectPath="/login"
+            component={PostForm}
           />
         </Switch>
       </section>

@@ -9,6 +9,7 @@ const router = Router();
 
 //public
 
+router.route("/").get(userController.getAllUsers);
 router.route("/register").post(userController.registerUser);
 router.route("/login").post(userController.loginUser);
 router.route("/recover").post(userController.sendPasswordResetEmail);

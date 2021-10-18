@@ -17,6 +17,7 @@ import commentRouter from "./api/routes/commentRouter";
 import tagsRouter from "./api/routes/tagsRouter";
 import mediaRouter from "./api/routes/mediaRouter";
 import questionRouter from "./api/routes/questionRouter";
+import tmceRouter from "./api/routes/tmceRouter";
 
 dotenv.config({ path: "src/config/config.env" });
 
@@ -43,6 +44,7 @@ app.use("/api/comments", commentRouter);
 app.use("/api/tags", tagsRouter);
 app.use("/api/media", mediaRouter);
 app.use("/api/questions", questionRouter);
+app.use("/api/tmce", tmceRouter);
 
 const port = process.env.PORT || 8000;
 

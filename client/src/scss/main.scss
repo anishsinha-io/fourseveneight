@@ -15,6 +15,7 @@
 @import "./components/categories.scss";
 @import "./components/questions.scss";
 @import "./components/question.scss";
+@import "./components/richtexteditor.scss";
 
 @import "./pages/post.scss";
 @import "./pages/dashboard.scss";
@@ -65,9 +66,8 @@ textarea {
 
 pre,
 code {
-  display: inline-block;
+  display: flex;
   font-size: 1rem;
-  background-color: #ebebeb;
 }
 
 input {

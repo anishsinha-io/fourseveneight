@@ -1,4 +1,4 @@
-import { IRegisterData } from "../features/auth/authSlice";
+import { IRegisterData } from "../components/auth/authSlice";
 
 export const validateInputs = (formParameters: IRegisterData): string[] => {
   const errors = [] as string[];
